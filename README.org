@@ -1,0 +1,2 @@
+* My Emacs configuration directory
+- I manage my Emacs config by =Org-mode= (see [[file:init.org][init.org]])
