@@ -1,0 +1,294 @@
+#+TITLE: My Emacs Setting
+#+PROPERTY: header-args :tangle yes
+* Startup
+** Package Management
+I use ~leaf.el~ for package management.
+#+BEGIN_SRC emacs-lisp
+  (prog1 "prepare leaf"
+    (prog1 "package"
+      (custom-set-variables
+       '(package-archives '(("org"   . "http://orgmode.org/elpa/")
+                            ("melpa" . "http://melpa.org/packages/")
+                            ("melpa-stable" . "http://stable.melpa.org/packages/")
+                            ("marmalade" . "http://marmalade-repo.org/packages/")
+                            ("gnu"   . "http://elpa.gnu.org/packages/"))))
+      (package-initialize))
+
+    (prog1 "leaf"
+      (unless (package-installed-p 'leaf)
+        (unless (assoc 'leaf package-archive-contents)
+          (package-refresh-contents))
+        (condition-case err
+            (package-install 'leaf)
+          (error
+           (package-refresh-contents)
+           (package-install 'leaf))))
+      (prog1 'leaf-keywords
+        (require 'leaf)
+        (leaf-keywords-init))
+      (prog1 "defmacro for debugging leaf grammer"
+        (defmacro p (form)
+          "Output pretty `macroexpand-1'ed given FORM."
+          `(progn
+             (pp (macroexpand-1 ',form))
+             nil))))
+
+    (leaf leaf-keywords
+      :ensure t
+      :require t
+      :config
+      (leaf hydra :ensure t)
+      (leaf el-get :ensure t
+        :custom ((el-get-git-shallow-clone . t)))
+      (leaf-keywords-init)))
+    (leaf package-utils
+       :ensure t
+       :require t)
+#+END_SRC
+** Tangling
+#+BEGIN_SRC emacs-lisp
+  (leaf *tangling
+    :config
+    (setq user-emacs-directory "~/GitHub/gtd/dotfiles/.emacs.d/")
+    (defun tangle-init ()
+      ;; Tangle code blocks if current buffer is init.org or mylibrary.org
+      (when (member (buffer-file-name)
+                    `(,(expand-file-name (concat user-emacs-directory "init.org"))))
+        (let ((prog-mode-hook nil))
+          (org-babel-tangle)
+          (find-file-noselect "init.el")
+          (with-current-buffer "init.el"
+            (eval-buffer))
+          (kill-buffer "init.el"))))
+    (add-hook 'after-save-hook 'tangle-init))
+#+END_SRC
+** Macro
+#+begin_src emacs-lisp
+  (defmacro append-to-list (to lst)
+    `(setq ,to (append ,lst ,to)))
+#+end_src
+** Config
+#+begin_src emacs-lisp
+  (setenv "LANG" "en_US.UTF-8")
+  (setq-default indent-tabs-mode  nil)
+  (setq tags-add-tables nil)
+  (setq use-dialog-box nil)
+  (leaf exec-path-from-shell
+    :ensure t
+    :config
+    (exec-path-from-shell-initialize))
+  (put 'narrow-to-region 'disabled nil)
+  (setq max-lisp-eval-depth 10000)
+  (append-to-list load-path
+                  '("~/.emacs.d/site-lisp"
+                    "~/.emacs.d/elpa"
+                    "~/.emacs.d/elisp"))
+  (leaf *make-scratch
+    :config
+    (defun my:make-scratch (&optional arg)
+      (interactive)
+      (progn
+        (set-buffer (get-buffer-create "*scratch*"))
+        (funcall initial-major-mode)
+        (erase-buffer)
+        (when (and initial-scratch-message (not inhibit-startup-message))
+          (insert initial-scratch-message))
+        (or arg
+            (progn
+              (setq arg 0)
+              (switch-to-buffer "*scratch*")))
+        (cond ((= arg 0) (message "*scratch* is cleared up."))
+              ((= arg 1) (message "another *scratch* is created")))))
+    (defun my:buffer-name-list ()
+      (mapcar (function buffer-name) (buffer-list)))
+    (add-hook 'kill-buffer-query-functions
+              ;; *scratch* バッファで kill-buffer したら内容を消去するだけにする
+              (function (lambda ()
+                          (if (string= "*scratch*" (buffer-name))
+                              (progn (my:make-scratch 0) nil)
+                            t))))
+    (add-hook 'after-save-hook
+              ;; *scratch* バッファの内容を保存したら
+              ;; *scratch* バッファを新しく作る.
+              (function
+               (lambda ()
+                 (unless (member "*scratch*" (my:buffer-name-list))
+                   (my:make-scratch 1))))))
+  (leaf *defvars
+    :config
+    (defvar kmacro-save-file "~/.emacs.d/kmacro-save.el"))
+#+end_src
+*** Garbage collection
+#+begin_src emacs-lisp
+  (setq garbage-collection-messages t)
+  (setq gc-cons-threshold 100000000)
+#+end_src
+*** Backup
+#+begin_src emacs-lisp
+  (add-to-list 'backup-directory-alist
+               (cons "." "~/.emacs.d/backups"))
+  (setq auto-save-file-name-transforms
+        `((".*" ,(expand-file-name "~/.emacs.d/backups/") t)))
+  (setq auto-save-timeout 15)
+  (setq auto-save-interval 30)
+#+end_src
+*** Buffer
+#+begin_src emacs-lisp
+  (leaf *swap_buffers
+    :config
+    (defun swap-buffers-keep-focus ()
+      (interactive)
+      (swap-buffers t)))
+  (leaf tempbuf
+    :require t
+    :hook
+    ((dired-mode-hook . turn-on-tempbuf-mode)
+     (magit-mode-hook . turn-on-tempbuf-mode)))
+  ;; (leaf maxframe
+  ;;   :ensure t
+  ;;   :require t
+  ;;   :config
+  ;;   (add-hook 'window-setup-hook 'maximize-frame t))
+  (leaf rotate
+    :ensure t
+    :require t
+    :bind
+    `(("s-1" . rotate-window)
+      ("S-s-1" . rotate:tiled)
+      ("s-2" . rotate:even-vertical)
+      ("S-s-2" . rotate:main-vertical)
+      ("s-3" . rotate:even-horizontal)
+      ("S-s-3" . rotate:main-horizontal)))
+#+end_src
+*** Environment
+#+begin_src emacs-lisp
+(mapcar 'exec-path-from-shell-copy-env '("SLACK_USER_HAYASHIKE"
+                                         "SLACK_USER_FIXPOINT"
+                                         "SLACK_TOKEN_HAYASHIKE"
+                                         "SLACK_TOKEN_FIXPOINT"))
+#+end_src
+** Write custom settings to separate file
+#+begin_src emacs-lisp
+  (setq custom-file (locate-user-emacs-file "custom.el"))
+  (unless (file-exists-p custom-file)
+    (write-region "" nil custom-file))
+  (load custom-file)
+#+end_src
+** Basic Keybinds
+#+BEGIN_SRC emacs-lisp
+  (setq mac-command-modifier 'super)
+  (setq mac-right-command-modifier 'hyper)
+  (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
+  (global-set-key (kbd "C-m") 'newline-and-indent)
+  (global-set-key (kbd "C-t") 'other-window)
+  (defun other-window-backward (&optional n)
+    "Select Nth previous window."
+    (interactive "P")
+    (other-window (- (prefix-numeric-value n))))
+  (global-set-key (kbd "C-S-t") 'other-window-backward)
+  (global-set-key (kbd "M-s-b") 'bookmark-jump)
+#+END_SRC
+** My essential packages
+*** Evil
+#+begin_src emacs-lisp
+  (leaf evil
+    :ensure t
+    :require t
+    :setq
+    `((evil-default-cursor . 'box)
+      (evil-normal-state-cursor . '("#Ff00ff"))
+      (evil-insert-state-cursor . '("#4169e1" (bar . 2)))
+      (evil-emacs-state-cursor  . '("#00ced1" (bar . 2)))
+      (evil-cross-lines . t)
+      ;; Do not move eol when normal state
+      (evil-move-cursor-back . t))
+    :config
+    (evil-mode 1)
+    (define-key evil-normal-state-map "\C-t" 'other-window)
+    (define-key evil-insert-state-map "\C-t" 'other-window)
+    (define-key evil-visual-state-map "\C-t" 'other-window)
+    (define-key evil-insert-state-map "\C-y" 'yank)
+    (evil-set-initial-state 'emacs-lisp-mode 'emacs)
+    (evil-set-initial-state 'slime-repl-mode 'emacs)
+    (evil-set-initial-state 'git-commit-mode 'emacs)
+    (evil-set-initial-state 'lisp-mode 'emacs)
+    (evil-set-initial-state 'ess-rdired-mode 'emacs)
+    (evil-set-initial-state 'inferior-python-mode 'emacs)
+    (evil-set-initial-state 'eshell-mode 'emacs))
+
+  (leaf evil-numbers
+    :ensure t
+    :require t
+    :config
+    (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
+    (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt))
+  (lexical-let ((default-color (cons (face-background 'mode-line)
+                                     (face-foreground 'mode-line))))
+    (add-hook 'post-command-hook
+              (lambda ()
+                (let ((color (cond ((minibufferp) default-color)
+                                   ((evil-insert-state-p) '("#aa0000" . "#ffffff"))
+                                   ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
+                                   ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
+                                   (t default-color))))
+                  (set-face-background 'mode-line (car color))
+                  (set-face-foreground 'mode-line (cdr color))))))
+#+end_src
+*** fecentf
+#+begin_src emacs-lisp
+  (leaf sync-recentf
+    :ensure t
+    :require t
+    :setq
+    `((recentf-max-saved-items . 2000)
+      (recentf-auto-cleanup . t)
+      (recentf-exclude . '("/recentf" "COMMIT_EDITMSG"
+                           "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores"
+                           "/\\.emacs\\.d/\\.cask/" "/sync-recentf-marker" "amx-items"))
+      (recentf-auto-save-timer . '(run-with-idle-timer 30 t 'recentf-save-list)))
+    :config
+    (recentf-mode 1))
+#+end_src
+*** counsel
+    #+begin_src emacs-lisp
+  (leaf counsel
+       :ensure t
+       :require t
+       :bind*
+       `(("M-x" .  counsel-M-x)
+         ("C-x C-r" .  counsel-recentf)
+         ("C-x C-f" .  counsel-find-file)
+         ("C-x r b" . counsel-bookmark)
+         ("<f1> f" . counsel-describe-function)
+         ("<f1> v" . counsel-describe-variable)
+         ("<f1> l" . counsel-find-library)
+         ("<f1> b" . counsel-descbinds)
+         ("<f2> i" . counsel-info-lookup-symbol)
+         ("<f2> u" . counsel-unicode-char)
+         ("C-c g" . counsel-git)
+         ("C-c j" . counsel-git-grep)
+         ("C-c k" . counsel-ag)
+         ("C-x l" . counsel-locate)
+         ("C-S-o" . counsel-rhythmbox))
+       :config
+       (recentf-mode 1)
+       (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../")))
+       )
+    #+end_src
+*** doom
+#+begin_src emacs-lisp
+  (leaf doom-themes
+     :ensure t
+     :require t
+     :setq
+     `((doom-themes-enable-italic . t)
+       (doom-themes-enable-bold . t))
+     :config
+     (load-theme 'doom-challenger-deep t)
+     (doom-themes-neotree-config)
+     (doom-themes-org-config)
+     (set-cursor-color "cyan")
+     (line-number-mode 0)
+     (column-number-mode 0))
+#+end_src
+
