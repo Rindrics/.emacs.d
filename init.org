@@ -1,52 +1,60 @@
-#+TITLE: My Emacs Setting
+#+TITLE: My Emacs Configurations
 #+PROPERTY: header-args :tangle yes
 * Startup
 ** Package Management
-I use ~leaf.el~ for package management.
-#+BEGIN_SRC emacs-lisp
-  (prog1 "prepare leaf"
-    (prog1 "package"
-      (custom-set-variables
-       '(package-archives '(("org"   . "http://orgmode.org/elpa/")
-                            ("melpa" . "http://melpa.org/packages/")
-                            ("melpa-stable" . "http://stable.melpa.org/packages/")
-                            ("marmalade" . "http://marmalade-repo.org/packages/")
-                            ("gnu"   . "http://elpa.gnu.org/packages/"))))
-      (package-initialize))
+*** Package repo
+#+begin_src emacs-lisp
+  (custom-set-variables
+   '(package-archives '(("org"   . "http://orgmode.org/elpa/")
+                        ("melpa" . "http://melpa.org/packages/")
+                        ("melpa-stable" . "http://stable.melpa.org/packages/")
+                        ("marmalade" . "http://marmalade-repo.org/packages/")
+                        ("gnu"   . "http://elpa.gnu.org/packages/"))))
+  (package-initialize)
+#+end_src
+*** ~leaf.el~
+I use [[https://github.com/conao3/leaf.el][leaf.el]] for package management.
+#+begin_src emacs-lisp
+  (prog1 "enable function '(leaf)'"
+    (unless (package-installed-p 'leaf)
+      (unless (assoc 'leaf package-archive-contents)
+        (package-refresh-contents))
+      (condition-case err
+          (package-install 'leaf)
+        (error
+         (package-refresh-contents)
+         (package-install 'leaf))))
+    (prog1 'leaf-keywords
+      (require 'leaf)
+      (leaf-keywords-init))
+    (prog1 "defmacro for debugging leaf grammar"
+      (defmacro p (form)
+        "Output pretty `macroexpand-1'ed given FORM."
+        `(progn
+           (pp (macroexpand-1 ',form))
+           nil))))
+#+end_src
 
-    (prog1 "leaf"
-      (unless (package-installed-p 'leaf)
-        (unless (assoc 'leaf package-archive-contents)
-          (package-refresh-contents))
-        (condition-case err
-            (package-install 'leaf)
-          (error
-           (package-refresh-contents)
-           (package-install 'leaf))))
-      (prog1 'leaf-keywords
-        (require 'leaf)
-        (leaf-keywords-init))
-      (prog1 "defmacro for debugging leaf grammer"
-        (defmacro p (form)
-          "Output pretty `macroexpand-1'ed given FORM."
-          `(progn
-             (pp (macroexpand-1 ',form))
-             nil))))
-
-    (leaf leaf-keywords
-      :ensure t
-      :require t
-      :config
-      (leaf hydra :ensure t)
-      (leaf el-get :ensure t
-        :custom ((el-get-git-shallow-clone . t)))
-      (leaf-keywords-init)))
-    (leaf package-utils
-       :ensure t
-       :require t)
-#+END_SRC
+By evaluating the block above, I can call function ~(leaf)~ to configure packages.
+#+begin_src emacs-lisp
+  (leaf leaf-keywords
+    :ensure t
+    :require t
+    :config
+    (leaf hydra :ensure t)
+    (leaf el-get :ensure t
+      :custom ((el-get-git-shallow-clone . t)))
+    (leaf-keywords-init))
+#+end_src
+*** ~package-utils~
+#+begin_src emacs-lisp
+  (leaf package-utils
+     :ensure t
+     :require t)
+#+end_src
 ** Tangling
-#+BEGIN_SRC emacs-lisp
+Every time I save this file, ~org-babel~ tangles the configuration file ~init.el~.
+#+begin_src emacs-lisp
   (leaf *tangling
     :config
     (setq user-emacs-directory "~/GitHub/gtd/dotfiles/.emacs.d/")
@@ -61,7 +69,9 @@ I use ~leaf.el~ for package management.
             (eval-buffer))
           (kill-buffer "init.el"))))
     (add-hook 'after-save-hook 'tangle-init))
-#+END_SRC
+#+end_src
+The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer)~ inside of it.
+
 ** Macro
 #+begin_src emacs-lisp
   (defmacro append-to-list (to lst)
@@ -175,7 +185,7 @@ I use ~leaf.el~ for package management.
   (load custom-file)
 #+end_src
 ** Basic Keybinds
-#+BEGIN_SRC emacs-lisp
+#+_SRC emacs-lisp
   (setq mac-command-modifier 'super)
   (setq mac-right-command-modifier 'hyper)
   (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
