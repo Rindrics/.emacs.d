@@ -300,4 +300,65 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
      (line-number-mode 0)
      (column-number-mode 0))
 #+end_src
+* Org-mode
+I love org-mode.
+#+begin_src emacs-lisp
+  (leaf org
+      :require t
+      :bind ("C-c l" . org-store-link)
+      :preface
+      (defun rindrics-org-reset-check-on-repeat ()
+        (when (and (org-get-repeat) (member org-state org-done-keywords))
+          (org-reset-checkbox-state-subtree)))
+      :hook
+      (org-after-todo-state-change-hook . rindrics-org-reset-check-on-repeat))
+#+end_src
+** Agenda
+#+begin_src emacs-lisp
+  (leaf org-agenda
+    :leaf-defer nil
+    :require t
+    :init
+    (defun my-agenda ()
+      "open org-agenda"
+      (interactive)
+      (org-agenda nil "a"))
+    (defun orgs-in-directory-except-readme (dir)
+      "Find org-mode files in given directory except README.org"
+      (let* ((orgs (directory-files-recursively dir "\.org")))
+        (cl-remove-if (lambda (list)
+                        (string-match "README\.org$" list))
+                      orgs)))
+    :bind
+    (("C-c a" . org-agenda)
+     ("s-a" . my-agenda))
+    :setq
+    `((org-agenda-start-with-log-mode . nil)
+      (org-agenda-files . `(,@(orgs-in-directory-except-readme "~/GitHub/gtd/projects/")
+                            "~/GitHub/gtd/gtd.org"))
+      (org-refile-targets .'(("~/GitHub/gtd/gtd.org" :tag . "refile_target")))
+      (org-directory . "~/Dropbox/org/")
+      (org-journal-dir . ,(concat org-directory "journal/"))
+      (org-agenda-show-future-repeats . nil)
+      (org-cllock-idle-time . 5)
+      (org-agenda-include-diary . nil)
+      (org-global-properties . '(("EFFORT_ALL". "1 3 5")
+                                 ("outcome_ALL". "1 3 5")))
+      (org-agenda-time-grid . '((daily today require-timed)
+                                (300 600 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100)
+                                "- " "────────────────"))
+      (org-agenda-current-time-string . "← now"))
+    :config
+    (defhydra hydra-global-org
+      (global-map "s-o" :color blue)
+      "Org"
+      ("t" org-timer-start "Start Timer")
+      ("s" org-timer-stop "Stop Timer")
+      ("r" org-timer-set-timer "Set Timer") ; This one requires you be in an orgmode doc, as it sets the timer for the header
+      ("p" org-timer "Print Timer") ; output timer value to buffer
+      ("o" org-clock-out "Clock-Out") ; you might also want (setq org-log-note-clock-out t)
+      ("j" org-clock-goto "Clock Goto") ; global visit the clocked task
+      ("l" org-capture-goto-last-stored "Last Capture")))
+
+#+end_src
 
