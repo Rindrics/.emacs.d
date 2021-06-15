@@ -185,7 +185,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (load custom-file)
 #+end_src
 ** Basic Keybinds
-#+_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq mac-command-modifier 'super)
   (setq mac-right-command-modifier 'hyper)
   (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
@@ -197,7 +197,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     (other-window (- (prefix-numeric-value n))))
   (global-set-key (kbd "C-S-t") 'other-window-backward)
   (global-set-key (kbd "M-s-b") 'bookmark-jump)
-#+END_SRC
+#+end_src
 ** My essential packages
 *** Evil
 #+begin_src emacs-lisp
