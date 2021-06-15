@@ -1,5 +1,9 @@
 #+TITLE: My Emacs Configurations
 #+PROPERTY: header-args :tangle yes
+#+begin_comment
+old settings: file:../.emacs.dd/init.bk.org
+myfuncs: file:../.emacs.dd/elisp/myfuncs.el
+#+end_comment
 * Startup
 ** Package Management
 *** Package repo
