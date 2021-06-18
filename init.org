@@ -148,11 +148,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
 #+end_src
 *** Buffer
 #+begin_src emacs-lisp
-  (leaf *swap_buffers
-    :config
-    (defun swap-buffers-keep-focus ()
-      (interactive)
-      (swap-buffers t)))
+
   (leaf tempbuf
     :require t
     :hook
