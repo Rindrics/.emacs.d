@@ -368,6 +368,54 @@ I love org-mode.
       ("l" org-capture-goto-last-stored "Last Capture")))
 
 #+end_src
+* Text editing
+** Minor modes
+*** Smartparens
+#+begin_src emacs-lisp
+  (leaf smartparens
+    :ensure t
+    :require t
+    :hook ((prog-mode-hook . smartparens-mode))
+    :bind
+    (:smartparens-mode-map
+     ("C-M-f" . sp-next-sexp)
+     ("C-M-n" . sp-forward-sexp)
+     ("C-S-a" . sp-beginning-of-sexp)
+     ("C-S-e" . sp-end-of-sexp)
+     ("C-S-n" . sp-beginning-of-next-sexp)
+     ("C-S-p" . sp-beginning-of-previous-sexp)
+     ("M-C" . sp-wrap-round)
+     ("C-)" . sp-forward-slurp-sexp)
+     ("C-}" . sp-forward-barf-sexp)
+     ("C-(" . sp-backward-slurp-sexp))
+    :hook (emacs-lisp-mode-hook . (lambda () (smartparens-mode 0)))
+    :config
+    (ad-disable-advice 'delete-backward-char 'before 'sp-delete-pair-advice)
+    (ad-activate 'delete-backward-char)(smartparens-global-mode)
+    (sp-use-smartparens-bindings)
+    (defun sp--org-skip-markup (ms mb me)
+      (save-excursion
+        (and (progn
+               (goto-char mb)
+               (save-match-data (looking-back "\\sw\\|\\s_\\|\\s.")))
+             (progn
+               (goto-char me)
+               (save-match-data (looking-at "\\sw\\|\\s_\\|\\s."))))))
+    (sp-with-modes sp--lisp-modes
+                   ;; disable ', it's the quote character!
+                   (sp-local-pair "'" nil :actions nil)
+                   ;; also only use the pseudo-quote inside strings where it serve as
+                   ;; hyperlink.
+                   (sp-local-pair "`" "'" :when '(sp-in-string-p sp-in-comment-p))
+                   (sp-local-pair "`" nil
+                                  :skip-match (lambda (ms mb me)
+                                                (cond
+                                                 ((equal ms "'")
+                                                  (or (sp--org-skip-markup ms mb me)
+                                                      (not (sp-point-in-string-or-comment))))
+                                                 (t (not (sp-point-in-string-or-comment))))))))
+#+end_src
+
 * Programming
 ** LSP
 #+begin_src emacs-lisp
@@ -493,4 +541,3 @@ I love org-mode.
 
 * Needed
 ** colored parens
-** close paren
