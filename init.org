@@ -590,3 +590,15 @@ I love org-mode.
 ** disable Japanese input when =C-x= is pressed
 ** support for jupyter-notebook
 ** migemo
+** goto-chg
+** undo-tree
+** redo+
+** sense-region
+** yasnippet
+** hippie-command
+** Follow-mode
+** summarye.el
+** html-fold
+** imenu
+** which-func-mode
+
