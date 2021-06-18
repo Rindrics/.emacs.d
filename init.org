@@ -316,6 +316,9 @@ I love org-mode.
           (org-reset-checkbox-state-subtree)))
       :hook
       (org-after-todo-state-change-hook . rindrics-org-reset-check-on-repeat))
+
+  (leaf :org-bullets
+    :hook (org-mode-hook . (lambda () (org-bullets-mode 1))))
 #+end_src
 ** Agenda
 #+begin_src emacs-lisp
