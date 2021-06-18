@@ -415,6 +415,13 @@ I love org-mode.
                                                       (not (sp-point-in-string-or-comment))))
                                                  (t (not (sp-point-in-string-or-comment))))))))
 #+end_src
+*** Rainbow-delimiters
+#+begin_src emacs-lisp
+  (leaf rainbow-delimiters
+    :ensure t
+    :require t
+    :hook (prog-mode-hook . rainbow-delimiters-mode))
+#+end_src
 
 * Programming
 ** LSP
@@ -540,4 +547,4 @@ I love org-mode.
 #+end_src
 
 * Needed
-** colored parens
+** emoji-cheatsheet
