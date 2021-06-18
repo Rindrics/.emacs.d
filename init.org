@@ -431,13 +431,22 @@ I love org-mode.
     :hook (prog-mode-hook . rainbow-delimiters-mode))
 #+end_src
 * Misc helpers
-** Quick emoji insert
- #+begin_src emacs-lisp
-   (leaf emoji-cheat-sheet-plus
-     :ensure t
-     :require t
-     :bind (("C-c E" . emoji-cheat-sheet-plus-insert)))
- #+end_src
+** Emoji
+*** Quick insert
+#+begin_src emacs-lisp
+  (leaf emoji-cheat-sheet-plus
+    :ensure t
+    :require t
+    :bind (("C-c E" . emoji-cheat-sheet-plus-insert)))
+#+end_src
+*** Display inline
+#+begin_src emacs-lisp
+(leaf emojify
+  :ensure t
+  :if (display-graphic-p)
+  :hook (after-init-hook . global-emojify-mode))
+#+end_src
+
 
 * Programming
 ** LSP
