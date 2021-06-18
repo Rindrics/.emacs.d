@@ -464,8 +464,10 @@ I love org-mode.
   :if (display-graphic-p)
   :hook (after-init-hook . global-emojify-mode))
 #+end_src
-
-
+** buffer
+#+begin_src emacs-lisp
+(icomplete-mode 1)
+#+end_src
 * Programming
 ** LSP
 #+begin_src emacs-lisp
