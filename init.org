@@ -423,7 +423,7 @@ I love org-mode.
       (save-excursion
         (and (progn
                (goto-char mb)
-               (save-match-data (looking-back "\\sw\\|\\s_\\|\\s.")))
+               (save-match-data (looking-back "\\sw\\|\\s_\\|\\s." nil)))
              (progn
                (goto-char me)
                (save-match-data (looking-at "\\sw\\|\\s_\\|\\s."))))))
