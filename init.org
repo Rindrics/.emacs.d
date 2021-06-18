@@ -174,13 +174,6 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
       ("s-3" . rotate:even-horizontal)
       ("S-s-3" . rotate:main-horizontal)))
 #+end_src
-*** Environment
-#+begin_src emacs-lisp
-(mapcar 'exec-path-from-shell-copy-env '("SLACK_USER_HAYASHIKE"
-                                         "SLACK_USER_FIXPOINT"
-                                         "SLACK_TOKEN_HAYASHIKE"
-                                         "SLACK_TOKEN_FIXPOINT"))
-#+end_src
 ** Write custom settings to separate file
 #+begin_src emacs-lisp
   (setq custom-file (locate-user-emacs-file "custom.el"))
