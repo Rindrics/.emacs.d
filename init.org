@@ -369,11 +369,10 @@ I love org-mode.
       "Org"
       ("t" org-timer-start "Start Timer")
       ("s" org-timer-stop "Stop Timer")
-      ("r" org-timer-set-timer "Set Timer") ; This one requires you be in an orgmode doc, as it sets the timer for the header
-      ("p" org-timer "Print Timer") ; output timer value to buffer
-      ("o" org-clock-out "Clock-Out") ; you might also want (setq org-log-note-clock-out t)
-      ("j" org-clock-goto "Clock Goto") ; global visit the clocked task
-      ("l" org-capture-goto-last-stored "Last Capture")))
+      ("r" org-timer-set-timer "Set Timer")
+      ("p" org-timer "Print Timer")
+      ("o" org-clock-out "Clock-Out")
+      ("j" org-clock-goto "Clock Goto")))
 
 #+end_src
 ** Babel
