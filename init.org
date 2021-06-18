@@ -290,7 +290,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     #+end_src
 *** doom
 #+begin_src emacs-lisp
-  (leaf doom-themes
+   (leaf doom-themes
      :ensure t
      :require t
      :setq
