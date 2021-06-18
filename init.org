@@ -427,7 +427,7 @@ I love org-mode.
              (progn
                (goto-char me)
                (save-match-data (looking-at "\\sw\\|\\s_\\|\\s."))))))
-    (sp-with-modes sp--lisp-modes
+    (sp-with-modes sp-lisp-modes
                    ;; disable ', it's the quote character!
                    (sp-local-pair "'" nil :actions nil)
                    ;; also only use the pseudo-quote inside strings where it serve as
