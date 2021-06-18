@@ -310,7 +310,7 @@ I love org-mode.
       :bind ("C-c l" . org-store-link)
       :preface
       (defun rindrics-org-reset-check-on-repeat ()
-        (when (and (org-get-repeat) (member org-state org-done-keywords))
+        (when (and (org-get-repeat) (member (org-get-todo-state) org-done-keywords))
           (org-reset-checkbox-state-subtree)))
       :hook
       (org-after-todo-state-change-hook . rindrics-org-reset-check-on-repeat)
