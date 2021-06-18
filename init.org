@@ -284,19 +284,19 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     #+end_src
 *** doom
 #+begin_src emacs-lisp
-   (leaf doom-themes
-     :ensure t
-     :require t
-     :setq
-     `((doom-themes-enable-italic . t)
-       (doom-themes-enable-bold . t))
-     :config
-     (load-theme 'doom-challenger-deep t)
-     (doom-themes-neotree-config)
-     (doom-themes-org-config)
-     (set-cursor-color "cyan")
-     (line-number-mode 0)
-     (column-number-mode 0))
+  (leaf doom-themes
+    :ensure t
+    :require t
+    :setq
+    `((doom-themes-enable-italic . t)
+      (doom-themes-enable-bold . t))
+    :config
+    (load-theme 'doom-challenger-deep t)
+    (doom-themes-neotree-config)
+    (doom-themes-org-config)
+    (set-cursor-color "cyan")
+    (line-number-mode 0)
+    (column-number-mode 0))
 #+end_src
 ** For GUI Emacs
 #+begin_src emacs-lisp
