@@ -323,7 +323,17 @@ I love org-mode.
         (when (and (org-get-repeat) (member org-state org-done-keywords))
           (org-reset-checkbox-state-subtree)))
       :hook
-      (org-after-todo-state-change-hook . rindrics-org-reset-check-on-repeat))
+      (org-after-todo-state-change-hook . rindrics-org-reset-check-on-repeat)
+      :setq
+      `((org-startup-indented . t)
+        (org-startup-folded . 'content)
+        (org-enforce-todo-dependencies . t)
+        (org-image-actual-width . nil)
+        (org-todo-keywords . '((sequence "TODO(t)" "MIT(m)" "WAIT(w)" "SOMADAY(s)" "|" "DONE(d)" "CANCELED(c)")))
+        (org-todo-keyword-faces . '((("WAIT" "SOMEDAY") . (:foreground "#6272a4":weight bold))
+                                    ("MIT"             . (:foreground "#f1fa8c" :weight bold))
+                                    ("INFO"             . (:foreground "#1eb3ce" :weight bold))
+                                    ("CANCELLED"        . (:foreground "#6272a4" :background "#373844" :weight bold))))))
 
   (leaf :org-bullets
     :hook (org-mode-hook . (lambda () (org-bullets-mode 1))))
@@ -571,4 +581,7 @@ I love org-mode.
 
 #+end_src
 
-* Needed
+* Desired features
+** disable Japanese input when =C-x= is pressed
+** support for jupyter-notebook
+** migemo
