@@ -386,6 +386,20 @@ I love org-mode.
       ("l" org-capture-goto-last-stored "Last Capture")))
 
 #+end_src
+** Babel
+#+begin_src emacs-lisp
+  (leaf babel
+    :setq
+    `((org-confirm-babel-evaluate . nil))
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (python . t)
+       (shell . t)))
+    (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
+#+end_src
+
 * Text editing
 ** Minor modes
 *** Smartparens
