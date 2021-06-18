@@ -304,6 +304,14 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
      (line-number-mode 0)
      (column-number-mode 0))
 #+end_src
+** For GUI Emacs
+#+begin_src emacs-lisp
+  (if window-system
+      (progn
+        (toggle-scroll-bar 0)
+        (tool-bar-mode 0)
+        (menu-bar-mode 0)))
+#+end_src
 * Org-mode
 I love org-mode.
 #+begin_src emacs-lisp
