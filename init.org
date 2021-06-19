@@ -517,6 +517,13 @@ I love org-mode.
     (highlight-indent-guides-responsive . t)
     (highlight-indent-guides-method . 'character)) ; column
 #+end_src
+*** Undo
+#+begin_src emacs-lisp
+  (leaf undo-tree
+    :ensure t
+    :require t
+    :config (global-undo-tree-mode t))
+#+end_src
 ** Version control
 #+begin_src emacs-lisp
   (leaf magit
@@ -988,7 +995,6 @@ I love org-mode.
 ** support for jupyter-notebook
 ** migemo
 ** goto-chg
-** undo-tree
 ** redo+
 ** sense-region
 ** yasnippet
