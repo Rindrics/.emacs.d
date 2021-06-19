@@ -345,6 +345,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
         (tool-bar-mode 0)
         (menu-bar-mode 0)))
 #+end_src
+
 * Org-mode
 I love org-mode.
 #+begin_src emacs-lisp
@@ -434,15 +435,15 @@ I love org-mode.
 #+end_src
 
 * Text editing
-** Major modes
-*** YAML
+* Major modes
+** YAML
 #+begin_src emacs-lisp
   (leaf yaml-mode
     :ensure t
     :require t)
 #+end_src
-** Minor modes
-*** Parenthesis
+* Minor modes
+** Parenthesis
 #+begin_src emacs-lisp
   (leaf paren
     :ensure t
@@ -498,14 +499,14 @@ I love org-mode.
                                          (not (sp-point-in-string-or-comment))))
                                     (t (not (sp-point-in-string-or-comment))))))))
 #+end_src
-*** Rainbow-delimiters
+** Rainbow-delimiters
 #+begin_src emacs-lisp
   (leaf rainbow-delimiters
     :ensure t
     :require t
     :hook (prog-mode-hook . rainbow-delimiters-mode))
 #+end_src
-*** Indentation
+** Indentation
 #+begin_src emacs-lisp
   (leaf highlight-indent-guides
     :ensure t
@@ -748,7 +749,6 @@ I love org-mode.
     ;; (setq jedi:server-command (list (executable-find "jediepcserver"))))
 
 #+end_src
-
 * Misc helpers
 ** Emoji
 *** Quick insert
@@ -988,4 +988,6 @@ I love org-mode.
 ** html-fold
 ** imenu
 ** which-func-mode
-
+** swiper
+** font settings
+** modeline
