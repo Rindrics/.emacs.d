@@ -326,6 +326,7 @@ I love org-mode.
                                     ("CANCELLED"        . (:foreground "#6272a4" :background "#373844" :weight bold))))))
 
   (leaf :org-bullets
+    :custom (org-bullets-bullet-list . '("" "" "" "" "" "" "" "" "" ""))
     :hook (org-mode-hook . (lambda () (org-bullets-mode 1))))
 #+end_src
 ** Agenda
