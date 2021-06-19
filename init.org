@@ -279,6 +279,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
        )
     #+end_src
 *** doom
+**** Main theme
 #+begin_src emacs-lisp
   (leaf doom-themes
     :ensure t
@@ -293,6 +294,52 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     (set-cursor-color "cyan")
     (line-number-mode 0)
     (column-number-mode 0))
+#+end_src
+#+begin_src emacs-lisp
+  (defvar mode-line-cleaner-alist
+    '(
+      ;; Minor-mode identifier should start from ' '
+      (undo-tree-mode . " Ut")
+      (python-mode . "Py")
+      (emacs-lisp-mode . "El")
+      (markdown-mode . "Md")))
+  (eval-when-compile (require 'cl))
+  (defun clean-mode-line ()
+    (interactive)
+    (loop for (mode . mode-str) in mode-line-cleaner-alist
+          do
+          (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+            (when old-mode-str
+              (setcar old-mode-str mode-str))
+            ;; major mode
+            (when (eq mode major-mode)
+              (setq mode-name mode-str)))))
+  (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+
+  (leaf doom-modeline
+    :doc "If you get mojibake, try 'M-x all-the-icons-install-fonts'."
+    :ensure t
+    :require t
+    :init (doom-modeline-mode)
+    :hook ((after-init-hook . doom-modeline-mode))
+    :custom
+    `((doom-modeline-buffer-file-name-style . 'truncate-with-project)
+      (doom-modeline-icon . t)
+      (doom-modeline-major-mode-icon . t)
+      (doom-modeline-minor-modes . nil))
+    :config
+    (doom-modeline-def-modeline 'main
+      '(bar window-number
+            matches buffer-info
+            remote-host buffer-position parrot
+            selection-info)
+      '(misc-info persp-name lsp github debug
+                  minor-modes input-method major-mode
+                  process vcs checker)))
+
+  (leaf all-the-icons
+    :custom
+    (all-the-icons-scale-factor . 1.0))
 #+end_src
 ** For GUI Emacs
 #+begin_src emacs-lisp
