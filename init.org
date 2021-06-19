@@ -438,6 +438,13 @@ I love org-mode.
 #+end_src
 
 * Text editing
+** Major modes
+*** YAML
+#+begin_src emacs-lisp
+  (leaf yaml-mode
+    :ensure t
+    :require t)
+#+end_src
 ** Minor modes
 *** Smartparens
 #+begin_src emacs-lisp
@@ -491,6 +498,19 @@ I love org-mode.
     :require t
     :hook (prog-mode-hook . rainbow-delimiters-mode))
 #+end_src
+*** Indentation
+#+begin_src emacs-lisp
+  (leaf highlight-indent-guides
+    :ensure t
+    :require t
+    :hook
+    ((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode)
+    :custom
+    (highlight-indent-guides-auto-enabled . t)
+    (highlight-indent-guides-responsive . t)
+    (highlight-indent-guides-method . 'character)) ; column
+#+end_src
+
 * Fonts
 #+begin_src emacs-lisp
   (if window-system
