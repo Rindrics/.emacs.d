@@ -84,6 +84,8 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
 ** Config
 #+begin_src emacs-lisp
   (setenv "LANG" "en_US.UTF-8")
+  (set-language-environment "Japanese")
+  (prefer-coding-system 'utf-8)
   (setq-default indent-tabs-mode  nil)
   (setq tags-add-tables nil)
   (setq use-dialog-box nil)
