@@ -183,7 +183,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (setq mac-right-command-modifier 'hyper)
   (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
   (global-set-key (kbd "C-m") 'newline-and-indent)
-  (global-set-key (kbd "C-t") 'other-window)
+  (global-set-key (kbd "C--") 'other-window)
   (defun other-window-backward (&optional n)
     "Select Nth previous window."
     (interactive "P")
@@ -207,9 +207,9 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
       (evil-move-cursor-back . t))
     :config
     (evil-mode 1)
-    (define-key evil-normal-state-map "\C-t" 'other-window)
-    (define-key evil-insert-state-map "\C-t" 'other-window)
-    (define-key evil-visual-state-map "\C-t" 'other-window)
+    (define-key evil-normal-state-map "\C--" 'other-window)
+    (define-key evil-insert-state-map "\C--" 'other-window)
+    (define-key evil-visual-state-map "\C--" 'other-window)
     (define-key evil-insert-state-map "\C-y" 'yank)
     (evil-set-initial-state 'emacs-lisp-mode 'emacs)
     (evil-set-initial-state 'slime-repl-mode 'emacs)
