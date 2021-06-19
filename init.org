@@ -775,6 +775,16 @@ I love org-mode.
     :config
     (beacon-mode 1))
 #+end_src
+** Keybinds
+#+begin_src emacs-lisp
+  (leaf which-key
+    :ensure t
+    :require t
+    :custom
+    ((which-key-max-description-length . 40))
+    :hook ((after-init-hook . which-key-mode))
+    :setq (which-key-idle-delay . 0.3))
+#+end_src
 
 ** buffer
 #+begin_src emacs-lisp
