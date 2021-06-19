@@ -655,4 +655,5 @@ I love org-mode.
 ** html-fold
 ** imenu
 ** which-func-mode
-
+** swiper
+** modeline
