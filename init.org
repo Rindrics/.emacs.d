@@ -726,6 +726,38 @@ I love org-mode.
     (define-key global-map (kbd "s-p") 'hydra-projectile/body))
 
 #+end_src
+*** Derectory
+#+begin_src emacs-lisp
+  (leaf neotree
+    :ensure t
+    :require t
+    :after
+    projectile
+    :commands
+    (neotree-show neotree-hide neotree-dir neotree-find)
+    :custom
+    (neo-theme 'nerd2)
+    :bind
+    ("<f9>" . neotree-projectile-toggle)
+    :preface
+    (defun neotree-projectile-toggle ()
+      (interactive)
+      (let ((project-dir
+             (ignore-errors
+          ;;; Pick one: projectile or find-file-in-project
+               (projectile-project-root)))
+            (file-name (buffer-file-name))
+            (neo-smart-open t))
+        (if (and (fboundp 'neo-global--window-exists-p)
+                 (neo-global--window-exists-p))
+            (neotree-hide)
+          (progn
+            (neotree-show)
+            (if project-dir
+                (neotree-dir project-dir))
+            (if file-name
+                (neotree-find file-name)))))))
+#+end_src
 * Programming
 ** LSP
 #+begin_src emacs-lisp
