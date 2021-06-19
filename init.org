@@ -720,6 +720,17 @@ I love org-mode.
   :if (display-graphic-p)
   :hook (after-init-hook . global-emojify-mode))
 #+end_src
+** Beacon
+#+begin_src emacs-lisp
+  (leaf beacon
+    :ensure t
+    :require t
+    :custom
+    (beacon-color . "#85c1e9")
+    :config
+    (beacon-mode 1))
+#+end_src
+
 ** buffer
 #+begin_src emacs-lisp
 (icomplete-mode 1)
