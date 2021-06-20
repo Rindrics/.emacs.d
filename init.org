@@ -1006,3 +1006,5 @@ I love org-mode.
 ** which-func-mode
 ** swiper
 ** modeline
+** gnus
+** org-gcal
