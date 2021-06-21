@@ -368,7 +368,9 @@ I love org-mode.
                                     ("INFO"             . (:foreground "#1eb3ce" :weight bold))
                                     ("CANCELLED"        . (:foreground "#6272a4" :background "#373844" :weight bold))))))
 
-  (leaf :org-bullets
+  (leaf org-bullets
+    :ensure t
+    :require t
     :custom (org-bullets-bullet-list . '("" "" "" "" "" "" "" "" "" ""))
     :hook (org-mode-hook . (lambda () (org-bullets-mode 1))))
 #+end_src
