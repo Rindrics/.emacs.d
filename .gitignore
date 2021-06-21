@@ -3,3 +3,6 @@ backups
 init.el*
 emojis/
 projectile-bookmarks.eld
+recentf
+eshell
+elpa
