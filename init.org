@@ -221,6 +221,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     :config
     (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
     (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt))
+  (eval-when-compile (require 'cl))
   (lexical-let ((default-color (cons (face-background 'mode-line)
                                      (face-foreground 'mode-line))))
     (add-hook 'post-command-hook
