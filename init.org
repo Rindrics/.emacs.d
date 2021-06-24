@@ -759,6 +759,12 @@ I love org-mode.
 #+end_src
 
 * Misc helpers
+#+begin_src emacs-lisp
+  (global-set-key (kbd "s-c")
+                  (defun org-toggle-checkbox-and-nextline ()
+                    (interactive)
+                    (progn (org-toggle-checkbox)(forward-line))))
+#+end_src
 ** Emoji
 *** Quick insert
 #+begin_src emacs-lisp
