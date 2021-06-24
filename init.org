@@ -999,6 +999,22 @@ I love org-mode.
             (if file-name
                 (neotree-find file-name)))))))
 #+end_src
+** Writing
+#+begin_src emacs-lisp
+  (leaf ox-hugo
+    :ensure t
+    :require t
+    :config
+    (defun org-hugo--tag-processing-fn-remove-tags-maybe (tags-list info)
+      "Remove user-specified tags/categories. See `org-hugo-tag-processing-functions' for more info."
+      ;; Use tag/category string (including @ prefix) exactly as used in Org file.
+      (let ((tags-categories-to-be-removed '("ahblog" "pnp" "blog" "renaissance" "guru" "refile_target")))
+        (cl-remove-if (lambda (tag_or_cat)
+                        (member tag_or_cat tags-categories-to-be-removed))
+                      tags-list)))
+    (add-to-list 'org-hugo-tag-processing-functions
+                 #'org-hugo--tag-processing-fn-remove-tags-maybe))
+#+end_src
 * Desired features
 ** disable Japanese input when =C-x= is pressed
 ** support for jupyter-notebook
