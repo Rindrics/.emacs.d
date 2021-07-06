@@ -911,15 +911,34 @@ I love org-mode.
     :require t
     :bind (("C-s" . swiper))
     :setq `((swiper-include-line-number-in-search . t)))
-  ;; (leaf avy-migemo
-  ;;   :after swiper
-  ;;   :require t
-  ;;   :config
-  ;;   (avy-migemo-mode 1)
-  ;;   (require 'avy-migemo-e.g.swiper))
   (leaf ag
     :ensure t
     :require t)
+  (leaf migemo
+    :ensure t
+    :require t
+    :setq
+    `((migemo-command . "cmigemo")
+      (migemo-options . '("-q" "--emacs"))
+      (migemo-dictionary . "/usr/local/share/migemo/utf-8/migemo-dict")
+      (migemo-user-dictionary . nil)
+      (migemo-regex-dictionary . nil)
+      (migemo-coding-system . 'utf-8-unix))
+    :config
+    (load-library "migemo")
+    (migemo-init))
+  (leaf ivy-with-migemo
+    :require t
+    :setq
+    `((ivy-with-migemo-enable-command . '(swiper
+                                          spiper-isearch
+                                          counsel-recentf
+                                          councel-ag))
+      (migemo-options . '("--quiet" "--nonewline" "--emacs")))
+    :config
+    (migemo-kill)
+    (migemo-init)
+    (global-ivy-with-migemo-mode 1))
 #+end_src
 ** Project
 #+begin_src emacs-lisp
@@ -1033,7 +1052,6 @@ I love org-mode.
 * Desired features
 ** disable Japanese input when =C-x= is pressed
 ** support for jupyter-notebook
-** migemo
 ** goto-chg
 ** redo+
 ** sense-region
