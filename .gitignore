@@ -7,3 +7,6 @@ recentf
 eshell
 elpa
 custom.el
+bookmarks
+.lsp-session*
+transient/
