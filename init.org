@@ -742,7 +742,16 @@ I love org-mode.
     (setq gofmt-command "gofmt")
     (add-hook 'before-save-hook 'gofmt-before-save))
 #+end_src
-
+** Processing
+#+begin_src emacs-lisp
+  (leaf processing-mode
+    :ensure t
+    :require t
+    :setq
+    `((processing-location . "/usr/local/bin/processing-java")
+      (processing-application-dir . "/Applications/Processing.app")
+      (processing-sketchbook-dir . "/Users/ahayashi/dev/processing")))
+#+end_src
 ** Python
 #+begin_src emacs-lisp
   (leaf elpy
