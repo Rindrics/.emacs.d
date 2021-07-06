@@ -1101,7 +1101,8 @@ I love org-mode.
 ** html-fold
 ** imenu
 ** which-func-mode
-** swiper
 ** modeline
 ** gnus
 ** org-gcal
+** daily log setting
+** set faces (agenda, comments)
