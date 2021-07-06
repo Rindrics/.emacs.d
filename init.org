@@ -435,6 +435,19 @@ I love org-mode.
        (shell . t)))
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
 #+end_src
+** Capture
+#+begin_src emacs-lisp
+  (leaf org-capture
+    :bind (("s-h" . org-capture))
+    :hook (org-capture-mode-hook . evil-emacs-state)
+    :setq
+    `((org-default-notes-file . "~/GitHub/gtd/gtd.org")
+      (org-capture-templates .
+                             '(("u" "Collect to inbox" entry
+                                (file+headline org-default-notes-file "インボックス") "* %i%?\n %a")
+                               ("h" "Journal entry" entry
+                                (file+olp+datetree "~/GitHub/gtd/gtd.org" "望むべき結果" "【5000m】目的・価値観" "website 【akirahayashi.com】" "Posts" "Daily logs") "* %i%?\n%K - %a\nEntered on %U\n")))))
+#+end_src
 
 * Text editing
 ** Major modes
