@@ -133,6 +133,10 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (leaf *defvars
     :config
     (defvar kmacro-save-file "~/.emacs.d/kmacro-save.el"))
+  (setq custom-file (locate-user-emacs-file "custom.el"))
+  (unless (file-exists-p custom-file)
+    (write-region "" nil custom-file))
+  (load custom-file)
 #+end_src
 *** Garbage collection
 #+begin_src emacs-lisp
