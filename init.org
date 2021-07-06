@@ -275,9 +275,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
          ("C-x l" . counsel-locate)
          ("C-S-o" . counsel-rhythmbox))
        :config
-       (recentf-mode 1)
-       (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../")))
-       )
+       (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../"))))
     #+end_src
 *** doom
 **** Main theme
