@@ -1048,6 +1048,23 @@ I love org-mode.
                       tags-list)))
     (add-to-list 'org-hugo-tag-processing-functions
                  #'org-hugo--tag-processing-fn-remove-tags-maybe))
+  (leaf org-ref
+    :ensure t
+    :require t
+    :setq
+    `((org-ref-default-bibliography . "~/GitHub/gtd/refs/mylibrary.bib")
+      (org-ref-pdf-directory . "~/Library/Mobile Documents/com~apple~CloudDocs/pdf/")
+      (bibtex-autokey-year-length . 4)
+      (bibtex-autokey-name-year-separator . "")
+      (bibtex-autokey-year-title-separator . "-")
+      (bibtex-autokey-titleword-separator . "-")
+      (bibtex-autokey-titlewords . 2)
+      (bibtex-autokey-titlewords-stretch . 1)
+      (bibtex-autokey-titleword-length . 5))
+    :config
+    (define-key org-mode-map (kbd "C-c c c") `org-ref-helm-insert-cite-link)
+    (define-key org-mode-map (kbd "C-c c l") `org-ref-helm-insert-label-link)
+    (define-key org-mode-map (kbd "C-c c r") `org-ref-helm-insert-ref-link))
 #+end_src
 * Desired features
 ** disable Japanese input when =C-x= is pressed
