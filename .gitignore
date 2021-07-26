@@ -10,3 +10,5 @@ custom.el
 bookmarks
 .lsp-session*
 transient/
+tramp
+.DS_Store
