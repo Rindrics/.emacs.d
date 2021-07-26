@@ -731,6 +731,15 @@ I love org-mode.
                                            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
                                              (ggtags-mode 1)))))
 #+end_src
+** Quickrun
+:PROPERTIES:
+:ID:       9E08D4C4-89EB-4BA8-B93B-AC1C71A1A23F
+:END:
+#+begin_src emacs-lisp
+  (leaf quickrun
+    :ensure t
+    :require t)
+#+end_src
 ** LSP
 :PROPERTIES:
 :ID:       408D7220-2BAF-4EBC-B32C-D50C1C5FAE63
