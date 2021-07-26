@@ -7,6 +7,9 @@ myfuncs: file:../.emacs.dd/elisp/myfuncs.el
 * Startup
 ** Package Management
 *** Package repo
+:PROPERTIES:
+:ID:       91A2F5F0-EDB5-4573-AE19-7DCF52E3C6DF
+:END:
 #+begin_src emacs-lisp
   (custom-set-variables
    '(package-archives '(("org"   . "http://orgmode.org/elpa/")
@@ -16,6 +19,9 @@ myfuncs: file:../.emacs.dd/elisp/myfuncs.el
   (package-initialize)
 #+end_src
 *** ~leaf.el~
+:PROPERTIES:
+:ID:       7CFB3AF1-694C-430F-81EE-24044D9C3882
+:END:
 I use [[https://github.com/conao3/leaf.el][leaf.el]] for package management.
 #+begin_src emacs-lisp
   (prog1 "enable function '(leaf)'"
@@ -50,12 +56,18 @@ By evaluating the block above, I can call function ~(leaf)~ to configure package
     (leaf-keywords-init))
 #+end_src
 *** ~package-utils~
+:PROPERTIES:
+:ID:       4211B8E6-E83A-485B-B599-1B736CB05E76
+:END:
 #+begin_src emacs-lisp
   (leaf package-utils
      :ensure t
      :require t)
 #+end_src
 ** Tangling
+:PROPERTIES:
+:ID:       DCD140A4-2DEE-4183-9C6C-393E2CD93EBA
+:END:
 Every time I save this file, ~org-babel~ tangles the configuration file ~init.el~.
 #+begin_src emacs-lisp
   (leaf *tangling
@@ -77,11 +89,17 @@ Every time I save this file, ~org-babel~ tangles the configuration file ~init.el
 The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer)~ inside of it.
 
 ** Macro
+:PROPERTIES:
+:ID:       48AF2610-4044-487A-B9B3-D47E7B7E9CD5
+:END:
 #+begin_src emacs-lisp
   (defmacro append-to-list (to lst)
     `(setq ,to (append ,lst ,to)))
 #+end_src
 ** Config
+:PROPERTIES:
+:ID:       634D5BE0-C878-484F-9927-E563EF260CE7
+:END:
 #+begin_src emacs-lisp
   (setenv "LANG" "en_US.UTF-8")
   (set-language-environment "Japanese")
@@ -151,11 +169,17 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
       (setq confirm-kill-emacs 'yes-or-no-p)))
 #+end_src
 *** Garbage collection
+:PROPERTIES:
+:ID:       8DBE5BDD-686E-47DB-9379-FFACC0DDED18
+:END:
 #+begin_src emacs-lisp
   (setq garbage-collection-messages t)
   (setq gc-cons-threshold 100000000)
 #+end_src
 *** Backup
+:PROPERTIES:
+:ID:       FCFD688A-359F-4107-BA2E-F1D8DDE52B31
+:END:
 #+begin_src emacs-lisp
   (add-to-list 'backup-directory-alist
                (cons "." "~/.emacs.d/backups"))
@@ -165,6 +189,9 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (setq auto-save-interval 30)
 #+end_src
 *** Buffer
+:PROPERTIES:
+:ID:       23748D6F-8CC0-4385-B32C-BB418D539B24
+:END:
 #+begin_src emacs-lisp
 
   (leaf tempbuf
@@ -190,6 +217,9 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
 #+end_src
 ** Write custom settings to separate file
 ** Basic Keybinds
+:PROPERTIES:
+:ID:       B503E4DA-4818-4CBC-A83F-3C92B568888A
+:END:
 #+begin_src emacs-lisp
   (setq mac-command-modifier 'super)
   (setq mac-right-command-modifier 'hyper)
@@ -205,6 +235,9 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
 #+end_src
 ** My essential packages
 *** Evil
+:PROPERTIES:
+:ID:       0B90B817-F16B-4843-99C3-DA52DFC5A742
+:END:
 #+begin_src emacs-lisp
   (leaf evil
     :ensure t
@@ -251,6 +284,9 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
                   (set-face-foreground 'mode-line (cdr color))))))
 #+end_src
 *** fecentf
+:PROPERTIES:
+:ID:       011D48F4-DE2D-416B-81EA-401609FE8094
+:END:
 #+begin_src emacs-lisp
   (leaf sync-recentf
     :ensure t
@@ -266,6 +302,9 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     (recentf-mode 1))
 #+end_src
 *** counsel
+:PROPERTIES:
+:ID:       73F3C87F-DF36-4ACF-83FE-D0A44E71A06F
+:END:
     #+begin_src emacs-lisp
   (leaf counsel
        :ensure t
@@ -291,6 +330,9 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     #+end_src
 *** doom
 **** Main theme
+:PROPERTIES:
+:ID:       1B430D72-E130-4CC4-A5AD-20EF039E9726
+:END:
 #+begin_src emacs-lisp
   (leaf doom-themes
     :ensure t
@@ -353,6 +395,9 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     (all-the-icons-scale-factor . 1.0))
 #+end_src
 ** For GUI Emacs
+:PROPERTIES:
+:ID:       682CFF2C-3F77-456D-8557-67F14E086045
+:END:
 #+begin_src emacs-lisp
   (if window-system
       (progn
@@ -376,6 +421,7 @@ I love org-mode.
       `((org-startup-indented . t)
         (org-startup-folded . 'content)
         (org-enforce-todo-dependencies . t)
+        (org-id-link-to-org-use-id . t)
         (org-image-actual-width . nil)
         (org-todo-keywords . '((sequence "TODO(t)" "MIT(m)" "WAIT(w)" "SOMADAY(s)" "|" "DONE(d)" "CANCELED(c)")))
         (org-todo-keyword-faces . '((("WAIT" "SOMEDAY") . (:foreground "#6272a4":weight bold))
@@ -390,6 +436,9 @@ I love org-mode.
     :hook (org-mode-hook . (lambda () (org-bullets-mode 1))))
 #+end_src
 ** Agenda
+:PROPERTIES:
+:ID:       D7902F9A-68A9-4F54-90DD-5F56F859C9BA
+:END:
 #+begin_src emacs-lisp
   (leaf org-agenda
     :leaf-defer nil
@@ -437,6 +486,9 @@ I love org-mode.
 
 #+end_src
 ** Babel
+:PROPERTIES:
+:ID:       38ACE2FD-12AB-4CBD-8251-F7740A674B91
+:END:
 #+begin_src emacs-lisp
   (leaf babel
     :setq
@@ -450,6 +502,9 @@ I love org-mode.
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
 #+end_src
 ** Capture
+:PROPERTIES:
+:ID:       9EECECCF-B224-427D-84E1-8BFCCDBC5075
+:END:
 #+begin_src emacs-lisp
   (leaf org-capture
     :bind (("s-h" . org-capture))
@@ -466,6 +521,9 @@ I love org-mode.
 * Text editing
 ** Major modes
 *** YAML
+:PROPERTIES:
+:ID:       4047D319-3D09-4C9A-B33D-8FDA732A6E5B
+:END:
 #+begin_src emacs-lisp
   (leaf yaml-mode
     :ensure t
@@ -473,6 +531,9 @@ I love org-mode.
 #+end_src
 ** Minor modes
 *** Parenthesis
+:PROPERTIES:
+:ID:       82B913F6-97D1-4A8F-8EEA-E8913AB20811
+:END:
 #+begin_src emacs-lisp
   (leaf paren
     :ensure t
@@ -529,6 +590,9 @@ I love org-mode.
                                     (t (not (sp-point-in-string-or-comment))))))))
 #+end_src
 *** Rainbow-delimiters
+:PROPERTIES:
+:ID:       DCE13388-8134-4F7C-9C0E-C42C89039AED
+:END:
 #+begin_src emacs-lisp
   (leaf rainbow-delimiters
     :ensure t
@@ -536,6 +600,9 @@ I love org-mode.
     :hook (prog-mode-hook . rainbow-delimiters-mode))
 #+end_src
 *** Indentation
+:PROPERTIES:
+:ID:       729F62BD-5899-43DE-9EA6-DCB58B7FB1BC
+:END:
 #+begin_src emacs-lisp
   (leaf highlight-indent-guides
     :ensure t
@@ -548,13 +615,36 @@ I love org-mode.
     (highlight-indent-guides-method . 'character)) ; column
 #+end_src
 *** Undo
+:PROPERTIES:
+:ID:       7479F25A-C333-4B2E-8A31-DD0791D68E29
+:END:
 #+begin_src emacs-lisp
   (leaf undo-tree
     :ensure t
     :require t
     :config (global-undo-tree-mode t))
 #+end_src
+*** Snippet
+#+begin_src emacs-lisp
+  (leaf yasnippet
+    :ensure t
+    :require t
+    :setq
+    (yas-prompt-functions . '(yas-ido-prompt))
+    :config
+    (yas-global-mode 1)
+    (define-key yas-minor-mode-map (kbd "C-x i i") 'yas-insert-snippet)
+    (define-key yas-minor-mode-map (kbd "C-x i n") 'yas-new-snippet)
+    (define-key yas-minor-mode-map (kbd "C-x i h") 'yas-expand)
+    (define-key yas-minor-mode-map (kbd "C-x i v") 'yas-visit-snippet-file))
+  (leaf ivy-yasnippet
+    :ensure t
+    :require t)
+#+end_src
 ** Version control
+:PROPERTIES:
+:ID:       DCA4AACF-5ED9-4353-9DBF-5887AAE8E25C
+:END:
 #+begin_src emacs-lisp
   (leaf magit
     :ensure t
@@ -601,6 +691,9 @@ I love org-mode.
 #+end_src
 
 * Fonts
+:PROPERTIES:
+:ID:       77B59B36-4D7D-4762-99C8-880EBBAE9598
+:END:
 #+begin_src emacs-lisp
   (if window-system
       (progn
@@ -656,6 +749,9 @@ I love org-mode.
 | 今日もいい天気ですね | お、     | 等幅になった
 * Programming
 ** Tag reading
+:PROPERTIES:
+:ID:       61AF0147-8ADB-46B3-908F-A8B056CE4A97
+:END:
 #+begin_src emacs-lisp
   (leaf ggtags
     :ensure t
@@ -671,8 +767,19 @@ I love org-mode.
     :require t
     :config
     (global-flycheck-mode))
+** Quickrun
+:PROPERTIES:
+:ID:       9E08D4C4-89EB-4BA8-B93B-AC1C71A1A23F
+:END:
+#+begin_src emacs-lisp
+  (leaf quickrun
+    :ensure t
+    :require t)
 #+end_src
 ** LSP
+:PROPERTIES:
+:ID:       408D7220-2BAF-4EBC-B32C-D50C1C5FAE63
+:END:
 #+begin_src emacs-lisp
   (leaf lsp-mode
     :ensure t
@@ -682,7 +789,8 @@ I love org-mode.
     :commands lsp lsp-deferred
     :hook
     ((python-mode-hook . lsp)
-     (go-mode-hook . lsp))
+     (go-mode-hook . lsp)
+     (java-mode-hook . lsp))
     ;; ;; ((lsp-mode-hook . lsp-enable-which-key-integration))
     ;;       :bind
     ;;       (:lsp-mode-map
@@ -769,6 +877,9 @@ I love org-mode.
                     :server-id 'gopls-remote))
 #+end_src
 ** Go
+:PROPERTIES:
+:ID:       378FBBB6-1756-4E51-B7A7-A1384FCEB783
+:END:
 #+begin_src emacs-lisp
   (leaf go-mode
     :ensure t
@@ -777,7 +888,19 @@ I love org-mode.
     (setq gofmt-command "gofmt")
     (add-hook 'before-save-hook 'gofmt-before-save))
 #+end_src
+** Java
+:PROPERTIES:
+:ID:       C7C55090-290C-406E-AF64-2A9AFF68ABA9
+:END:
+#+begin_src emacs-lisp
+  (leaf lsp-java
+    :ensure t
+    :require t)
+#+end_src
 ** Processing
+:PROPERTIES:
+:ID:       207F1C0A-DDA6-41AC-BE81-5202705E45F1
+:END:
 #+begin_src emacs-lisp
   (leaf processing-mode
     :ensure t
@@ -788,6 +911,9 @@ I love org-mode.
       (processing-sketchbook-dir . "/Users/ahayashi/dev/processing")))
 #+end_src
 ** Python
+:PROPERTIES:
+:ID:       BD3AF941-0D01-422B-AE46-328C98E5E749
+:END:
 #+begin_src emacs-lisp
   (leaf elpy
     :ensure t
@@ -818,7 +944,40 @@ I love org-mode.
     ;; (setq jedi:server-command (list (executable-find "jediepcserver"))))
 
 #+end_src
+** R
+:PROPERTIES:
+:ID:       53679356-6C9F-423B-BEE4-6270F5889DF6
+:END:
+#+begin_src emacs-lisp
+  (leaf ess
+    :ensure t
+    :preface
+    (defun then_R_operator ()
+      "R - %>% operator or 'then' pipe operator"
+      (interactive)
+      (just-one-space 1)
+      (insert "%>%")
+      (reindent-then-newline-and-indent))
+    :bind
+    (("C-S-m" . then_R_operator)
+     ("C-S-m" . then_R_operator))
+    :setq
+    `((ess-ask-for-ess-directory . nil)
+      (ess-style . 'DEFAULT)
+      (ess-indent-offset . 2))
+    :config
+    (add-hook 'ess-R-post-run-hook (lambda () (evil-emacs-state)))
+    (add-hook 'ess-r-mode-hook 'lsp)
+    :bind
+    `(("M--" . ess-insert-assign)))
+  (leaf ess-r-package
+    :require t)
+#+end_src
+
 * Misc helpers
+:PROPERTIES:
+:ID:       7C84463D-F22D-408F-8D34-3AC78828FABD
+:END:
 #+begin_src emacs-lisp
   (global-set-key (kbd "s-c")
                   (defun org-toggle-checkbox-and-nextline ()
@@ -827,6 +986,9 @@ I love org-mode.
 #+end_src
 ** Emoji
 *** Quick insert
+:PROPERTIES:
+:ID:       88A34652-C3EC-42B9-A317-787E98C1946E
+:END:
 #+begin_src emacs-lisp
   (leaf emoji-cheat-sheet-plus
     :ensure t
@@ -834,6 +996,9 @@ I love org-mode.
     :bind (("C-c E" . emoji-cheat-sheet-plus-insert)))
 #+end_src
 *** Display inline
+:PROPERTIES:
+:ID:       662B68EC-C451-448F-8C29-672FDBFD63DE
+:END:
 #+begin_src emacs-lisp
 (leaf emojify
   :ensure t
@@ -841,6 +1006,9 @@ I love org-mode.
   :hook (after-init-hook . global-emojify-mode))
 #+end_src
 ** Beacon
+:PROPERTIES:
+:ID:       BBAE91B2-79F7-4B97-AE42-EE982C1BF17A
+:END:
 #+begin_src emacs-lisp
   (leaf beacon
     :ensure t
@@ -851,6 +1019,9 @@ I love org-mode.
     (beacon-mode 1))
 #+end_src
 ** Keybinds
+:PROPERTIES:
+:ID:       4FD9A2B5-752C-4FE0-B789-E2B8CCAA6643
+:END:
 #+begin_src emacs-lisp
   (leaf which-key
     :ensure t
@@ -862,10 +1033,16 @@ I love org-mode.
 #+end_src
 
 ** buffer
+:PROPERTIES:
+:ID:       1E30D2D1-E9FE-40B7-95CF-9EE77CC855A6
+:END:
 #+begin_src emacs-lisp
 (icomplete-mode 1)
 #+end_src
 ** Searching
+:PROPERTIES:
+:ID:       3DABCB85-E1AA-474E-852C-627B2EE9F430
+:END:
 #+begin_src emacs-lisp
   (leaf ivy
     :ensure t
@@ -985,6 +1162,9 @@ I love org-mode.
     (global-ivy-with-migemo-mode 1))
 #+end_src
 ** Project
+:PROPERTIES:
+:ID:       0AEAAF6A-EEFF-419F-8BF8-79AC5DB168B4
+:END:
 #+begin_src emacs-lisp
   (leaf projectile
     :ensure t
@@ -1046,6 +1226,9 @@ I love org-mode.
 
 #+end_src
 *** Derectory
+:PROPERTIES:
+:ID:       BD22430E-CB32-4D1D-A3DD-82ED98E3E354
+:END:
 #+begin_src emacs-lisp
   (leaf neotree
     :ensure t
@@ -1078,6 +1261,9 @@ I love org-mode.
                 (neotree-find file-name)))))))
 #+end_src
 ** Writing
+:PROPERTIES:
+:ID:       44DFB932-B1E6-4C3E-AF04-DDFAD8009CD8
+:END:
 #+begin_src emacs-lisp
   (leaf ox-hugo
     :ensure t

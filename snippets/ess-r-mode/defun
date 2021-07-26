@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: deine function
+# key:fun
+# --
+<- function($0) {
+}

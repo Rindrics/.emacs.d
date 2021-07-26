@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: fdl_daily
+# key: fdl_daily
+# --
+******** FDL
+- gtd.org のコミットログをここに出す
+- よかったこと :: $1
+- 改善ポイント :: $2
+- 主観採点: $3/5

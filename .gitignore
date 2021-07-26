@@ -12,3 +12,7 @@ bookmarks
 transient/
 tramp
 .DS_Store
+.*
+kkcrc
+workspace/
+eclipse*
