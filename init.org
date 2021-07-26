@@ -664,6 +664,14 @@ I love org-mode.
                                            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
                                              (ggtags-mode 1)))))
 #+end_src
+** Syntax check
+#+begin_src emacs-lisp
+  (leaf flycheck
+    :ensure t
+    :require t
+    :config
+    (global-flycheck-mode))
+#+end_src
 ** LSP
 #+begin_src emacs-lisp
   (leaf lsp-mode
