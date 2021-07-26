@@ -767,6 +767,7 @@ I love org-mode.
     :require t
     :config
     (global-flycheck-mode))
+#+end_src
 ** Quickrun
 :PROPERTIES:
 :ID:       9E08D4C4-89EB-4BA8-B93B-AC1C71A1A23F
