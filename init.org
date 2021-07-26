@@ -138,6 +138,18 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     (write-region "" nil custom-file))
   (load custom-file)
 #+end_src
+*** Server mode
+#+begin_src emacs-lisp
+  (when window-system                       ; GUI時
+    (require 'server)
+    (unless (eq (server-running-p) 't)
+      (server-start)
+      (defun iconify-emacs-when-server-is-done ()
+        (unless server-clients (iconify-frame)))
+      (global-set-key (kbd "C-x C-c") 'server-edit)
+      (defalias 'exit 'save-buffers-kill-emacs)
+      (setq confirm-kill-emacs 'yes-or-no-p)))
+#+end_src
 *** Garbage collection
 #+begin_src emacs-lisp
   (setq garbage-collection-messages t)
