@@ -10,3 +10,7 @@ custom.el
 bookmarks
 .lsp-session*
 transient/
+.*
+kkcrc
+workspace/
+eclipse*

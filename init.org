@@ -753,7 +753,8 @@ I love org-mode.
     :commands lsp lsp-deferred
     :hook
     ((python-mode-hook . lsp)
-     (go-mode-hook . lsp))
+     (go-mode-hook . lsp)
+     (java-mode-hook . lsp))
     ;; ;; ((lsp-mode-hook . lsp-enable-which-key-integration))
     ;;       :bind
     ;;       (:lsp-mode-map
@@ -851,7 +852,19 @@ I love org-mode.
     (setq gofmt-command "gofmt")
     (add-hook 'before-save-hook 'gofmt-before-save))
 #+end_src
+** Java
+:PROPERTIES:
+:ID:       C7C55090-290C-406E-AF64-2A9AFF68ABA9
+:END:
+#+begin_src emacs-lisp
+  (leaf lsp-java
+    :ensure t
+    :require t)
+#+end_src
 ** Processing
+:PROPERTIES:
+:ID:       207F1C0A-DDA6-41AC-BE81-5202705E45F1
+:END:
 #+begin_src emacs-lisp
   (leaf processing-mode
     :ensure t
