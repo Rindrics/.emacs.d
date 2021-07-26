@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: new leaf
+# key: leaf
+# --
+(leaf $0
+  :ensure t
+  :require t
+  :setq
+  `()
+  :config
+  )

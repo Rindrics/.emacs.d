@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: testthat
+# key: test
+# --
+test_that("$0", {
+  browser()
+  expect_equal(1, 2)
+})

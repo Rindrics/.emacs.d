@@ -1,0 +1,60 @@
+# key: revwk
+# name: review_week
+# --
+********** KPT
+今週の
+- [[file:gtd.org::*週次][MITopic]]: $0
+- MITry: 
+#+begin_comment
+MITopic & Try の達成度を評価する
+理由を探っていく
+
+#+end_comment
+*********** Keep
+- 睡眠は足りている？
+- 休憩は取れている？
+- 余裕をもってルーティンを消化できている？
+- 大事なことに時間を割けている？
+- やるべきなのに後回しになっているタスクはない？
+- 部屋の気に入らないところはない？
+- Emacs のイライラポイントはない？
+- 繰り返しやっている無駄なことはない？
+- カレンダーを基準に動くことができている？
+- 学習に時間をとれている？
+*********** Problem & Try
+
+#+begin_comment
+- [ ] 次の MITopic と MITry を [[file:~/Documents/GitHub/gtd/gtd.org::*gitmessage][gitmessage]] に書く
+#+end_comment
+来週の MITs:
+- MITopic ::
+- MITry ::
+********** スプリントプランニング
+#+begin_comment
+*********** 25のやりたいことを書き出す [/]
+************ WAIT
+*********** プランニング
+- [ ] 最大 5 つに proj タグをつける
+- [ ] タスク分解
+- [ ] 水曜までについてタスク枠を確保
+*********** 明らかにする
+- [ ] 未整理の書類などを収集する
+  - [ ] 財布
+  - [ ] Lノートのポケット
+  - [ ] キャプチャノート
+*********** レビュー収集
+#+begin_comment
+トリガーリストを展開
+#+end_comment
+triggerh
+*********** 連絡待ちリストを確認 (org-todo-list 3)
+
+#+end_comment
+
+#+begin_comment
+- [ ] [[*Wish リスト][Wish リスト]] にwish を書く
+- [ ] 次の MITopic を決める
+- [ ] 掃除する
+- [ ] [[https://github.com/akikirinrin/ahayashi/pulls][masterへのPRを作る]]
+
+#+end_comment

@@ -1,0 +1,10 @@
+# key: rpp
+# name: read_paper
+# --
+`(make-string (+ 1 (org-current-level)) ?*)` どんなもの？
+$0
+`(make-string (+ 1 (org-current-level)) ?*)` 先行研究と比べてどこがすごい？
+`(make-string (+ 1 (org-current-level)) ?*)` 技術や手法のキモはどこ？
+`(make-string (+ 1 (org-current-level)) ?*)` どうやって有効だと検証した？
+`(make-string (+ 1 (org-current-level)) ?*)` 議論はある？
+`(make-string (+ 1 (org-current-level)) ?*)` 次に読むべき論文は？

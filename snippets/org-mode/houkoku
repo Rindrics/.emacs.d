@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: houkoku
+# key: houkoku
+# --
+日時: 2019年$1月$2日
+場所: $3($4県$5市)
+内容: $0
