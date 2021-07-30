@@ -876,6 +876,7 @@ I love org-mode.
                     :major-modes '(go-mode)
                     :remote? t
                     :server-id 'gopls-remote))
+  (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin"))
 #+end_src
 ** Go
 :PROPERTIES:
@@ -886,7 +887,7 @@ I love org-mode.
     :ensure t
     :require t
     :config
-    (setq gofmt-command "gofmt")
+    (setq gofmt-command "goimports")
     (add-hook 'before-save-hook 'gofmt-before-save))
 #+end_src
 ** Java
