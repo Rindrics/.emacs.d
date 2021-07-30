@@ -1006,6 +1006,12 @@ I love org-mode.
   :if (display-graphic-p)
   :hook (after-init-hook . global-emojify-mode))
 #+end_src
+** Eval
+#+begin_src emacs-lisp
+  (leaf lispxmp
+    :ensure t
+    :require t)
+#+end_src
 ** Beacon
 :PROPERTIES:
 :ID:       BBAE91B2-79F7-4B97-AE42-EE982C1BF17A
