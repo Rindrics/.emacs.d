@@ -1013,6 +1013,14 @@ I love org-mode.
     :ensure t
     :require t)
 #+end_src
+** goto-chg
+#+begin_src emacs-lisp
+  (leaf goto-chg
+    :require t
+    :bind
+    (("C-;" . goto-last-change)
+     ("C-," . goto-last-change-reverse)))
+#+end_src
 ** Beacon
 :PROPERTIES:
 :ID:       BBAE91B2-79F7-4B97-AE42-EE982C1BF17A
@@ -1307,7 +1315,6 @@ I love org-mode.
 * Desired features
 ** disable Japanese input when =C-x= is pressed
 ** support for jupyter-notebook
-** goto-chg
 ** redo+
 ** sense-region
 ** yasnippet
