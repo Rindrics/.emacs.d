@@ -1315,9 +1315,7 @@ I love org-mode.
 * Desired features
 ** disable Japanese input when =C-x= is pressed
 ** support for jupyter-notebook
-** redo+
 ** sense-region
-** yasnippet
 ** hippie-command
 ** Follow-mode
 ** summarye.el
