@@ -986,6 +986,20 @@ I love org-mode.
                     (interactive)
                     (progn (org-toggle-checkbox)(forward-line))))
 #+end_src
+** Autocompletion
+#+begin_src emacs-lisp
+  (setq hippie-expand-try-functions-list
+      '(try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-all-abbrevs
+        try-expand-list try-expand-line
+        try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-lisp-symbol-partially
+        try-complete-lisp-symbol))
+#+end_src
+
 ** Emoji
 *** Quick insert
 :PROPERTIES:
@@ -1316,7 +1330,6 @@ I love org-mode.
 ** disable Japanese input when =C-x= is pressed
 ** support for jupyter-notebook
 ** sense-region
-** hippie-command
 ** Follow-mode
 ** summarye.el
 ** html-fold
