@@ -1345,3 +1345,10 @@ I love org-mode.
 ** org-gcal
 ** daily log setting
 ** set faces (agenda, comments)
+** sequential-command
+** key-chordu
+** uniquify
+** iswitchb
+** point-undo
+** hippie-expand
+** kmacro-save
