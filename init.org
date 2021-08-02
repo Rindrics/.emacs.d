@@ -1325,6 +1325,11 @@ I love org-mode.
     (define-key org-mode-map (kbd "C-c c c") `org-ref-helm-insert-cite-link)
     (define-key org-mode-map (kbd "C-c c l") `org-ref-helm-insert-label-link)
     (define-key org-mode-map (kbd "C-c c r") `org-ref-helm-insert-ref-link))
+  (leaf citeproc-org
+    :ensure t
+    :after ox-hugo
+    :config
+    (citeproc-org-setup))
 #+end_src
 * Desired features
 ** disable Japanese input when =C-x= is pressed
