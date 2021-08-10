@@ -423,7 +423,7 @@ I love org-mode.
         (org-enforce-todo-dependencies . t)
         (org-id-link-to-org-use-id . t)
         (org-image-actual-width . nil)
-        (org-todo-keywords . '((sequence "TODO(t)" "MIT(m)" "WAIT(w)" "SOMADAY(s)" "|" "DONE(d)" "CANCELED(c)")))
+        (org-todo-keywords . '((sequence "TODO(t)" "MIT(m)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")))
         (org-todo-keyword-faces . '((("WAIT" "SOMEDAY") . (:foreground "#6272a4":weight bold))
                                     ("MIT"             . (:foreground "#f1fa8c" :weight bold))
                                     ("INFO"             . (:foreground "#1eb3ce" :weight bold))
@@ -767,6 +767,7 @@ I love org-mode.
     :require t
     :config
     (global-flycheck-mode))
+#+end_src
 ** Quickrun
 :PROPERTIES:
 :ID:       9E08D4C4-89EB-4BA8-B93B-AC1C71A1A23F
@@ -876,6 +877,7 @@ I love org-mode.
                     :major-modes '(go-mode)
                     :remote? t
                     :server-id 'gopls-remote))
+  (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin"))
 #+end_src
 ** Go
 :PROPERTIES:
@@ -886,7 +888,7 @@ I love org-mode.
     :ensure t
     :require t
     :config
-    (setq gofmt-command "gofmt")
+    (setq gofmt-command "goimports")
     (add-hook 'before-save-hook 'gofmt-before-save))
 #+end_src
 ** Java
@@ -985,6 +987,20 @@ I love org-mode.
                     (interactive)
                     (progn (org-toggle-checkbox)(forward-line))))
 #+end_src
+** Autocompletion
+#+begin_src emacs-lisp
+  (setq hippie-expand-try-functions-list
+      '(try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-all-abbrevs
+        try-expand-list try-expand-line
+        try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-lisp-symbol-partially
+        try-complete-lisp-symbol))
+#+end_src
+
 ** Emoji
 *** Quick insert
 :PROPERTIES:
@@ -1005,6 +1021,20 @@ I love org-mode.
   :ensure t
   :if (display-graphic-p)
   :hook (after-init-hook . global-emojify-mode))
+#+end_src
+** Eval
+#+begin_src emacs-lisp
+  (leaf lispxmp
+    :ensure t
+    :require t)
+#+end_src
+** goto-chg
+#+begin_src emacs-lisp
+  (leaf goto-chg
+    :require t
+    :bind
+    (("C-;" . goto-last-change)
+     ("C-," . goto-last-change-reverse)))
 #+end_src
 ** Beacon
 :PROPERTIES:
@@ -1297,6 +1327,11 @@ I love org-mode.
     (define-key org-mode-map (kbd "C-c c c") `org-ref-helm-insert-cite-link)
     (define-key org-mode-map (kbd "C-c c l") `org-ref-helm-insert-label-link)
     (define-key org-mode-map (kbd "C-c c r") `org-ref-helm-insert-ref-link))
+  (leaf citeproc-org
+    :ensure t
+    :after ox-hugo
+    :config
+    (citeproc-org-setup))
 #+end_src
 *** LaTeX
 #+begin_src emacs-lisp
@@ -1307,11 +1342,7 @@ I love org-mode.
 * Desired features
 ** disable Japanese input when =C-x= is pressed
 ** support for jupyter-notebook
-** goto-chg
-** redo+
 ** sense-region
-** yasnippet
-** hippie-command
 ** Follow-mode
 ** summarye.el
 ** html-fold
@@ -1322,3 +1353,10 @@ I love org-mode.
 ** org-gcal
 ** daily log setting
 ** set faces (agenda, comments)
+** sequential-command
+** key-chordu
+** uniquify
+** iswitchb
+** point-undo
+** hippie-expand
+** kmacro-save
