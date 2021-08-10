@@ -1265,6 +1265,7 @@ I love org-mode.
 :PROPERTIES:
 :ID:       44DFB932-B1E6-4C3E-AF04-DDFAD8009CD8
 :END:
+*** Org helpers
 #+begin_src emacs-lisp
   (leaf ox-hugo
     :ensure t
@@ -1296,6 +1297,12 @@ I love org-mode.
     (define-key org-mode-map (kbd "C-c c c") `org-ref-helm-insert-cite-link)
     (define-key org-mode-map (kbd "C-c c l") `org-ref-helm-insert-label-link)
     (define-key org-mode-map (kbd "C-c c r") `org-ref-helm-insert-ref-link))
+#+end_src
+*** LaTeX
+#+begin_src emacs-lisp
+  (leaf yatex
+    :ensure t
+    :require t)
 #+end_src
 * Desired features
 ** disable Japanese input when =C-x= is pressed
