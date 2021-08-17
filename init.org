@@ -964,7 +964,7 @@ I love org-mode.
       (ess-style . 'DEFAULT)
       (ess-indent-offset . 2))
     :config
-    (add-hook 'ess-R-post-run-hook (lambda () (evil-emacs-state)))
+    (add-hook 'ess-r-post-run-hook (lambda () (evil-emacs-state)))
     (add-hook 'ess-r-mode-hook 'lsp)
     :bind
     `(("M--" . ess-insert-assign)))
