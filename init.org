@@ -1044,6 +1044,13 @@ I love org-mode.
     :config
     (beacon-mode 1))
 #+end_src
+** Junk files
+#+begin_src emacs-lisp
+  (leaf open-junk-file
+    :ensure t
+    :require t
+    :setq (open-junk-file-format . "~/Dropbox/junk/%Y-%m-%d-%H%M%S."))
+#+end_src
 ** Keybinds
 :PROPERTIES:
 :ID:       4FD9A2B5-752C-4FE0-B789-E2B8CCAA6643
