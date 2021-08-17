@@ -937,22 +937,6 @@ I love org-mode.
       (python-shell-interpreter-args . "console --simple-prompt")
       (python-shell-prompt-detect-failure-warning . nil)
       (elpy-shell-echo-output . nil)))
-  ;; (leaf ein
-  ;;   :ensure t
-  ;;   :require t
-  ;;   :setq
-  ;;   `((ein:output-area-inlined-images . t)))
-  ;; (leaf flymake-python-pyflakes
-  ;;   :ensure t
-  ;;   :require t)
-  ;; (leaf jedi
-  ;;   :ensure t
-  ;;   :require t
-  ;;   :setq (jedi:complete-on-dot . t)
-  ;;   :hook (python-mode-hook . jedi:setup)
-  ;;   :config
-    ;; (setq jedi:server-command (list (executable-find "jediepcserver"))))
-
   (leaf python-mode
     :ensure t
     :require t)
