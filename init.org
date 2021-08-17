@@ -297,7 +297,8 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
       (recentf-exclude . '("/recentf" "COMMIT_EDITMSG"
                            "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores"
                            "/\\.emacs\\.d/\\.cask/" "/sync-recentf-marker" "amx-items"))
-      (recentf-auto-save-timer . '(run-with-idle-timer 30 t 'recentf-save-list)))
+      (recentf-auto-save-timer . '(run-with-idle-timer 30 t 'recentf-save-list))
+      (recentf-keep . '(file-remote-p file-readable-p)))
     :config
     (recentf-mode 1))
 #+end_src
