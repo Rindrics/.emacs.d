@@ -531,6 +531,21 @@ I love org-mode.
     :require t)
 #+end_src
 ** Minor modes
+*** Indentation
+:PROPERTIES:
+:ID:       729F62BD-5899-43DE-9EA6-DCB58B7FB1BC
+:END:
+#+begin_src emacs-lisp
+  (leaf highlight-indent-guides
+    :ensure t
+    :require t
+    :hook
+    ((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode)
+    :custom
+    (highlight-indent-guides-auto-enabled . t)
+    (highlight-indent-guides-responsive . t)
+    (highlight-indent-guides-method . 'character)) ; column
+#+end_src
 *** Parenthesis
 :PROPERTIES:
 :ID:       82B913F6-97D1-4A8F-8EEA-E8913AB20811
@@ -600,31 +615,6 @@ I love org-mode.
     :require t
     :hook (prog-mode-hook . rainbow-delimiters-mode))
 #+end_src
-*** Indentation
-:PROPERTIES:
-:ID:       729F62BD-5899-43DE-9EA6-DCB58B7FB1BC
-:END:
-#+begin_src emacs-lisp
-  (leaf highlight-indent-guides
-    :ensure t
-    :require t
-    :hook
-    ((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode)
-    :custom
-    (highlight-indent-guides-auto-enabled . t)
-    (highlight-indent-guides-responsive . t)
-    (highlight-indent-guides-method . 'character)) ; column
-#+end_src
-*** Undo
-:PROPERTIES:
-:ID:       7479F25A-C333-4B2E-8A31-DD0791D68E29
-:END:
-#+begin_src emacs-lisp
-  (leaf undo-tree
-    :ensure t
-    :require t
-    :config (global-undo-tree-mode t))
-#+end_src
 *** Snippet
 #+begin_src emacs-lisp
   (leaf yasnippet
@@ -641,6 +631,16 @@ I love org-mode.
   (leaf ivy-yasnippet
     :ensure t
     :require t)
+#+end_src
+*** Undo
+:PROPERTIES:
+:ID:       7479F25A-C333-4B2E-8A31-DD0791D68E29
+:END:
+#+begin_src emacs-lisp
+  (leaf undo-tree
+    :ensure t
+    :require t
+    :config (global-undo-tree-mode t))
 #+end_src
 ** Version control
 :PROPERTIES:
@@ -749,32 +749,24 @@ I love org-mode.
 |----------------------+----------+-------------------|
 | 今日もいい天気ですね | お、     | 等幅になった
 * Programming
-** Tag reading
+** Go
 :PROPERTIES:
-:ID:       61AF0147-8ADB-46B3-908F-A8B056CE4A97
+:ID:       378FBBB6-1756-4E51-B7A7-A1384FCEB783
 :END:
 #+begin_src emacs-lisp
-  (leaf ggtags
-    :ensure t
-    :require t
-    :hook (add-hook c-mode-common-hook . (lambda ()
-                                           (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-                                             (ggtags-mode 1)))))
-#+end_src
-** Syntax check
-#+begin_src emacs-lisp
-  (leaf flycheck
+  (leaf go-mode
     :ensure t
     :require t
     :config
-    (global-flycheck-mode))
+    (setq gofmt-command "goimports")
+    (add-hook 'before-save-hook 'gofmt-before-save))
 #+end_src
-** Quickrun
+** Java
 :PROPERTIES:
-:ID:       9E08D4C4-89EB-4BA8-B93B-AC1C71A1A23F
+:ID:       C7C55090-290C-406E-AF64-2A9AFF68ABA9
 :END:
 #+begin_src emacs-lisp
-  (leaf quickrun
+  (leaf lsp-java
     :ensure t
     :require t)
 #+end_src
@@ -896,27 +888,6 @@ I love org-mode.
     :config
     (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin" "/snap/bin")))
 #+end_src
-** Go
-:PROPERTIES:
-:ID:       378FBBB6-1756-4E51-B7A7-A1384FCEB783
-:END:
-#+begin_src emacs-lisp
-  (leaf go-mode
-    :ensure t
-    :require t
-    :config
-    (setq gofmt-command "goimports")
-    (add-hook 'before-save-hook 'gofmt-before-save))
-#+end_src
-** Java
-:PROPERTIES:
-:ID:       C7C55090-290C-406E-AF64-2A9AFF68ABA9
-:END:
-#+begin_src emacs-lisp
-  (leaf lsp-java
-    :ensure t
-    :require t)
-#+end_src
 ** Processing
 :PROPERTIES:
 :ID:       207F1C0A-DDA6-41AC-BE81-5202705E45F1
@@ -958,6 +929,15 @@ I love org-mode.
      (setq lsp-python-ms-executable (executable-find "python-language-server"))
     :hook (python-mode-hook . lsp-deferred))
 #+end_src
+** Quickrun
+:PROPERTIES:
+:ID:       9E08D4C4-89EB-4BA8-B93B-AC1C71A1A23F
+:END:
+#+begin_src emacs-lisp
+  (leaf quickrun
+    :ensure t
+    :require t)
+#+end_src
 ** R
 :PROPERTIES:
 :ID:       53679356-6C9F-423B-BEE4-6270F5889DF6
@@ -988,6 +968,26 @@ I love org-mode.
     :require t)
 #+end_src
 
+** Syntax check
+#+begin_src emacs-lisp
+  (leaf flycheck
+    :ensure t
+    :require t
+    :config
+    (global-flycheck-mode))
+#+end_src
+** Tag reading
+:PROPERTIES:
+:ID:       61AF0147-8ADB-46B3-908F-A8B056CE4A97
+:END:
+#+begin_src emacs-lisp
+  (leaf ggtags
+    :ensure t
+    :require t
+    :hook (add-hook c-mode-common-hook . (lambda ()
+                                           (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                                             (ggtags-mode 1)))))
+#+end_src
 * Misc helpers
 :PROPERTIES:
 :ID:       7C84463D-F22D-408F-8D34-3AC78828FABD
@@ -1012,6 +1012,26 @@ I love org-mode.
         try-complete-lisp-symbol))
 #+end_src
 
+** Beacon
+:PROPERTIES:
+:ID:       BBAE91B2-79F7-4B97-AE42-EE982C1BF17A
+:END:
+#+begin_src emacs-lisp
+  (leaf beacon
+    :ensure t
+    :require t
+    :custom
+    (beacon-color . "#85c1e9")
+    :config
+    (beacon-mode 1))
+#+end_src
+** buffer
+:PROPERTIES:
+:ID:       1E30D2D1-E9FE-40B7-95CF-9EE77CC855A6
+:END:
+#+begin_src emacs-lisp
+(icomplete-mode 1)
+#+end_src
 ** Emoji
 *** Quick insert
 :PROPERTIES:
@@ -1047,19 +1067,6 @@ I love org-mode.
     (("C-;" . goto-last-change)
      ("C-," . goto-last-change-reverse)))
 #+end_src
-** Beacon
-:PROPERTIES:
-:ID:       BBAE91B2-79F7-4B97-AE42-EE982C1BF17A
-:END:
-#+begin_src emacs-lisp
-  (leaf beacon
-    :ensure t
-    :require t
-    :custom
-    (beacon-color . "#85c1e9")
-    :config
-    (beacon-mode 1))
-#+end_src
 ** Junk files
 #+begin_src emacs-lisp
   (leaf open-junk-file
@@ -1081,12 +1088,104 @@ I love org-mode.
     :setq (which-key-idle-delay . 0.3))
 #+end_src
 
-** buffer
+** Project
 :PROPERTIES:
-:ID:       1E30D2D1-E9FE-40B7-95CF-9EE77CC855A6
+:ID:       0AEAAF6A-EEFF-419F-8BF8-79AC5DB168B4
 :END:
 #+begin_src emacs-lisp
-(icomplete-mode 1)
+  (leaf projectile
+    :ensure t
+    :require t
+    :setq `((projectile-globally-ignored-file-suffixes . '(".elc"))
+            (projectile-globally-ignored-files . '(".DS_Store" "Icon" "TAGS"))
+            (projectile-enable-caching . t))
+    :config
+    (projectile-mode))
+  (leaf counsel-projectile
+    :ensure t
+    :require t
+    :config
+    (projectile-mode 1)
+    ;; (defhydra hydra-projectile-other-window (:color teal)
+    ;;   "projectile-other-window"
+    ;;   ("f"  projectile-find-file-other-window        "file")
+    ;;   ("g"  projectile-find-file-dwim-other-window   "file dwim")
+    ;;   ("d"  projectile-find-dir-other-window         "dir")
+    ;;   ("b"  projectile-switch-to-buffer-other-window "buffer")
+    ;;   ("q"  nil                                      "cancel" :color blue))
+    (defhydra hydra-projectile
+      (:color pink :hint nil)
+      "
+        PROJECTILE: %(projectile-project-root)
+
+      Find File            Search/Tags          Buffers                Cache
+   --------------------------------------------------------------------------
+     _C-f_: file            _a_: ag                _i_: ibuffer           _c_: cache clear
+      _ff_: file dwim       _g_: update gtags      _b_: switch to buffer  _x_: remove known project
+      _fd_: file curr dir   _m_: multi-occur       _K_: Kill buffers      _X_: cleanup non-existing
+       _r_: recentf                                                   ^^^^_z_: cache current
+       _d_: dir
+   "
+      ("s"   counsel-projectile-switch-project "switch project")
+      ;; ("o"   hydra-projectile-other-window/body "other window")
+      ("q"   nil "cancel" :color blue)
+
+      ("C-f" projectile-find-file)
+      ("ff"  projectile-find-file-dwim)
+      ("fd"  projectile-find-file-in-directory)
+      ("r"   projectile-recentf)
+      ("d"   projectile-find-dir)
+
+      ("a"   projectile-ag)
+      ("g"   ggtags-update-tags)
+      ("m"   projectile-multi-occur)
+
+
+      ("i"   projectile-ibuffer)
+      ("b"   projectile-switch-to-buffer)
+      ("K"   projectile-kill-buffers)
+
+      ("c"   projectile-invalidate-cache)
+      ("x"   projectile-remove-known-project)
+      ("X"   projectile-cleanup-known-projects)
+      ("z"   projectile-cache-current-file))
+    (define-key global-map (kbd "s-p") 'hydra-projectile/body))
+
+#+end_src
+*** Derectory
+:PROPERTIES:
+:ID:       BD22430E-CB32-4D1D-A3DD-82ED98E3E354
+:END:
+#+begin_src emacs-lisp
+  (leaf neotree
+    :ensure t
+    :require t
+    :after
+    projectile
+    :commands
+    (neotree-show neotree-hide neotree-dir neotree-find)
+    :custom
+    (neo-theme 'nerd2)
+    :bind
+    ("<f9>" . neotree-projectile-toggle)
+    :preface
+    (defun neotree-projectile-toggle ()
+      (interactive)
+      (let ((project-dir
+             (ignore-errors
+          ;;; Pick one: projectile or find-file-in-project
+               (projectile-project-root)))
+            (file-name (buffer-file-name))
+            (neo-smart-open t))
+        (if (and (fboundp 'neo-global--window-exists-p)
+                 (neo-global--window-exists-p))
+            (neotree-hide)
+          (progn
+            (neotree-show)
+            (if project-dir
+                (neotree-dir project-dir))
+            (if file-name
+                (neotree-find file-name)))))))
 #+end_src
 ** Searching
 :PROPERTIES:
@@ -1210,105 +1309,6 @@ I love org-mode.
     (migemo-init)
     (global-ivy-with-migemo-mode 1))
 #+end_src
-** Project
-:PROPERTIES:
-:ID:       0AEAAF6A-EEFF-419F-8BF8-79AC5DB168B4
-:END:
-#+begin_src emacs-lisp
-  (leaf projectile
-    :ensure t
-    :require t
-    :setq `((projectile-globally-ignored-file-suffixes . '(".elc"))
-            (projectile-globally-ignored-files . '(".DS_Store" "Icon" "TAGS"))
-            (projectile-enable-caching . t))
-    :config
-    (projectile-mode))
-  (leaf counsel-projectile
-    :ensure t
-    :require t
-    :config
-    (projectile-mode 1)
-    ;; (defhydra hydra-projectile-other-window (:color teal)
-    ;;   "projectile-other-window"
-    ;;   ("f"  projectile-find-file-other-window        "file")
-    ;;   ("g"  projectile-find-file-dwim-other-window   "file dwim")
-    ;;   ("d"  projectile-find-dir-other-window         "dir")
-    ;;   ("b"  projectile-switch-to-buffer-other-window "buffer")
-    ;;   ("q"  nil                                      "cancel" :color blue))
-    (defhydra hydra-projectile
-      (:color pink :hint nil)
-      "
-        PROJECTILE: %(projectile-project-root)
-
-      Find File            Search/Tags          Buffers                Cache
-   --------------------------------------------------------------------------
-     _C-f_: file            _a_: ag                _i_: ibuffer           _c_: cache clear
-      _ff_: file dwim       _g_: update gtags      _b_: switch to buffer  _x_: remove known project
-      _fd_: file curr dir   _m_: multi-occur       _K_: Kill buffers      _X_: cleanup non-existing
-       _r_: recentf                                                   ^^^^_z_: cache current
-       _d_: dir
-   "
-      ("s"   counsel-projectile-switch-project "switch project")
-      ;; ("o"   hydra-projectile-other-window/body "other window")
-      ("q"   nil "cancel" :color blue)
-
-      ("C-f" projectile-find-file)
-      ("ff"  projectile-find-file-dwim)
-      ("fd"  projectile-find-file-in-directory)
-      ("r"   projectile-recentf)
-      ("d"   projectile-find-dir)
-
-      ("a"   projectile-ag)
-      ("g"   ggtags-update-tags)
-      ("m"   projectile-multi-occur)
-
-
-      ("i"   projectile-ibuffer)
-      ("b"   projectile-switch-to-buffer)
-      ("K"   projectile-kill-buffers)
-
-      ("c"   projectile-invalidate-cache)
-      ("x"   projectile-remove-known-project)
-      ("X"   projectile-cleanup-known-projects)
-      ("z"   projectile-cache-current-file))
-    (define-key global-map (kbd "s-p") 'hydra-projectile/body))
-
-#+end_src
-*** Derectory
-:PROPERTIES:
-:ID:       BD22430E-CB32-4D1D-A3DD-82ED98E3E354
-:END:
-#+begin_src emacs-lisp
-  (leaf neotree
-    :ensure t
-    :require t
-    :after
-    projectile
-    :commands
-    (neotree-show neotree-hide neotree-dir neotree-find)
-    :custom
-    (neo-theme 'nerd2)
-    :bind
-    ("<f9>" . neotree-projectile-toggle)
-    :preface
-    (defun neotree-projectile-toggle ()
-      (interactive)
-      (let ((project-dir
-             (ignore-errors
-          ;;; Pick one: projectile or find-file-in-project
-               (projectile-project-root)))
-            (file-name (buffer-file-name))
-            (neo-smart-open t))
-        (if (and (fboundp 'neo-global--window-exists-p)
-                 (neo-global--window-exists-p))
-            (neotree-hide)
-          (progn
-            (neotree-show)
-            (if project-dir
-                (neotree-dir project-dir))
-            (if file-name
-                (neotree-find file-name)))))))
-#+end_src
 ** Writing
 :PROPERTIES:
 :ID:       44DFB932-B1E6-4C3E-AF04-DDFAD8009CD8
@@ -1351,23 +1351,23 @@ I love org-mode.
     (citeproc-org-setup))
 #+end_src
 * Desired features
+** daily log setting
 ** disable Japanese input when =C-x= is pressed
-** support for jupyter-notebook
-** sense-region
 ** Follow-mode
-** summarye.el
+** gnus
+** hippie-expand
 ** html-fold
 ** imenu
-** which-func-mode
-** modeline
-** gnus
-** org-gcal
-** daily log setting
-** set faces (agenda, comments)
-** sequential-command
-** key-chordu
-** uniquify
 ** iswitchb
-** point-undo
-** hippie-expand
+** key-chordu
 ** kmacro-save
+** modeline
+** org-gcal
+** point-undo
+** sense-region
+** sequential-command
+** set faces (agenda, comments)
+** summarye.el
+** support for jupyter-notebook
+** uniquify
+** which-func-mode
