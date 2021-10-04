@@ -893,6 +893,7 @@ I love org-mode.
                     :server-id 'pyls-remote))
   (leaf tramp
     :require t
+    :setq `((tramp-verbose . 6))
     :config
     (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin" "/snap/bin")))
 #+end_src
