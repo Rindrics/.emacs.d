@@ -1406,6 +1406,10 @@ I love org-mode.
                  (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
                  (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region))))
 #+end_src
+*** DocView
+#+begin_src emacs-lisp
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
+#+end_src
 * Desired features
 ** disable Japanese input when =C-x= is pressed
 ** support for jupyter-notebook
