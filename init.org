@@ -767,7 +767,10 @@ I love org-mode.
     :ensure t
     :require t
     :config
-    (global-flycheck-mode))
+    (global-flycheck-mode)
+    (define-key flycheck-mode-map flycheck-keymap-prefix nil)
+    (setq flycheck-keymap-prefix (kbd "C-c c"))
+    (define-key flycheck-mode-map flycheck-keymap-prefix flycheck-command-map))
 #+end_src
 ** Quickrun
 :PROPERTIES:
