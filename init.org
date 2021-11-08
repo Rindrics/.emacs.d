@@ -521,6 +521,12 @@ I love org-mode.
 
 * Text editing
 ** Major modes
+*** Terraform
+#+begin_src emacs-lisp
+  (leaf terraform-mode
+    :ensure t
+    :require t)
+#+end_src
 *** YAML
 :PROPERTIES:
 :ID:       4047D319-3D09-4C9A-B33D-8FDA732A6E5B
