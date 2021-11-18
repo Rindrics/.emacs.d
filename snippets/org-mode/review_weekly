@@ -1,60 +1,115 @@
-# key: revwk
-# name: review_week
+# -*- mode: snippet -*-
+# name: week
+# key: week
 # --
-********** KPT
-今週の
-- [[file:gtd.org::*週次][MITopic]]: $0
-- MITry: 
-#+begin_comment
-MITopic & Try の達成度を評価する
-理由を探っていく
 
-#+end_comment
+`(make-string (+ 1 (org-current-level)) ?*)` w$1                    :w$1:
+:PROPERTIES:
+:EXPORT_HUGO_SECTION*: w$1
+:END:
+
+`(make-string (org-current-level) ?**)` Review w$1
+
+
+********* Sprint review
+
+********* Sprint retrospective
+********** Garbage collection
+#+begin_quote
+- [ ] 明らかにする [0/3]
+  - [ ] 未整理の書類などを収集する [0/3]
+    - [ ] 財布
+    - [ ] Lノートのポケット
+    - [ ] キャプチャノート
+  - [ ] 物理Inboxを空にする
+  - [ ] =収集=
+    - [ ] トリガーリストを展開して =収集= :point_down: ~(C-x i h)~
+#+end_quote
+trigger
+#+begin_quote
+
+#+begin_quote
+- [ ] 最新の状態にする [0/6]
+  - [ ] 行動リストのレビュー ~(view-misc-tasks)~
+    - [ ] 完了した行動を =DONE= に
+    - [ ] =DONE= になったタスクを整理 ~(org-todo-list 5)~
+    - [ ] =CANCELLED= になったタスクを削除 ~(org-todo-list 6)~
+    - [ ] 次の行動を見極める ~(org-agenda-list-stuck-projects)~
+  - [ ] 過去のカレンダーのレビュー ~(view-google-calendar)~
+    - [ ] 残っている行動や参照データがあればシステムに入れる
+  - [ ] 未来のカレンダーのレビュー
+    - [ ] 必要な行動を =収集= する
+  - [ ] 連絡待ちリストのレビュー ~(org-todo-list 3)~
+    - [ ] とるべき行動があれば =収集= する
+    - [ ] 連絡があったものはチェックを入れる
+  - [ ] agendaファイルのメンテナンス ~(org-agenda "a" "a")~
+  - [ ] プロジェクトについて垂直的に考え、必要な行動や連絡待ち事項などを明らかにする
+    - [ ] [[*【3000m】ゴール・目標][【3000m】ゴール・目標]]は実現できそうだろうか、多すぎないだろうか
+    - [ ] [[*【2000m】注意を向けるべき分野][【2000m】注意を向けるべき分野]]の配分はどうだろうか
+    - [ ] [[*【1000m】プロジェクト][【1000m】プロジェクト]]に不必要なものはないだろうか
+- [ ] 創造性を高める [0/5]
+  - [ ] [[*Somedays 【定期的にレビューするもの】][Somedays 【定期的にレビューするもの】]]のレビュー（これを公開する勇気はまだない）
+    - [ ] とりかかる必要があるものがあれば =【1000m】プロジェクト= へリファイルする
+    - [ ] 関心のなくなったものは削除する
+  - [ ] 創造性とチャレンジ精神を発揮する
+    - [ ] [[*System somedays][System somedays]] の中から、システムに取り込めそうなアイデア・発想・考え・リスクのあるチャレンジを試してみる
+    - [ ] １:tomato: 以内でできるものはすぐ実行
+    - [ ] 必要だが大きすぎるものはプロジェクトにしたくなるまで保留
+    - [ ] [[file:posts/.org::#努力して身につけたキーバインド][努力して身につけたキーバインド]]から1項目選び、 =.gitmessage= に書く
+  - [ ] 設定ファイル（ =init.org= ）を少し整理する
+  - [ ] インボックスを処理する
+  - [ ] 掃除する
+    - [ ] キャビネットの上
+    - [ ] デスク
+- [ ] [[*Wish リスト][Wish リスト]]にwish を書く
+#+end_quote
+
+********** KPT
+*********** Review =MIT= s
+[[file:post/mitables/.org::#mitables][=MITables=]] に飛び、 =MIT= s の達成状況をレビューする
+- =MITopic=:
+- =MITry=:
+
+
 *********** Keep
-- 睡眠は足りている？
-- 休憩は取れている？
-- 余裕をもってルーティンを消化できている？
-- 大事なことに時間を割けている？
-- やるべきなのに後回しになっているタスクはない？
-- 部屋の気に入らないところはない？
-- Emacs のイライラポイントはない？
-- 繰り返しやっている無駄なことはない？
-- カレンダーを基準に動くことができている？
-- 学習に時間をとれている？
+
 *********** Problem & Try
 
-#+begin_comment
-- [ ] 次の MITopic と MITry を [[file:~/Documents/GitHub/gtd/gtd.org::*gitmessage][gitmessage]] に書く
-#+end_comment
-来週の MITs:
-- MITopic ::
-- MITry ::
-********** スプリントプランニング
-#+begin_comment
-*********** 25のやりたいことを書き出す [/]
-************ WAIT
-*********** プランニング
-- [ ] 最大 5 つに proj タグをつける
-- [ ] タスク分解
-- [ ] 水曜までについてタスク枠を確保
-*********** 明らかにする
-- [ ] 未整理の書類などを収集する
-  - [ ] 財布
-  - [ ] Lノートのポケット
-  - [ ] キャプチャノート
-*********** レビュー収集
-#+begin_comment
-トリガーリストを展開
-#+end_comment
-triggerh
-*********** 連絡待ちリストを確認 (org-todo-list 3)
+#+begin_quote
+- [ ] 次の =MITopic= を [[file:/post/mitables-2021/][=MITables=]] に書く
+- [ ] 次の =MITry= を [[file:post/commit_template.org][=gitmessage=]] に書く
+- [ ] 次の =MITry= を habit に書く
+#+end_quote
+************ ここに habit 名                            :noexport:
+CHEDULED: <2021-05-08 Sat .+1d
+:PROPERTIES:
+:STYLE:    habit
+:LOGGING:  lognoterepeat
+:NOBLOCKING: t
+:LAST_REPEAT: [2021-05-07 Fri 22:00]
+:END:
+************* review
+CHEDULED: <2021-05-22 Sat
 
-#+end_comment
 
-#+begin_comment
-- [ ] [[*Wish リスト][Wish リスト]] にwish を書く
-- [ ] 次の MITopic を決める
-- [ ] 掃除する
+********** 来週の =MIT= s:
+- =MITopic= :: 
+
+- =MITry= :: 
+
+#+begin_quote
+こみっとメッセージのテンプレートへのリンク
+#+end_quote
+*********** 来週の =MIT= s:
+- =MITopic= :: 
+- =MITry= :: 
+********* Sprint planning
+- [ ] ~(org-todo-list 1)~
+- [ ] 今週やるタスクの =PRIORITY= を =[A]= にする
+- [ ] =OUTCOME=、=EFFORT=、=IMPORTANCE= 設定
+- [ ] 重要度順に週の頭から割当て（月〜水）
+********* Closing
+- 要約を書く
+- DONE する
 - [ ] [[https://github.com/akikirinrin/ahayashi/pulls][masterへのPRを作る]]
 
-#+end_comment
