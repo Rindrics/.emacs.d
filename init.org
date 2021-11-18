@@ -518,6 +518,11 @@ I love org-mode.
                                ("h" "Journal entry" entry
                                 (file+olp+datetree "~/GitHub/gtd/gtd.org" "望むべき結果" "【5000m】目的・価値観" "website 【akirahayashi.com】" "Posts" "Daily logs") "* %i%?\n%K - %a\nEntered on %U\n")))))
 #+end_src
+** Habit
+#+begin_src emacs-lisp
+  (leaf org-habit
+    :require t)
+#+end_src
 
 * Text editing
 ** Major modes
