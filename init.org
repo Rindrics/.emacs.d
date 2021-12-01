@@ -475,7 +475,7 @@ I love org-mode.
                                 (300 600 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100)
                                 "- " "────────────────"))
       (org-agenda-current-time-string . "← now")
-      (org-stuck-projects . '("+LEVEL<=3-IGNORE/-INFO-SOMEDAY-DONE-CANCELLED" ("NEXT" "TODO" "WAIT") ("@shop") "\\<IGNORE\\>")))
+      (org-stuck-projects . '("+LEVEL<=4-IGNORE/-INFO-SOMEDAY-DONE-CANCELLED" ("NEXT" "TODO" "WAIT") ("@shop") "\\<IGNORE\\>")))
     :config
     (defhydra hydra-global-org
       (global-map "s-o" :color blue)
