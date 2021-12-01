@@ -424,9 +424,10 @@ I love org-mode.
         (org-enforce-todo-dependencies . t)
         (org-id-link-to-org-use-id . t)
         (org-image-actual-width . nil)
-        (org-todo-keywords . '((sequence "TODO(t)" "MIT(m)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")))
+        (org-todo-keywords . '((sequence "TODO(t)" "NEXT(n)" "MIT(m)" "INFO(i)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")))
         (org-todo-keyword-faces . '((("WAIT" "SOMEDAY") . (:foreground "#6272a4":weight bold))
-                                    ("MIT"             . (:foreground "#f1fa8c" :weight bold))
+                                    ("NEXT"             . (:foreground "#f1fa8c" :weight bold))
+                                    ("MIT"              . (:foreground "#ff8a1f" :weight bold))
                                     ("INFO"             . (:foreground "#1eb3ce" :weight bold))
                                     ("CANCELLED"        . (:foreground "#6272a4" :background "#373844" :weight bold))))))
 
