@@ -1325,6 +1325,9 @@ I love org-mode.
     (migemo-kill)
     (migemo-init)
     (global-ivy-with-migemo-mode 1))
+  (leaf color-moccur
+    :ensure t
+    :require t)
 #+end_src
 ** Writing
 :PROPERTIES:
