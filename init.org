@@ -542,7 +542,9 @@ I love org-mode.
 #+begin_src emacs-lisp
   (leaf yaml-mode
     :ensure t
-    :require t)
+    :require t
+    :hook
+    ((terraform-mode-hook . terraform-format-on-save-mode)))
 #+end_src
 ** Minor modes
 *** Indentation
