@@ -424,9 +424,10 @@ I love org-mode.
         (org-enforce-todo-dependencies . t)
         (org-id-link-to-org-use-id . t)
         (org-image-actual-width . nil)
-        (org-todo-keywords . '((sequence "TODO(t)" "MIT(m)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")))
+        (org-todo-keywords . '((sequence "TODO(t)" "NEXT(n)" "MIT(m)" "INFO(i)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")))
         (org-todo-keyword-faces . '((("WAIT" "SOMEDAY") . (:foreground "#6272a4":weight bold))
-                                    ("MIT"             . (:foreground "#f1fa8c" :weight bold))
+                                    ("NEXT"             . (:foreground "#f1fa8c" :weight bold))
+                                    ("MIT"              . (:foreground "#ff8a1f" :weight bold))
                                     ("INFO"             . (:foreground "#1eb3ce" :weight bold))
                                     ("CANCELLED"        . (:foreground "#6272a4" :background "#373844" :weight bold))))))
 
@@ -473,7 +474,8 @@ I love org-mode.
       (org-agenda-time-grid . '((daily today require-timed)
                                 (300 600 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100)
                                 "- " "────────────────"))
-      (org-agenda-current-time-string . "← now"))
+      (org-agenda-current-time-string . "← now")
+      (org-stuck-projects . '("+LEVEL<=4-IGNORE/-INFO-SOMEDAY-DONE-CANCELLED" ("NEXT" "TODO" "WAIT") ("@shop") "\\<IGNORE\\>")))
     :config
     (defhydra hydra-global-org
       (global-map "s-o" :color blue)
@@ -517,6 +519,11 @@ I love org-mode.
                                 (file+headline org-default-notes-file "インボックス") "* %i%?\n %a")
                                ("h" "Journal entry" entry
                                 (file+olp+datetree "~/GitHub/gtd/gtd.org" "望むべき結果" "【5000m】目的・価値観" "website 【akirahayashi.com】" "Posts" "Daily logs") "* %i%?\n%K - %a\nEntered on %U\n")))))
+#+end_src
+** Habit
+#+begin_src emacs-lisp
+  (leaf org-habit
+    :require t)
 #+end_src
 
 * Text editing
