@@ -784,9 +784,13 @@ I love org-mode.
   (leaf go-mode
     :ensure t
     :require t
+    :preface
+    (defun gofmt-before-save-when-go-mode ()
+      (when (eq major-mode 'go-mode)
+        (gofmt-before-save)))
     :config
     (setq gofmt-command "goimports")
-    (add-hook 'before-save-hook 'gofmt-before-save))
+    (add-hook 'before-save-hook 'gofmt-before-save-when-go-mode))
 #+end_src
 ** Java
 :PROPERTIES:
