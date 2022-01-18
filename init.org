@@ -533,8 +533,12 @@ I love org-mode.
   (leaf json-mode
     :ensure t
     :require t
+    :preface
+    (defun json-pretty-print-when-json-mode ()
+      (when (eq major-mode 'json-mode)
+        (json-pretty-print-buffer)))
     :config
-    (add-hook 'before-save-hook 'json-pretty-print-buffer))
+    (add-hook 'before-save-hook 'json-pretty-print-when-json-mode))
 #+end_src
 *** Terraform
 #+begin_src emacs-lisp
