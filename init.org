@@ -573,6 +573,18 @@ I love org-mode.
     (highlight-indent-guides-responsive . t)
     (highlight-indent-guides-method . 'character)) ; column
 #+end_src
+*** Multiple-cursors
+#+begin_src emacs-lisp
+  (leaf multiple-cursors
+    :ensure t
+    :require t
+    :config
+    (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
+#+end_src
+
 *** Parenthesis
 :PROPERTIES:
 :ID:       82B913F6-97D1-4A8F-8EEA-E8913AB20811
