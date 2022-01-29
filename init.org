@@ -941,6 +941,14 @@ I love org-mode.
     :config
     (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin" "/snap/bin")))
 #+end_src
+** PlantUML
+#+begin_src emacs-lisp
+  (leaf plantuml-mode
+    :ensure t
+    :require t
+    :setq
+    `((org-plantuml-jar-path . "~/.emacs.d/lib/plantuml.jar")))
+#+end_src
 ** Processing
 :PROPERTIES:
 :ID:       207F1C0A-DDA6-41AC-BE81-5202705E45F1
