@@ -558,6 +558,12 @@ I love org-mode.
     :hook
     ((terraform-mode-hook . terraform-format-on-save-mode)))
 #+end_src
+*** Web-mode
+#+begin_src emacs-lisp
+  (leaf web-mode
+    :ensure t
+    :require t)
+#+end_src
 ** Minor modes
 *** Indentation
 :PROPERTIES:
