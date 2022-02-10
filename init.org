@@ -1372,6 +1372,8 @@ I love org-mode.
   (leaf color-moccur
     :ensure t
     :require t)
+  (leaf moccur-edit
+    :require t)
 #+end_src
 ** Writing
 :PROPERTIES:
