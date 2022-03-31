@@ -565,7 +565,14 @@ I love org-mode.
 #+begin_src emacs-lisp
   (leaf web-mode
     :ensure t
-    :require t)
+    :require t
+    :setq
+    `((web-mode-markup-indent-offest . 2)
+      (web-mode-css-indent-offset . 2)
+      (web-mode-code-indent-offset . 2))
+    :config
+    (append-to-list auto-mode-alist '(("\\.html\\'" . web-mode)
+                                      ("\\.css\\'" . web-mode))))
 #+end_src
 ** Minor modes
 *** Indentation
