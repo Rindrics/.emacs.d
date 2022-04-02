@@ -504,6 +504,7 @@ I love org-mode.
      'org-babel-load-languages
      '((emacs-lisp . t)
        (plantuml . t)
+       (hy . t)
        (python . t)
        (shell . t)))
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
@@ -831,6 +832,9 @@ I love org-mode.
 ** Hy
 #+begin_src emacs-lisp
   (leaf hy-mode
+    :ensure t
+    :require t)
+  (leaf ob-hy
     :ensure t
     :require t)
 #+end_src
