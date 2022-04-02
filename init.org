@@ -828,6 +828,13 @@ I love org-mode.
     (setq gofmt-command "goimports")
     (add-hook 'before-save-hook 'gofmt-before-save-when-go-mode))
 #+end_src
+** Hy
+#+begin_src emacs-lisp
+  (leaf hy-mode
+    :ensure t
+    :require t)
+#+end_src
+
 ** Java
 :PROPERTIES:
 :ID:       C7C55090-290C-406E-AF64-2A9AFF68ABA9
