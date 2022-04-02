@@ -32,14 +32,14 @@ trigger
 - [ ] 最新の状態にする [0/6]
   - [ ] 行動リストのレビュー ~(view-misc-tasks)~
     - [ ] 完了した行動を =DONE= に
-    - [ ] =DONE= になったタスクを整理 ~(org-todo-list 5)~
-    - [ ] =CANCELLED= になったタスクを削除 ~(org-todo-list 6)~
+    - [ ] =DONE= になったタスクを整理 ~(org-todo-list "DONE")~
+    - [ ] =CANCELLED= になったタスクを削除 ~(org-todo-list "CANCELLED")~
     - [ ] 次の行動を見極める ~(org-agenda-list-stuck-projects)~
   - [ ] 過去のカレンダーのレビュー ~(view-google-calendar)~
     - [ ] 残っている行動や参照データがあればシステムに入れる
   - [ ] 未来のカレンダーのレビュー
     - [ ] 必要な行動を =収集= する
-  - [ ] 連絡待ちリストのレビュー ~(org-todo-list 3)~
+  - [ ] 連絡待ちリストのレビュー ~(org-todo-list "WAIT")~
     - [ ] とるべき行動があれば =収集= する
     - [ ] 連絡があったものはチェックを入れる
   - [ ] agendaファイルのメンテナンス ~(org-agenda "a" "a")~
@@ -52,7 +52,7 @@ trigger
     - [ ] とりかかる必要があるものがあれば =【1000m】プロジェクト= へリファイルする
     - [ ] 関心のなくなったものは削除する
   - [ ] 創造性とチャレンジ精神を発揮する
-    - [ ] [[*System somedays][System somedays]] の中から、システムに取り込めそうなアイデア・発想・考え・リスクのあるチャレンジを試してみる
+    - [ ] [[*System MAYBEs][System MAYBEs]] の中から、システムに取り込めそうなアイデア・発想・考え・リスクのあるチャレンジを試してみる
     - [ ] １:tomato: 以内でできるものはすぐ実行
     - [ ] 必要だが大きすぎるものはプロジェクトにしたくなるまで保留
     - [ ] [[file:posts/.org::#努力して身につけたキーバインド][努力して身につけたキーバインド]]から1項目選び、 =.gitmessage= に書く
@@ -104,7 +104,7 @@ CHEDULED: <2021-05-22 Sat
 - =MITopic= :: 
 - =MITry= :: 
 ********* Sprint planning
-- [ ] ~(org-todo-list 1)~
+- [ ] ~(org-todo-list "TODO")~
 - [ ] 今週やるタスクの =PRIORITY= を =[A]= にする
 - [ ] =OUTCOME=、=EFFORT=、=IMPORTANCE= 設定
 - [ ] 重要度順に週の頭から割当て（月〜水）
