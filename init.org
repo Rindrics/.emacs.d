@@ -962,11 +962,6 @@ I love org-mode.
                     :major-modes '(python-mode)
                     :remote? t
                     :server-id 'pyls-remote))
-  (leaf tramp
-    :require t
-    :setq `((tramp-verbose . 0))
-    :config
-    (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin" "/snap/bin")))
 #+end_src
 ** PlantUML
 #+begin_src emacs-lisp
@@ -1078,6 +1073,12 @@ I love org-mode.
 #+end_src
 ** Tramp
 #+begin_src emacs-lisp
+  (leaf tramp
+    :require t
+    :setq `((tramp-verbose . 0))
+    :config
+    (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin" "/snap/bin")))
+
   (leaf docker-tramp
     :ensure t
     :require t)
