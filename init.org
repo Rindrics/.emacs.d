@@ -1076,6 +1076,12 @@ I love org-mode.
                                            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
                                              (ggtags-mode 1)))))
 #+end_src
+** Tramp
+#+begin_src emacs-lisp
+  (leaf docker-tramp
+    :ensure t
+    :require t)
+#+end_src
 * Misc helpers
 :PROPERTIES:
 :ID:       7C84463D-F22D-408F-8D34-3AC78828FABD
