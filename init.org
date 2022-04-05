@@ -506,6 +506,7 @@ I love org-mode.
        (plantuml . t)
        (hy . t)
        (python . t)
+       (scheme . t)
        (shell . t)))
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
 #+end_src
