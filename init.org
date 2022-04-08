@@ -257,6 +257,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     (define-key evil-insert-state-map "\C-\\-" 'other-window)
     (define-key evil-visual-state-map "\C-\\-" 'other-window)
     (define-key evil-insert-state-map "\C-y" 'yank)
+    (define-key org-mode-map (kbd "<tab>") 'org-cycle)
     (evil-set-undo-system 'undo-tree)
     (evil-set-initial-state 'emacs-lisp-mode 'emacs)
     (evil-set-initial-state 'slime-repl-mode 'emacs)
