@@ -1079,7 +1079,12 @@ I love org-mode.
   (leaf ess-r-package
     :require t)
 #+end_src
-
+** Scala
+#+begin_src emacs-lisp
+  (leaf scala-mode
+    :ensure t
+    :require t)
+#+end_src
 ** Syntax check
 #+begin_src emacs-lisp
   (leaf flycheck
