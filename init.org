@@ -1061,18 +1061,6 @@ I love org-mode.
     :config
     (global-flycheck-mode))
 #+end_src
-** Tag reading
-:PROPERTIES:
-:ID:       61AF0147-8ADB-46B3-908F-A8B056CE4A97
-:END:
-#+begin_src emacs-lisp
-  (leaf ggtags
-    :ensure t
-    :require t
-    :hook (add-hook c-mode-common-hook . (lambda ()
-                                           (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-                                             (ggtags-mode 1)))))
-#+end_src
 ** Tramp
 #+begin_src emacs-lisp
   (leaf tramp
@@ -1218,8 +1206,8 @@ I love org-mode.
       Find File            Search/Tags          Buffers                Cache
    --------------------------------------------------------------------------
      _C-f_: file            _a_: ag                _i_: ibuffer           _c_: cache clear
-      _ff_: file dwim       _g_: update gtags      _b_: switch to buffer  _x_: remove known project
-      _fd_: file curr dir   _m_: multi-occur       _K_: Kill buffers      _X_: cleanup non-existing
+      _ff_: file dwim       _m_: multi-occur       _b_: switch to buffer  _x_: remove known project
+      _fd_: file curr dir                          _K_: Kill buffers      _X_: cleanup non-existing
        _r_: recentf                                                   ^^^^_z_: cache current
        _d_: dir
    "
@@ -1234,7 +1222,6 @@ I love org-mode.
       ("d"   projectile-find-dir)
 
       ("a"   projectile-ag)
-      ("g"   ggtags-update-tags)
       ("m"   projectile-multi-occur)
 
 
