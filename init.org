@@ -851,6 +851,20 @@ I love org-mode.
     :ensure t
     :require t)
 #+end_src
+** Lisp
+*** Scheme
+#+begin_src emacs-lisp
+  (leaf geiser
+    :ensure t
+    :require t
+    :commands (geiser run-geiser)
+    :setq
+    `((geiser-active-implementations . '(mit))))
+
+  (leaf geiser-mit
+    :ensure t
+    :require t)
+#+end_src
 ** LSP
 :PROPERTIES:
 :ID:       408D7220-2BAF-4EBC-B32C-D50C1C5FAE63
