@@ -506,6 +506,7 @@ I love org-mode.
      '((emacs-lisp . t)
        (plantuml . t)
        (hy . t)
+       (lisp . t)
        (python . t)
        (scheme . t)
        (shell . t)))
