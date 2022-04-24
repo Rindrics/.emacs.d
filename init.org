@@ -889,6 +889,8 @@ I love org-mode.
     :hook
     ((python-mode-hook . lsp)
      (go-mode-hook . lsp)
+     (c-mode-hook . lsp)
+     (c++-mode-hook . lsp)
      (ess-mode-hook . lsp)
      (java-mode-hook . lsp))
     ;; ;; ((lsp-mode-hook . lsp-enable-which-key-integration))
