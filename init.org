@@ -243,6 +243,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (leaf evil
     :ensure t
     :require t
+    :after org
     :setq
     `((evil-default-cursor . 'box)
       (evil-normal-state-cursor . '("#Ff00ff"))
