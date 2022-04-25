@@ -843,16 +843,6 @@ I love org-mode.
   :commands lsp-go-enable)
 
 #+end_src
-** Hy
-#+begin_src emacs-lisp
-  (leaf hy-mode
-    :ensure t
-    :require t)
-  (leaf ob-hy
-    :ensure t
-    :require t)
-#+end_src
-
 ** Java
 :PROPERTIES:
 :ID:       C7C55090-290C-406E-AF64-2A9AFF68ABA9
