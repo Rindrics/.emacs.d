@@ -894,6 +894,7 @@ I love org-mode.
      (c++-mode-hook . lsp)
      (ess-mode-hook . lsp)
      (java-mode-hook . lsp)
+     (terraform-mode-hook . lsp)
      (yaml-mode-hook . lsp))
     ;; ;; ((lsp-mode-hook . lsp-enable-which-key-integration))
     ;;       :bind
@@ -992,6 +993,16 @@ I love org-mode.
                     :major-modes '(python-mode)
                     :remote? t
                     :server-id 'pyls-remote))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "terraform-lsp")
+                    :major-modes '(terraform-mode)
+                    :remote? t
+                    :server-id 'pyls-remote))
+  (leaf tramp
+    :require t
+    :setq `((tramp-verbose . 0))
+    :config
+    (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin" "/snap/bin")))
 #+end_src
 ** PlantUML
 #+begin_src emacs-lisp
