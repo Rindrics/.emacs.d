@@ -893,7 +893,8 @@ I love org-mode.
      (c-mode-hook . lsp)
      (c++-mode-hook . lsp)
      (ess-mode-hook . lsp)
-     (java-mode-hook . lsp))
+     (java-mode-hook . lsp)
+     (yaml-mode-hook . lsp))
     ;; ;; ((lsp-mode-hook . lsp-enable-which-key-integration))
     ;;       :bind
     ;;       (:lsp-mode-map
