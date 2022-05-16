@@ -1305,6 +1305,16 @@ I love org-mode.
             (if file-name
                 (neotree-find file-name)))))))
 #+end_src
+
+** Point-history
+#+begin_src emacs-lisp
+  (leaf point-history
+    :require t
+    :url "https://github.com/blue0513/point-history"
+    :config
+    (point-history-mode t)
+    (global-set-key (kbd "s-i") 'point-history-show))
+#+end_src
 ** Searching
 :PROPERTIES:
 :ID:       3DABCB85-E1AA-474E-852C-627B2EE9F430
