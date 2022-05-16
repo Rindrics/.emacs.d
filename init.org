@@ -995,7 +995,9 @@ I love org-mode.
                     :server-id 'pyls-remote))
   (leaf tramp
     :require t
-    :setq `((tramp-verbose . 0))
+    :setq
+    `((tramp-verbose . 0)
+      (tramp-default-method . "rsync"))
     :config
     (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin" "/snap/bin")))
 #+end_src
