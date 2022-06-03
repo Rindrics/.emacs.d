@@ -255,6 +255,8 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     :config
     (evil-mode 1)
     (define-key evil-normal-state-map "\C-\\-" 'other-window)
+    (define-key evil-normal-state-map "\M-." 'xref-find-definitions)
+    (define-key evil-normal-state-map "\M-," 'xref-go-back)
     (define-key evil-insert-state-map "\C-\\-" 'other-window)
     (define-key evil-visual-state-map "\C-\\-" 'other-window)
     (define-key evil-insert-state-map "\C-y" 'yank)
