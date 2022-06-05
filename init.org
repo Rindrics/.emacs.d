@@ -216,7 +216,6 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
       ("s-3" . rotate:even-horizontal)
       ("S-s-3" . rotate:main-horizontal)))
 #+end_src
-** Write custom settings to separate file
 ** Basic Keybinds
 :PROPERTIES:
 :ID:       B503E4DA-4818-4CBC-A83F-3C92B568888A
