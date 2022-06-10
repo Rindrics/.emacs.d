@@ -1137,6 +1137,12 @@ I love org-mode.
         try-expand-dabbrev-from-kill
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol))
+
+  (leaf company
+    :require t
+    :setq
+    `((company-idle-delay . 0)
+      (company-minimum-prefix-length . 1)))
 #+end_src
 
 ** Beacon
