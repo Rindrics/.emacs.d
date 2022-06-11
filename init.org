@@ -473,6 +473,222 @@ I love org-mode.
   (leaf org-habit
     :require t)
 #+end_src
+* Text editing
+** Major modes
+*** JSON
+#+begin_src emacs-lisp
+  (leaf json-mode
+    :ensure t
+    :require t
+    :preface
+    (defun json-pretty-print-when-json-mode ()
+      (when (eq major-mode 'json-mode)
+        (json-pretty-print-buffer)))
+    :config
+    (add-hook 'before-save-hook 'json-pretty-print-when-json-mode))
+#+end_src
+*** Terraform
+#+begin_src emacs-lisp
+  (leaf terraform-mode
+    :ensure t
+    :require t)
+#+end_src
+*** YAML
+:PROPERTIES:
+:ID:       4047D319-3D09-4C9A-B33D-8FDA732A6E5B
+:END:
+#+begin_src emacs-lisp
+  (leaf yaml-mode
+    :ensure t
+    :require t
+    :hook
+    ((terraform-mode-hook . terraform-format-on-save-mode)))
+#+end_src
+*** Web-mode
+#+begin_src emacs-lisp
+  (leaf web-mode
+    :ensure t
+    :require t
+    :setq
+    `((web-mode-markup-indent-offest . 2)
+      (web-mode-css-indent-offset . 2)
+      (web-mode-code-indent-offset . 2))
+    :config
+    (append-to-list auto-mode-alist '(("\\.html\\'" . web-mode)
+                                      ("\\.css\\'" . web-mode))))
+#+end_src
+** Minor modes
+*** Indentation
+:PROPERTIES:
+:ID:       729F62BD-5899-43DE-9EA6-DCB58B7FB1BC
+:END:
+#+begin_src emacs-lisp
+  (leaf highlight-indent-guides
+    :ensure t
+    :require t
+    :hook
+    ((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode)
+    :custom
+    (highlight-indent-guides-auto-enabled . t)
+    (highlight-indent-guides-responsive . t)
+    (highlight-indent-guides-method . 'character)) ; column
+#+end_src
+*** Multiple-cursors
+#+begin_src emacs-lisp
+  (leaf multiple-cursors
+    :ensure t
+    :require t
+    :config
+    (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
+#+end_src
+
+*** Parenthesis
+:PROPERTIES:
+:ID:       82B913F6-97D1-4A8F-8EEA-E8913AB20811
+:END:
+#+begin_src emacs-lisp
+  (leaf paren
+    :ensure t
+    :require t
+    :hook
+    (after-init-hook . show-paren-mode)
+    :custom-face
+    (show-paren-match . '((nil (:background "#44475a" :foreground "#f1fa8c"))))
+    :custom
+    (show-paren-style . 'mixed)
+    (show-paren-when-point-inside-paren . t)
+    (show-paren-when-point-in-periphery . t))
+  (leaf smartparens
+    :ensure t
+    :require t
+    :hook ((prog-mode-hook . smartparens-mode))
+    :bind
+    (:smartparens-mode-map
+     ("C-M-f" . sp-next-sexp)
+     ("C-M-n" . sp-forward-sexp)
+     ("C-S-a" . sp-beginning-of-sexp)
+     ("C-S-e" . sp-end-of-sexp)
+     ("C-S-n" . sp-beginning-of-next-sexp)
+     ("C-S-p" . sp-beginning-of-previous-sexp)
+     ("M-C" . sp-wrap-round)
+     ("C-)" . sp-forward-slurp-sexp)
+     ("C-}" . sp-forward-barf-sexp)
+     ("C-(" . sp-backward-slurp-sexp))
+    :config
+    (ad-disable-advice 'delete-backward-char 'before 'sp-delete-pair-advice)
+    (ad-activate 'delete-backward-char)(smartparens-global-mode)
+    (sp-use-smartparens-bindings)
+    (defun sp--org-skip-markup (ms mb me)
+      (save-excursion
+        (and (progn
+               (goto-char mb)
+               (save-match-data (looking-back "\\sw\\|\\s_\\|\\s." nil)))
+             (progn
+               (goto-char me)
+               (save-match-data (looking-at "\\sw\\|\\s_\\|\\s."))))))
+    (sp-with-modes sp-lisp-modes
+      ;; disable ', it's the quote character!
+      (sp-local-pair "'" nil :actions nil)
+      ;; also only use the pseudo-quote inside strings where it serve as
+      ;; hyperlink.
+      (sp-local-pair "`" "'" :when '(sp-in-string-p sp-in-comment-p))
+      (sp-local-pair "`" nil
+                     :skip-match (lambda (ms mb me)
+                                   (cond
+                                    ((equal ms "'")
+                                     (or (sp--org-skip-markup ms mb me)
+                                         (not (sp-point-in-string-or-comment))))
+                                    (t (not (sp-point-in-string-or-comment))))))))
+#+end_src
+*** Rainbow-delimiters
+:PROPERTIES:
+:ID:       DCE13388-8134-4F7C-9C0E-C42C89039AED
+:END:
+#+begin_src emacs-lisp
+  (leaf rainbow-delimiters
+    :ensure t
+    :require t
+    :hook (prog-mode-hook . rainbow-delimiters-mode))
+#+end_src
+*** Snippet
+#+begin_src emacs-lisp
+  (leaf yasnippet
+    :ensure t
+    :require t
+    :setq
+    (yas-prompt-functions . '(yas-ido-prompt))
+    :config
+    (yas-global-mode 1)
+    (define-key yas-minor-mode-map (kbd "C-x i i") 'yas-insert-snippet)
+    (define-key yas-minor-mode-map (kbd "C-x i n") 'yas-new-snippet)
+    (define-key yas-minor-mode-map (kbd "C-x i h") 'yas-expand)
+    (define-key yas-minor-mode-map (kbd "C-x i v") 'yas-visit-snippet-file))
+  (leaf ivy-yasnippet
+    :ensure t
+    :require t)
+#+end_src
+*** Undo
+:PROPERTIES:
+:ID:       7479F25A-C333-4B2E-8A31-DD0791D68E29
+:END:
+#+begin_src emacs-lisp
+  (leaf undo-tree
+    :ensure t
+    :require t
+    :config (global-undo-tree-mode t))
+#+end_src
+** Version control
+:PROPERTIES:
+:ID:       DCA4AACF-5ED9-4353-9DBF-5887AAE8E25C
+:END:
+#+begin_src emacs-lisp
+  (leaf magit
+    :ensure t
+    :require t
+    :leaf-defer nil
+    :bind (("C-x g" . magit-status))
+    ;; :hook
+    ;; `((magit-mode-hook . evil-emacs-state)
+    ;;   (git-commit-mode-hook . evil-emacs-state))
+    :config
+    (put 'magit-clean 'disabled nil))
+  (leaf git-gutter
+    :ensure t
+    :require t
+    :leaf-defer nil
+    :preface
+    (defun git-gutter:toggle-popup-hunk ()
+      "Toggle git-gutter hunk window."
+      (interactive)
+      (if (window-live-p (git-gutter:popup-buffer-window))
+          (delete-window (git-gutter:popup-buffer-window))
+        (git-gutter:popup-hunk)))
+    :custom-face
+    (git-gutter:modified . '((t (:background "#f1fa8c"))))
+    (git-gutter:added    . '((t (:background "#50fa7b"))))
+    (git-gutter:deleted  . '((t (:background "#ff79c6"))))
+    :bind (("s-g" . hydra-git-gutter/body))
+    :hydra (hydra-git-gutter
+            (:color red :hint nil)
+            "
+  ma_g_it  _b_lame  _d_ispatch  _t_imemachine  |  hunk: _p_revious  _n_ext  _s_tage  _r_evert  pop_u_p  _SPC_:toggle"
+            ("g" magit-status :exit t)
+            ("b" magit-blame :exit t)
+            ("t" git-timemachine :exit t)
+            ("d" magit-dispatch :exit t)
+            ("p" git-gutter:previous-hunk)
+            ("n" git-gutter:next-hunk)
+            ("s" git-gutter:stage-hunk)
+            ("r" git-gutter:revert-hunk)
+            ("u" git-gutter:popup-hunk)
+            ("SPC" git-gutter:toggle-popup-hunk))
+    :config
+    (global-git-gutter-mode))
+#+end_src
+
 * Programming
 ** LSP
 :PROPERTIES:
