@@ -294,6 +294,131 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
         (tool-bar-mode 0)
         (menu-bar-mode 0)))
 #+end_src
+* Org-mode
+I love org-mode.
+#+begin_src emacs-lisp
+  (leaf org
+      :require t
+      :bind ("C-c l" . org-store-link)
+      :preface
+      (defun rindrics-org-reset-check-on-repeat ()
+        (when (and (org-get-repeat) (member (org-get-todo-state) org-done-keywords))
+          (org-reset-checkbox-state-subtree)))
+      :hook
+      (org-after-todo-state-change-hook . rindrics-org-reset-check-on-repeat)
+      :setq
+      `((org-startup-indented . t)
+        (org-startup-folded . 'content)
+        (org-enforce-todo-dependencies . t)
+        (org-id-link-to-org-use-id . t)
+        (org-image-actual-width . nil)
+        (org-todo-keywords . '((sequence "TODO(t)" "NEXT(n)" "MIT(m)" "INFO(i)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELED(c)")))
+        (org-todo-keyword-faces . '((("WAIT" "SOMEDAY") . (:foreground "#6272a4":weight bold))
+                                    ("NEXT"             . (:foreground "#f1fa8c" :weight bold))
+                                    ("MIT"              . (:foreground "#ff8a1f" :weight bold))
+                                    ("INFO"             . (:foreground "#1eb3ce" :weight bold))
+                                    ("CANCELLED"        . (:foreground "#6272a4" :background "#373844" :weight bold))))))
+
+  (leaf org-bullets
+    :ensure t
+    :require t
+    :custom (org-bullets-bullet-list . '("" "" "" "" "" "" "" "" "" ""))
+    :hook (org-mode-hook . (lambda () (org-bullets-mode 1))))
+#+end_src
+** Agenda
+:PROPERTIES:
+:ID:       D7902F9A-68A9-4F54-90DD-5F56F859C9BA
+:END:
+#+begin_src emacs-lisp
+  (leaf org-agenda
+    :leaf-defer nil
+    :require t
+    :init
+    (defun my-agenda ()
+      "open org-agenda"
+      (interactive)
+      (org-agenda nil "a"))
+    (defun orgs-in-directory-except-readme (dir)
+      "Find org-mode files in given directory except README.org"
+      (let* ((orgs (directory-files-recursively dir "\.org")))
+        (cl-remove-if (lambda (list)
+                        (string-match "README\.org$" list))
+                      orgs)))
+    :bind
+    (("C-c a" . org-agenda)
+     ("s-a" . my-agenda))
+    :setq
+    `((org-agenda-start-with-log-mode . nil)
+      (org-agenda-files . `(,@(orgs-in-directory-except-readme "~/GitHub/gtd/projects/")
+                            "~/GitHub/gtd/gtd.org"))
+      (org-refile-targets .'(("~/GitHub/gtd/gtd.org" :tag . "refile_target")))
+      (org-directory . "~/Dropbox/org/")
+      (org-journal-dir . ,(concat org-directory "journal/"))
+      (org-agenda-show-future-repeats . nil)
+      (org-cllock-idle-time . 5)
+      (org-agenda-include-diary . nil)
+      (org-global-properties . '(("EFFORT_ALL". "1 3 5")
+                                 ("outcome_ALL". "1 3 5")))
+      (org-agenda-time-grid . '((daily today require-timed)
+                                (300 600 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100)
+                                "- " "────────────────"))
+      (org-agenda-current-time-string . "← now")
+      (org-stuck-projects . '("+LEVEL<=4-IGNORE/-INFO-SOMEDAY-DONE-CANCELLED" ("NEXT" "TODO" "WAIT") ("@shop") "\\<IGNORE\\>")))
+    :config
+    (defhydra hydra-global-org
+      (global-map "s-o" :color blue)
+      "Org"
+      ("t" org-timer-start "Start Timer")
+      ("s" org-timer-stop "Stop Timer")
+      ("r" org-timer-set-timer "Set Timer")
+      ("p" org-timer "Print Timer")
+      ("o" org-clock-out "Clock-Out")
+      ("j" org-clock-goto "Clock Goto")))
+
+#+end_src
+** Babel
+:PROPERTIES:
+:ID:       38ACE2FD-12AB-4CBD-8251-F7740A674B91
+:END:
+#+begin_src emacs-lisp
+  (leaf babel
+    :setq
+    `((org-confirm-babel-evaluate . nil)
+      (org-plantuml-jar-path . "~/.emacs.d/lib/plantuml.jar"))
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (plantuml . t)
+       (hy . t)
+       (lisp . t)
+       (python . t)
+       (scheme . t)
+       (shell . t)))
+    (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
+#+end_src
+** Capture
+:PROPERTIES:
+:ID:       9EECECCF-B224-427D-84E1-8BFCCDBC5075
+:END:
+#+begin_src emacs-lisp
+  (leaf org-capture
+    :require t
+    :bind (("s-h" . org-capture))
+    :hook (org-capture-mode-hook . evil-emacs-state)
+    :setq
+    `((org-default-notes-file . "~/GitHub/gtd/gtd.org")
+      (org-capture-templates .
+                             '(("u" "Collect to inbox" entry
+                                (file+headline org-default-notes-file "インボックス") "* %i%?\n %a")
+                               ("h" "Journal entry" entry
+                                (file+olp+datetree "~/GitHub/gtd/gtd.org" "望むべき結果" "【5000m】目的・価値観" "website 【akirahayashi.com】" "Posts" "Daily logs") "* %i%?\n%K - %a\nEntered on %U\n")))))
+#+end_src
+** Habit
+#+begin_src emacs-lisp
+  (leaf org-habit
+    :require t)
+#+end_src
 * Programming
 ** LSP
 :PROPERTIES:
