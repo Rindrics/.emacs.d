@@ -283,6 +283,17 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
       (company-selection-wrap-around . t)
       (company-quickhelp-max-lines . 5)))
 #+end_src
+** For GUI Emacs
+:PROPERTIES:
+:ID:       682CFF2C-3F77-456D-8557-67F14E086045
+:END:
+#+begin_src emacs-lisp
+  (if window-system
+      (progn
+        (toggle-scroll-bar 0)
+        (tool-bar-mode 0)
+        (menu-bar-mode 0)))
+#+end_src
 * Programming
 ** LSP
 :PROPERTIES:
