@@ -847,6 +847,10 @@ I love org-mode.
   ;;
     )
 #+end_src
+** Flycheck
+#+begin_src emacs-lisp
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+#+end_src
 ** Go
 #+begin_src emacs-lisp
   (leaf go-mode
