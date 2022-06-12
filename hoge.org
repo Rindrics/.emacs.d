@@ -7,6 +7,9 @@ myfuncs: file:../.emacs.dd/elisp/myfuncs.el
 * Startup
 ** Package Management
 *** Package repo
+:PROPERTIES:
+:ID:       91A2F5F0-EDB5-4573-AE19-7DCF52E3C6DF
+:END:
 #+begin_src emacs-lisp
   (custom-set-variables
    '(package-archives '(("org"   . "http://orgmode.org/elpa/")
@@ -16,6 +19,9 @@ myfuncs: file:../.emacs.dd/elisp/myfuncs.el
   (package-initialize)
 #+end_src
 *** ~leaf.el~
+:PROPERTIES:
+:ID:       7CFB3AF1-694C-430F-81EE-24044D9C3882
+:END:
 I use [[https://github.com/conao3/leaf.el][leaf.el]] for package management.
 #+begin_src emacs-lisp
   (prog1 "enable function '(leaf)'"
@@ -58,8 +64,10 @@ By evaluating the block above, I can call function ~(leaf)~ to configure package
      :ensure t
      :require t)
 #+end_src
-
 ** Tangling
+:PROPERTIES:
+:ID:       DCD140A4-2DEE-4183-9C6C-393E2CD93EBA
+:END:
 Every time I save this file, ~org-babel~ tangles the configuration file ~init.el~.
 #+begin_src emacs-lisp
   (leaf *tangling
@@ -79,12 +87,19 @@ Every time I save this file, ~org-babel~ tangles the configuration file ~init.el
     (add-hook 'after-save-hook 'tangle-init))
 #+end_src
 The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer)~ inside of it.
+
 ** Macro
+:PROPERTIES:
+:ID:       48AF2610-4044-487A-B9B3-D47E7B7E9CD5
+:END:
 #+begin_src emacs-lisp
   (defmacro append-to-list (to lst)
     `(setq ,to (append ,lst ,to)))
 #+end_src
 ** Config
+:PROPERTIES:
+:ID:       634D5BE0-C878-484F-9927-E563EF260CE7
+:END:
 #+begin_src emacs-lisp
   (setenv "LANG" "en_US.UTF-8")
   (set-language-environment "Japanese")
@@ -160,8 +175,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
 :END:
 #+begin_src emacs-lisp
   (setq garbage-collection-messages t)
-  (setq read-process-output-max (* 1024 1024))
-  (setq gc-cons-threshold (* 100 1024 1024))
+  (setq gc-cons-threshold 100000000)
 #+end_src
 *** Backup
 :PROPERTIES:
@@ -203,6 +217,9 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
       ("S-s-3" . rotate:main-horizontal)))
 #+end_src
 ** Basic Keybinds
+:PROPERTIES:
+:ID:       B503E4DA-4818-4CBC-A83F-3C92B568888A
+:END:
 #+begin_src emacs-lisp
   (setq mac-command-modifier 'super)
   (setq mac-right-command-modifier 'hyper)
@@ -216,7 +233,6 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (global-set-key (kbd "C-S-t") 'other-window-backward)
   (global-set-key (kbd "M-s-b") 'bookmark-jump)
 #+end_src
-
 ** My essential packages
 *** Evil
 :PROPERTIES:
@@ -273,6 +289,9 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
                   (set-face-foreground 'mode-line (cdr color))))))
 #+end_src
 *** recentf
+:PROPERTIES:
+:ID:       011D48F4-DE2D-416B-81EA-401609FE8094
+:END:
 #+begin_src emacs-lisp
   (leaf sync-recentf
     :ensure t
@@ -289,6 +308,9 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     (recentf-mode 1))
 #+end_src
 *** counsel
+:PROPERTIES:
+:ID:       73F3C87F-DF36-4ACF-83FE-D0A44E71A06F
+:END:
     #+begin_src emacs-lisp
   (leaf counsel
        :ensure t
@@ -312,31 +334,6 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
        :config
        (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../"))))
     #+end_src
-*** company
-#+begin_src emacs-lisp
-  (leaf company
-    :ensure t
-    :require t
-    :setq `((company-minimum-prefix-length . 1))
-    :bind
-    (("C-M-i" . company-complete)
-     (:company-active-map
-      ("C-h" . nil)
-      ("C-n" . company-select-next)
-      ("C-p" . company-select-previous)
-      ("<tab>" . company-complete-common-or-cycle)
-      ("<backtab>" . company-select-previous)
-      ("C-i" . company-complete-selection)
-      ("M-d" . company-show-doc-buffer))
-     (:company-search-map
-      ("C-n" . company-select-next)
-      ("C-p" . company-select-previous)))
-    :hook (after-init-hook . global-company-mode)
-    :setq
-    `((company-tooltip-maximum-width . 50)
-      (company-selection-wrap-around . t)
-      (company-quickhelp-max-lines . 5)))
-#+end_src
 *** doom
 **** Main theme
 :PROPERTIES:
@@ -523,7 +520,6 @@ I love org-mode.
 :END:
 #+begin_src emacs-lisp
   (leaf org-capture
-    :require t
     :bind (("s-h" . org-capture))
     :hook (org-capture-mode-hook . evil-emacs-state)
     :setq
@@ -539,6 +535,7 @@ I love org-mode.
   (leaf org-habit
     :require t)
 #+end_src
+
 * Text editing
 ** Major modes
 *** JSON
@@ -754,7 +751,11 @@ I love org-mode.
     :config
     (global-git-gutter-mode))
 #+end_src
+
 * Fonts
+:PROPERTIES:
+:ID:       77B59B36-4D7D-4762-99C8-880EBBAE9598
+:END:
 #+begin_src emacs-lisp
   (if window-system
       (progn
@@ -790,7 +791,7 @@ I love org-mode.
         (set-latin-and-greek-font default-font-family)
         (add-to-list 'face-font-rescale-alist (cons default-font-family 0.86))
         (add-to-list 'face-font-rescale-alist (cons jp-font-family 1.0))
-        ))
+))
 #+end_src
 |あいうえお|
 |aaiiuueeoo|
@@ -804,10 +805,10 @@ I love org-mode.
 |あいう えおか|
 |アイウ エオカ|
 |ｱｲｳｴｵｶ ｷｸｹｺｻｼ|
+
 | 1234                 | 1234     | 123456789012      |
 |----------------------+----------+-------------------|
 | 今日もいい天気ですね | お、     | 等幅になった
-
 * Programming
 ** Common lisp
 #+begin_src emacs-lisp
@@ -817,11 +818,10 @@ I love org-mode.
     :setq
     `((inferior-lisp-program . "sbcl")))
 #+end_src
-** Flycheck
-#+begin_src emacs-lisp
-  (add-hook 'after-init-hook #'global-flycheck-mode)
-#+end_src
 ** Go
+:PROPERTIES:
+:ID:       378FBBB6-1756-4E51-B7A7-A1384FCEB783
+:END:
 #+begin_src emacs-lisp
   (leaf go-mode
     :ensure t
@@ -834,13 +834,21 @@ I love org-mode.
     (setq gofmt-command "goimports")
     (add-hook 'before-save-hook 'gofmt-before-save-when-go-mode))
 
+  (leaf lsp-go
+  :after (lsp-mode go-mode)
+  :custom (lsp-go-language-server-flags '(
+    "-gocodecompletion"
+    "-diagnostics"
+    "-lint-tool=golint"))
+  :hook (go-mode . lsp-go-enable)
+  :commands lsp-go-enable)
+
   (leaf gotest
     :ensure t
     :require t
     :setq
     `((go-test-verbose . t)))
 #+end_src
-
 ** Java
 :PROPERTIES:
 :ID:       C7C55090-290C-406E-AF64-2A9AFF68ABA9
@@ -869,38 +877,130 @@ I love org-mode.
 :ID:       408D7220-2BAF-4EBC-B32C-D50C1C5FAE63
 :END:
 #+begin_src emacs-lisp
-  (leaf eglot
+  (leaf lsp-mode
     :ensure t
     :require t
+    :init
+    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+    :commands lsp lsp-deferred
     :hook
-    ((go-mode-hook . eglot-ensure))
+    ((python-mode-hook . lsp)
+     (go-mode-hook . lsp)
+     (c-mode-hook . lsp)
+     (c++-mode-hook . lsp)
+     (ess-mode-hook . lsp)
+     (java-mode-hook . lsp)
+     (terraform-mode-hook . lsp)
+     (yaml-mode-hook . lsp))
+    ;; ;; ((lsp-mode-hook . lsp-enable-which-key-integration))
+    ;;       :bind
+    ;;       (:lsp-mode-map
+    ;;        :package lsp-mode
+    ;;        ("C-c r" . lsp-rename))
+    :custom
+    ;; debug
+    (lsp-print-io . t)
+    (lsp-trace . nil)
+    (lsp-print-performance . t)
+    ; general
+    (lsp-auto-guess-root . t)
+    (lsp-document-sync-method . 'incremental)
+    (lsp-response-timeout . 10)
+    (lsp-prefer-flymake . nil)
+    ;;       (lsp-clients-go-server-args . '("--cache-style=always" "--diagnostics-style=onsave" "--format-style=goimports"))
     :config
-    (add-to-list 'eglot-stay-out-of 'flymake))
+    ;; (lsp-register-custom-settings
+    ;; '(("pylsp.plugins.pylsp_mypy.enabled" t t)
+    ;;   ("pylsp.plugins.pylsp_mypy.live_mode" nil t)
+    ;;   ("pylsp.plugins.pylsp_black.enabled" t t)
+    ;;   ("pylsp.plugins.flake8.enabled" t t)
+    ;;   ("pylsp.plugins.pylsp_isort.enabled" t t)))
+   )
+  ;; (leaf company-lsp
+  ;;  ;; this package is manually installed. Please find it it local dir and 'M-x package-install-from-buffer'.
+  ;;   :after (lsp-mode company yasnippet)
+  ;;   :require t
+  ;;   :defvar company-backends
+  ;;   :defun company-mode/backend-with-yas
+  ;;   :init (cl-pushnew (company-mode/backend-with-yas 'company-lsp) company-backends))
+  ;; (leaf lsp-ivy
+  ;;   :ensure t
+  ;;   :require t
+  ;;   :commands lsp-ivy-workspace-symbol)
+  ;; (leaf lsp-treemacs
+  ;;   :ensure t
+  ;;   :require t
+  ;;   :commands lsp-treemacs-errors-list)
+  (leaf lsp-ui
+    :ensure t
+    :require t
+    :commands lsp-ui-mode
 
+    :ensure t
+    :require t
+    :commands lsp-ui-mode
+    :custom
+    ;; lsp-ui-doc
+    (lsp-ui-doc-enable . t)
+    (lsp-ui-doc-header . t)
+    (lsp-ui-doc-include-signature . t)
+    (lsp-ui-doc-position . 'top) ;; top, bottom, or at-point
+    (lsp-ui-doc-max-width . 150)
+    (lsp-ui-doc-max-height . 30)
+    (lsp-ui-doc-use-childframe . t)
+    (lsp-ui-doc-use-webkit . t)
+    ;; lsp-ui-flycheck
+    (lsp-ui-flycheck-enable . nil)
+    ;; lsp-ui-sideline
+    (lsp-ui-sideline-enable . t)
+    (lsp-ui-sideline-ignore-duplicate . t)
+    (lsp-ui-sideline-show-symbol . t)
+    (lsp-ui-sideline-show-hover . t)
+    (lsp-ui-sideline-show-diagnostics . t)
+    (lsp-ui-sideline-show-code-actions . t)
+    (lsp-ui-sideline-code-actions-prefix . "")
+    ;; lsp-ui-imenu
+    (lsp-ui-imenu-enable . t)
+    (lsp-ui-imenu-kind-position . 'top)
+    ;; lsp-ui-peek
+    (lsp-ui-peek-enable . t)
+    (lsp-ui-peek-peek-height . 20)
+    (lsp-ui-peek-list-width . 50)
+    (lsp-ui-peek-fontify . 'always) ;; never, on-demand, or always
+    :preface
+    :bind
+    (:lsp-mode-map
+     :package lsp-mode
+     ("C-c C-r" . lsp-ui-peek-find-references)
+     ("C-c C-j" . lsp-ui-peek-find-definitions)
+     ("C-c i"   . lsp-ui-peek-find-implementation)
+     ("C-c m"   . lsp-ui-imenu)
+     ("C-c s"   . lsp-ui-sideline-mode))
+    :hook
+    ((lsp-mode-hook . lsp-ui-mode)))
+
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
+                    :major-modes '(go-mode)
+                    :remote? t
+                    :server-id 'gopls-remote))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
+                    :major-modes '(python-mode)
+                    :remote? t
+                    :server-id 'pyls-remote))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "terraform-lsp")
+                    :major-modes '(terraform-mode)
+                    :remote? t
+                    :server-id 'pyls-remote))
   (leaf tramp
     :require t
     :setq
     `((tramp-verbose . 0)
       (tramp-default-method . "rsync"))
     :config
-    (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin" "/snap/bin"))
-  ;; (lsp-register-client
-  ;;  (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
-  ;;                   :major-modes '(go-mode)
-  ;;                   :remote? t
-  ;;                   :server-id 'gopls-remote))
-  ;; (lsp-register-client
-  ;;  (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
-  ;;                   :major-modes '(python-mode)
-  ;;                   :remote? t
-  ;;                   :server-id 'pyls-remote))
-  ;; (lsp-register-client
-  ;;  (make-lsp-client :new-connection (lsp-tramp-connection "terraform-lsp")
-  ;;                   :major-modes '(terraform-mode)
-  ;;                   :remote? t
-  ;;                   :server-id 'pyls-remote))
-  ;;
-    )
+    (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin" "/snap/bin")))
 #+end_src
 ** PlantUML
 #+begin_src emacs-lisp
@@ -1015,7 +1115,6 @@ I love org-mode.
     :ensure t
     :require t)
 #+end_src
-
 * Misc helpers
 :PROPERTIES:
 :ID:       7C84463D-F22D-408F-8D34-3AC78828FABD
@@ -1038,6 +1137,12 @@ I love org-mode.
         try-expand-dabbrev-from-kill
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol))
+
+  (leaf company
+    :require t
+    :setq
+    `((company-idle-delay . 0)
+      (company-minimum-prefix-length . 1)))
 #+end_src
 
 ** Beacon
@@ -1435,7 +1540,7 @@ I love org-mode.
     (setq dviprint-command-format "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
 
     (add-hook 'yatex-mode-hook
-              #'(lambda ()
+              '(lambda ()
                  (auto-fill-mode -1)))
 
     ;;
@@ -1443,7 +1548,7 @@ I love org-mode.
     ;;
                                           ;(add-hook 'yatex-mode-hook 'turn-on-reftex)
     (add-hook 'yatex-mode-hook
-              #'(lambda ()
+              '(lambda ()
                  (reftex-mode 1)
                  (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
                  (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region))))
@@ -1452,7 +1557,6 @@ I love org-mode.
 #+begin_src emacs-lisp
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 #+end_src
-
 * Desired features
 ** daily log setting
 ** disable Japanese input when =C-x= is pressed
