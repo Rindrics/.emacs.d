@@ -1452,3 +1452,25 @@ I love org-mode.
 #+begin_src emacs-lisp
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 #+end_src
+
+* Desired features
+** daily log setting
+** disable Japanese input when =C-x= is pressed
+** Follow-mode
+** gnus
+** hippie-expand
+** html-fold
+** imenu
+** iswitchb
+** key-chordu
+** kmacro-save
+** modeline
+** org-gcal
+** point-undo
+** sense-region
+** sequential-command
+** set faces (agenda, comments)
+** summarye.el
+** support for jupyter-notebook
+** uniquify
+** which-func-mode
