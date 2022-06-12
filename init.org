@@ -1015,3 +1015,440 @@ I love org-mode.
     :ensure t
     :require t)
 #+end_src
+
+* Misc helpers
+:PROPERTIES:
+:ID:       7C84463D-F22D-408F-8D34-3AC78828FABD
+:END:
+#+begin_src emacs-lisp
+  (global-set-key (kbd "s-c")
+                  (defun org-toggle-checkbox-and-nextline ()
+                    (interactive)
+                    (progn (org-toggle-checkbox)(forward-line))))
+#+end_src
+** Autocompletion
+#+begin_src emacs-lisp
+  (setq hippie-expand-try-functions-list
+      '(try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-all-abbrevs
+        try-expand-list try-expand-line
+        try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-lisp-symbol-partially
+        try-complete-lisp-symbol))
+#+end_src
+
+** Beacon
+:PROPERTIES:
+:ID:       BBAE91B2-79F7-4B97-AE42-EE982C1BF17A
+:END:
+#+begin_src emacs-lisp
+  (leaf beacon
+    :ensure t
+    :require t
+    :custom
+    (beacon-color . "#85c1e9")
+    :config
+    (beacon-mode 1))
+#+end_src
+** buffer
+:PROPERTIES:
+:ID:       1E30D2D1-E9FE-40B7-95CF-9EE77CC855A6
+:END:
+#+begin_src emacs-lisp
+(icomplete-mode 1)
+#+end_src
+** Emoji
+*** Quick insert
+:PROPERTIES:
+:ID:       88A34652-C3EC-42B9-A317-787E98C1946E
+:END:
+#+begin_src emacs-lisp
+  (leaf emoji-cheat-sheet-plus
+    :ensure t
+    :require t
+    :bind (("C-c E" . emoji-cheat-sheet-plus-insert)))
+#+end_src
+*** Display inline
+:PROPERTIES:
+:ID:       662B68EC-C451-448F-8C29-672FDBFD63DE
+:END:
+#+begin_src emacs-lisp
+(leaf emojify
+  :ensure t
+  :if (display-graphic-p)
+  :hook (after-init-hook . global-emojify-mode))
+#+end_src
+** Eval
+#+begin_src emacs-lisp
+  (leaf lispxmp
+    :ensure t
+    :require t)
+#+end_src
+** goto-chg
+#+begin_src emacs-lisp
+  (leaf goto-chg
+    :require t
+    :bind
+    (("C-;" . goto-last-change)
+     ("C-," . goto-last-change-reverse)))
+#+end_src
+** Junk files
+#+begin_src emacs-lisp
+  (leaf open-junk-file
+    :ensure t
+    :require t
+    :setq (open-junk-file-format . "~/Dropbox/junk/%Y-%m-%d-%H%M%S."))
+#+end_src
+** Keybinds
+:PROPERTIES:
+:ID:       4FD9A2B5-752C-4FE0-B789-E2B8CCAA6643
+:END:
+#+begin_src emacs-lisp
+  (leaf which-key
+    :ensure t
+    :require t
+    :custom
+    ((which-key-max-description-length . 40))
+    :hook ((after-init-hook . which-key-mode))
+    :setq (which-key-idle-delay . 0.3))
+#+end_src
+
+** Project
+:PROPERTIES:
+:ID:       0AEAAF6A-EEFF-419F-8BF8-79AC5DB168B4
+:END:
+#+begin_src emacs-lisp
+  (leaf projectile
+    :ensure t
+    :require t
+    :setq `((projectile-globally-ignored-file-suffixes . '(".elc"))
+            (projectile-globally-ignored-files . '(".DS_Store" "Icon" "TAGS"))
+            (projectile-enable-caching . t))
+    :config
+    (projectile-mode))
+  (leaf counsel-projectile
+    :ensure t
+    :require t
+    :config
+    (projectile-mode 1)
+    ;; (defhydra hydra-projectile-other-window (:color teal)
+    ;;   "projectile-other-window"
+    ;;   ("f"  projectile-find-file-other-window        "file")
+    ;;   ("g"  projectile-find-file-dwim-other-window   "file dwim")
+    ;;   ("d"  projectile-find-dir-other-window         "dir")
+    ;;   ("b"  projectile-switch-to-buffer-other-window "buffer")
+    ;;   ("q"  nil                                      "cancel" :color blue))
+    (defhydra hydra-projectile
+      (:color pink :hint nil)
+      "
+        PROJECTILE: %(projectile-project-root)
+
+      Find File            Search/Tags          Buffers                Cache
+   --------------------------------------------------------------------------
+     _C-f_: file            _a_: ag                _i_: ibuffer           _c_: cache clear
+      _ff_: file dwim       _m_: multi-occur       _b_: switch to buffer  _x_: remove known project
+      _fd_: file curr dir                          _K_: Kill buffers      _X_: cleanup non-existing
+       _r_: recentf                                                   ^^^^_z_: cache current
+       _d_: dir
+   "
+      ("s"   counsel-projectile-switch-project "switch project")
+      ;; ("o"   hydra-projectile-other-window/body "other window")
+      ("q"   nil "cancel" :color blue)
+
+      ("C-f" projectile-find-file)
+      ("ff"  projectile-find-file-dwim)
+      ("fd"  projectile-find-file-in-directory)
+      ("r"   projectile-recentf)
+      ("d"   projectile-find-dir)
+
+      ("a"   projectile-ag)
+      ("m"   projectile-multi-occur)
+
+
+      ("i"   projectile-ibuffer)
+      ("b"   projectile-switch-to-buffer)
+      ("K"   projectile-kill-buffers)
+
+      ("c"   projectile-invalidate-cache)
+      ("x"   projectile-remove-known-project)
+      ("X"   projectile-cleanup-known-projects)
+      ("z"   projectile-cache-current-file))
+    (define-key global-map (kbd "s-p") 'hydra-projectile/body))
+
+#+end_src
+*** Derectory
+:PROPERTIES:
+:ID:       BD22430E-CB32-4D1D-A3DD-82ED98E3E354
+:END:
+#+begin_src emacs-lisp
+  (leaf neotree
+    :ensure t
+    :require t
+    :after
+    projectile
+    :commands
+    (neotree-show neotree-hide neotree-dir neotree-find)
+    :custom
+    (neo-theme 'nerd2)
+    :bind
+    ("<f9>" . neotree-projectile-toggle)
+    :preface
+    (defun neotree-projectile-toggle ()
+      (interactive)
+      (let ((project-dir
+             (ignore-errors
+          ;;; Pick one: projectile or find-file-in-project
+               (projectile-project-root)))
+            (file-name (buffer-file-name))
+            (neo-smart-open t))
+        (if (and (fboundp 'neo-global--window-exists-p)
+                 (neo-global--window-exists-p))
+            (neotree-hide)
+          (progn
+            (neotree-show)
+            (if project-dir
+                (neotree-dir project-dir))
+            (if file-name
+                (neotree-find file-name)))))))
+#+end_src
+
+** Point-history
+#+begin_src emacs-lisp
+  (leaf point-history
+    :require t
+    :url "https://github.com/blue0513/point-history"
+    :config
+    (point-history-mode t)
+    (global-set-key (kbd "s-i") 'point-history-show))
+#+end_src
+** Searching
+:PROPERTIES:
+:ID:       3DABCB85-E1AA-474E-852C-627B2EE9F430
+:END:
+#+begin_src emacs-lisp
+  (leaf ivy
+    :ensure t
+    :require t
+    :config
+    (ivy-mode 1)
+    (ivy-add-actions #'counsel-find-file '(("I" my-insert-file-name "insert relative")))
+    (ivy-add-actions #'counsel-recentf '(("I" my-insert-file-name "insert relative")))
+    :setq
+    `((ivy-use-virtual-buffers . t)
+      (enable-recursive-minibuffers . nil)
+      (ivy-height . 30)
+      (ivy-extra-directories . nil)
+      (ivy-re-builders-alist . '((t . ivy--regex-plus)))))
+  (leaf ivy-rich
+    :ensure t
+    :require t
+    :preface
+    (defun ivy-rich-switch-buffer-icon (candidate)
+      (with-current-buffer
+          (get-buffer candidate)
+        (let ((icon (all-the-icons-icon-for-mode major-mode)))
+          (if (symbolp icon)
+              (all-the-icons-icon-for-mode 'fundamental-mode)
+            icon))))
+    :setq
+    (ivy-rich--display-transformers-list .
+                                         '(ivy-switch-buffer
+                                           (:columns
+                                            ((ivy-rich-switch-buffer-icon :width 2)
+                                             (ivy-rich-candidate (:width 30))
+                                             (ivy-rich-switch-buffer-size (:width 7))
+                                             (ivy-rich-switch-buffer-indicators
+                                              (:width 4 :face error :align right))
+                                             (ivy-rich-switch-buffer-major-mode
+                                              (:width 12 :face warning))
+                                             (ivy-rich-switch-buffer-project
+                                              (:width 15 :face success))
+                                             (ivy-rich-switch-buffer-path
+                                              (:width (lambda (x)
+                                                        (ivy-rich-switch-buffer-shorten-path
+                                                         x
+                                                         (ivy-rich-minibuffer-width 0.3))))))
+                                            :predicate
+                                            (lambda (cand) (get-buffer cand)))
+                                           counsel-M-x
+                                           (:columns
+                                            ((counsel-M-x-transformer (:width 40))
+                                             (ivy-rich-counsel-function-docstring
+                                              (:face font-lock-doc-face))))
+                                           counsel-describe-function
+                                           (:columns
+                                            ((counsel-describe-function-transformer
+                                              (:width 40))  ; the original transformer
+                                             (ivy-rich-counsel-function-docstring
+                                              (:face font-lock-doc-face))))  ; return the docstring of the function
+                                           counsel-describe-variable
+                                           (:columns
+                                            ((counsel-describe-variable-transformer
+                                              (:width 40))  ; the original transformer
+                                             (ivy-rich-counsel-variable-docstring
+                                              (:face font-lock-doc-face))))  ; return the docstring of the variable
+                                           counsel-recentf
+                                           (:columns
+                                            ((ivy-rich-candidate
+                                              (:width 0.8)) ; return the candidate itself
+                                             (ivy-rich-file-last-modified-time
+                                              (:face font-lock-comment-face)))) ; return the last modified time of the file
+                                           ))
+    :config
+    (ivy-rich-mode 1)
+    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
+  (leaf all-the-icons-ivy-rich
+    :ensure t
+    :init (all-the-icons-ivy-rich-mode 1))
+  (leaf prescient
+    :ensure t
+    :require t)
+  (leaf ivy-prescient
+    :ensure t
+    :require t
+    :doc "Make recent item show up in high priority"
+    :config
+    (ivy-prescient-mode))
+  (leaf swiper
+    :ensure t
+    :require t
+    :bind (("C-s" . swiper))
+    :setq `((swiper-include-line-number-in-search . t)))
+  (leaf ag
+    :ensure t
+    :require t)
+  (leaf migemo
+    :ensure t
+    :require t
+    :setq
+    `((migemo-command . "cmigemo")
+      (migemo-options . '("-q" "--emacs"))
+      (migemo-dictionary . "/usr/local/share/migemo/utf-8/migemo-dict")
+      (migemo-user-dictionary . nil)
+      (migemo-regex-dictionary . nil)
+      (migemo-coding-system . 'utf-8-unix))
+    :config
+    (load-library "migemo")
+    (migemo-init))
+  (leaf ivy-with-migemo
+    :require t
+    :setq
+    `((ivy-with-migemo-enable-command . '(swiper
+                                          spiper-isearch
+                                          counsel-recentf
+                                          councel-ag))
+      (migemo-options . '("--quiet" "--nonewline" "--emacs")))
+    :config
+    (migemo-kill)
+    (migemo-init)
+    (global-ivy-with-migemo-mode 1))
+  (leaf color-moccur
+    :ensure t
+    :require t)
+  (leaf moccur-edit
+    :require t)
+#+end_src
+** Writing
+:PROPERTIES:
+:ID:       44DFB932-B1E6-4C3E-AF04-DDFAD8009CD8
+:END:
+*** Org helpers
+#+begin_src emacs-lisp
+  (leaf ox-hugo
+    :ensure t
+    :require t
+    :config
+    (defun org-hugo--tag-processing-fn-remove-tags-maybe (tags-list info)
+      "Remove user-specified tags/categories. See `org-hugo-tag-processing-functions' for more info."
+      ;; Use tag/category string (including @ prefix) exactly as used in Org file.
+      (let ((tags-categories-to-be-removed '("ahblog" "pnp" "blog" "renaissance" "guru" "refile_target")))
+        (cl-remove-if (lambda (tag_or_cat)
+                        (member tag_or_cat tags-categories-to-be-removed))
+                      tags-list)))
+    (add-to-list 'org-hugo-tag-processing-functions
+                 #'org-hugo--tag-processing-fn-remove-tags-maybe))
+  (leaf org-ref
+    :ensure t
+    :require t
+    :setq
+    `((org-ref-default-bibliography . "~/GitHub/gtd/refs/mylibrary.bib")
+      (org-ref-pdf-directory . "~/Library/Mobile Documents/com~apple~CloudDocs/pdf/")
+      (bibtex-autokey-year-length . 4)
+      (bibtex-autokey-name-year-separator . "")
+      (bibtex-autokey-year-title-separator . "-")
+      (bibtex-autokey-titleword-separator . "-")
+      (bibtex-autokey-titlewords . 2)
+      (bibtex-autokey-titlewords-stretch . 1)
+      (bibtex-autokey-titleword-length . 5))
+    :config
+    (define-key org-mode-map (kbd "C-c c c") `org-ref-helm-insert-cite-link)
+    (define-key org-mode-map (kbd "C-c c l") `org-ref-helm-insert-label-link)
+    (define-key org-mode-map (kbd "C-c c r") `org-ref-helm-insert-ref-link))
+  (leaf citeproc-org
+    :ensure t
+    :after ox-hugo
+    :config
+    (citeproc-org-setup))
+#+end_src
+*** LaTeX
+#+begin_src emacs-lisp
+  (leaf yatex
+    :ensure t
+    :require t
+    :url https://texwiki.texjp.org/?YaTeX
+    :config
+    (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+    (setq auto-mode-alist
+          (append '(("\\.tex$" . yatex-mode)
+                    ("\\.ltx$" . yatex-mode)
+                    ("\\.cls$" . yatex-mode)
+                    ("\\.sty$" . yatex-mode)
+                    ("\\.clo$" . yatex-mode)
+                    ("\\.bbl$" . yatex-mode)) auto-mode-alist))
+    (setq YaTeX-inhibit-prefix-letter t)
+    (setq YaTeX-kanji-code nil)
+    (setq YaTeX-latex-message-code 'utf-8)
+    (setq YaTeX-use-LaTeX2e t)
+    (setq YaTeX-use-AMS-LaTeX t)
+    (setq YaTeX-dvi2-command-ext-alist
+          '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
+    (setq tex-command "ptex2pdf -u -l -ot '-synctex=1'")
+                                          ;(setq tex-command "lualatex -synctex=1")
+                                          ;(setq tex-command "latexmk")
+                                          ;(setq tex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
+                                          ;(setq tex-command "latexmk -e '$lualatex=q/lualatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -norc -gg -pdflua")
+    (setq bibtex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
+    (setq makeindex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
+    (setq dvi2-command "open -a Skim")
+                                          ;(setq dvi2-command "open -a Preview")
+                                          ;(setq dvi2-command "open -a TeXShop")
+                                          ;(setq dvi2-command "/Applications/TeXworks.app/Contents/MacOS/TeXworks")
+                                          ;(setq dvi2-command "/Applications/texstudio.app/Contents/MacOS/texstudio --pdf-viewer-only")
+    (setq tex-pdfview-command "open -a Skim")
+                                          ;(setq tex-pdfview-command "open -a Preview")
+                                          ;(setq tex-pdfview-command "open -a TeXShop")
+                                          ;(setq tex-pdfview-command "/Applications/TeXworks.app/Contents/MacOS/TeXworks")
+                                          ;(setq tex-pdfview-command "/Applications/texstudio.app/Contents/MacOS/texstudio --pdf-viewer-only")
+    (setq dviprint-command-format "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+
+    (add-hook 'yatex-mode-hook
+              #'(lambda ()
+                 (auto-fill-mode -1)))
+
+    ;;
+    ;; RefTeX with YaTeX
+    ;;
+                                          ;(add-hook 'yatex-mode-hook 'turn-on-reftex)
+    (add-hook 'yatex-mode-hook
+              #'(lambda ()
+                 (reftex-mode 1)
+                 (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
+                 (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region))))
+#+end_src
+*** DocView
+#+begin_src emacs-lisp
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
+#+end_src
