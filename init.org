@@ -809,6 +809,14 @@ I love org-mode.
 | 今日もいい天気ですね | お、     | 等幅になった
 
 * Programming
+** Common lisp
+#+begin_src emacs-lisp
+  (leaf slime
+    :ensure t
+    :require t
+    :setq
+    `((inferior-lisp-program . "sbcl")))
+#+end_src
 ** Flycheck
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -833,6 +841,29 @@ I love org-mode.
     `((go-test-verbose . t)))
 #+end_src
 
+** Java
+:PROPERTIES:
+:ID:       C7C55090-290C-406E-AF64-2A9AFF68ABA9
+:END:
+#+begin_src emacs-lisp
+  (leaf lsp-java
+    :ensure t
+    :require t)
+#+end_src
+** Lisp
+*** Scheme
+#+begin_src emacs-lisp
+  (leaf geiser
+    :ensure t
+    :require t
+    :commands (geiser run-geiser)
+    :setq
+    `((geiser-active-implementations . '(mit))))
+
+  (leaf geiser-mit
+    :ensure t
+    :require t)
+#+end_src
 ** LSP
 :PROPERTIES:
 :ID:       408D7220-2BAF-4EBC-B32C-D50C1C5FAE63
@@ -870,4 +901,117 @@ I love org-mode.
   ;;                   :server-id 'pyls-remote))
   ;;
     )
+#+end_src
+** PlantUML
+#+begin_src emacs-lisp
+  (leaf plantuml-mode
+    :ensure t
+    :require t
+    :setq
+    `((org-plantuml-jar-path . "~/.emacs.d/lib/plantuml.jar")))
+#+end_src
+** Processing
+:PROPERTIES:
+:ID:       207F1C0A-DDA6-41AC-BE81-5202705E45F1
+:END:
+#+begin_src emacs-lisp
+  (leaf processing-mode
+    :ensure t
+    :require t
+    :setq
+    `((processing-location . "/usr/local/bin/processing-java")
+      (processing-application-dir . "/Applications/Processing.app")
+      (processing-sketchbook-dir . "/Users/ahayashi/dev/processing")))
+#+end_src
+** Python
+:PROPERTIES:
+:ID:       BD3AF941-0D01-422B-AE46-328C98E5E749
+:END:
+#+begin_src emacs-lisp
+  (leaf elpy
+    :ensure t
+    :require t
+    :config
+    (elpy-enable)
+    (setq org-babel-python-command "python3")
+    (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter")
+    :setq
+    `((python-shell-interpreter . "jupyter")
+      (python-shell-interpreter-args . "console --simple-prompt")
+      (python-shell-prompt-detect-failure-warning . nil)
+      (elpy-shell-echo-output . nil)))
+  (leaf python-mode
+    :ensure t
+    :require t)
+  (leaf lsp-python-ms
+    :ensure t
+    :require t
+    :init
+     (setq lsp-python-ms-auto-install-server t)
+     (setq lsp-python-ms-executable (executable-find "python-language-server"))
+    :hook (python-mode-hook . lsp-deferred))
+#+end_src
+** Quickrun
+:PROPERTIES:
+:ID:       9E08D4C4-89EB-4BA8-B93B-AC1C71A1A23F
+:END:
+#+begin_src emacs-lisp
+  (leaf quickrun
+    :ensure t
+    :require t)
+#+end_src
+** R
+:PROPERTIES:
+:ID:       53679356-6C9F-423B-BEE4-6270F5889DF6
+:END:
+#+begin_src emacs-lisp
+  (leaf ess
+    :ensure t
+    :preface
+    (defun then_R_operator ()
+      "R - %>% operator or 'then' pipe operator"
+      (interactive)
+      (just-one-space 1)
+      (insert "%>%")
+      (reindent-then-newline-and-indent))
+    :bind
+    (("C-S-m" . then_R_operator)
+     ("C-S-m" . then_R_operator))
+    :setq
+    `((ess-ask-for-ess-directory . nil)
+      (ess-style . 'DEFAULT)
+      (ess-indent-offset . 2))
+    :config
+    (add-hook 'ess-r-post-run-hook (lambda () (evil-emacs-state)))
+    (add-hook 'ess-r-mode-hook 'lsp)
+    :bind
+    `(("M--" . ess-insert-assign)))
+  (leaf ess-r-package
+    :require t)
+#+end_src
+** Scala
+#+begin_src emacs-lisp
+  (leaf scala-mode
+    :ensure t
+    :require t)
+#+end_src
+** Syntax check
+#+begin_src emacs-lisp
+  (leaf flycheck
+    :ensure t
+    :require t
+    :config
+    (global-flycheck-mode))
+#+end_src
+** Tramp
+#+begin_src emacs-lisp
+  (leaf tramp
+    :require t
+    :setq `((tramp-verbose . 0))
+    :config
+    (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin" "/snap/bin")))
+
+  (leaf docker-tramp
+    :ensure t
+    :require t)
 #+end_src
