@@ -1087,6 +1087,13 @@ I love org-mode.
     :ensure t
     :require t)
 #+end_src
+** Folding
+#+begin_src emacs-lisp
+  (leaf hideshow
+    :require t
+    :hook
+    (prog-mode-hook . (lambda() (progn (hs-minor-mode 1)(hs-hide-all)))))
+#+end_src
 ** goto-chg
 #+begin_src emacs-lisp
   (leaf goto-chg
