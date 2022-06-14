@@ -1092,7 +1092,7 @@ I love org-mode.
   (leaf hideshow
     :require t
     :hook
-    (prog-mode-hook . (lambda() (progn (hs-minor-mode 1)(hs-hide-all)))))
+    (prog-mode-hook . (lambda() (progn (hs-minor-mode 1)))))
 #+end_src
 ** goto-chg
 #+begin_src emacs-lisp
