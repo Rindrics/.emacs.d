@@ -207,7 +207,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (setq mac-command-modifier 'super)
   (setq mac-right-command-modifier 'hyper)
   (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
-  (global-set-key (kbd "C-m") 'newline-and-indent)
+  (global-set-key (kbd "C-m") 'my-break-between-braces)
   (global-set-key (kbd "C--") 'other-window)
   (defun other-window-backward (&optional n)
     "Select Nth previous window."

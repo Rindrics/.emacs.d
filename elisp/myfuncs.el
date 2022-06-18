@@ -189,6 +189,18 @@
                 (defun org-toggle-checkbox-and-nextline ()
                   (interactive)
                   (progn (org-toggle-checkbox)(next-line))))
+
+;;;###autoload
+(defun my-break-between-braces ()
+  (interactive)
+  (if
+      (and (eq ?} (char-after (point)))
+           (eq ?{(char-before (point))))
+      (progn
+        (c-context-open-line)
+        (c-context-line-break))
+      (newline-and-indent)))
+
 (provide 'myfuncs)
 
 ;;; myfuncs.el ends here
