@@ -310,8 +310,8 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
          ("C-x l" . counsel-locate)
          ("C-S-o" . counsel-rhythmbox))
        :config
-       (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../"))))
     #+end_src
+       (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../" "undo-tree"))))
 *** company
 #+begin_src emacs-lisp
   (leaf company
