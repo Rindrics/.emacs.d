@@ -555,7 +555,9 @@ I love org-mode.
 #+begin_src emacs-lisp
   (leaf terraform-mode
     :ensure t
-    :require t)
+    :require t
+    :setq
+    `((terraform-format-on-save-mode . nil)))
 #+end_src
 *** YAML
 :PROPERTIES:
