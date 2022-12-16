@@ -289,7 +289,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     (recentf-mode 1))
 #+end_src
 *** counsel
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (leaf counsel
        :ensure t
        :require t
@@ -310,8 +310,8 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
          ("C-x l" . counsel-locate)
          ("C-S-o" . counsel-rhythmbox))
        :config
-    #+end_src
        (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../" "undo-tree"))))
+#+end_src
 *** company
 #+begin_src emacs-lisp
   (leaf company
