@@ -469,8 +469,7 @@ I love org-mode.
      ("s-a" . my-agenda))
     :setq
     `((org-agenda-start-with-log-mode . nil)
-      (org-agenda-files . `(,@(orgs-in-directory-except-readme "~/GitHub/gtd/projects/")
-                            "~/GitHub/gtd/gtd.org"))
+      (org-agenda-files . `("~/GitHub/gtd/gtd.org"))
       (org-refile-targets .'(("~/GitHub/gtd/gtd.org" :tag . "refile_target")))
       (org-directory . "~/Dropbox/org/")
       (org-journal-dir . ,(concat org-directory "journal/"))
@@ -510,7 +509,6 @@ I love org-mode.
      'org-babel-load-languages
      '((emacs-lisp . t)
        (plantuml . t)
-       (hy . t)
        (lisp . t)
        (python . t)
        (scheme . t)
