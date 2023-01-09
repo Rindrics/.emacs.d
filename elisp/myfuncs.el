@@ -197,8 +197,9 @@
       (and (eq ?} (char-after (point)))
            (eq ?{(char-before (point))))
       (progn
-        (c-context-open-line)
-        (c-context-line-break))
+        (open-line 1)
+        (newline)
+        (indent-according-to-mode))
       (newline-and-indent)))
 
 (provide 'myfuncs)
