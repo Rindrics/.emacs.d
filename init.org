@@ -850,6 +850,23 @@ I love org-mode.
     :ensure t
     :require t)
 #+end_src
+** JavaScript
+#+begin_src emacs-lisp
+(leaf js2-mode
+  :ensure t
+  :require t
+  :config
+  (append-to-list auto-mode-alist '(("\\.js\\'" . js2-mode)))
+  :hook
+  ((js2-mode-hook . lsp-deferred)
+   (web-mode-hook . lsp-deferred)))
+#+end_src
+** Kotlin
+#+begin_src emacs-lisp
+  (leaf kotlin-mode
+    :ensure t
+    :require t)
+#+end_src
 ** Lisp
 *** Scheme
 #+begin_src emacs-lisp
