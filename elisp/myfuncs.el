@@ -195,10 +195,12 @@
   (interactive)
   (if
       (and (eq ?} (char-after (point)))
-           (eq ?{(char-before (point))))
+           (eq ?{ (char-before (point))))
       (progn
-        (open-line 1)
         (newline)
+        (newline)
+        (indent-according-to-mode)
+        (previous-line)
         (indent-according-to-mode))
       (newline-and-indent)))
 
