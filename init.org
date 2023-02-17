@@ -840,7 +840,23 @@ I love org-mode.
     :setq
     `((go-test-verbose . t)))
 #+end_src
+** Haskell
+#+begin_src emacs-lisp
+  (leaf haskell-mode
+    :ensure t
+    :require t)
 
+  (leaf lsp-haskell
+    :ensure t
+    :require t
+    :setq
+    `((lsp-haskell-process-path-hie . "haskell-language-server-wrapper"))
+    ;; Comment/uncomment this line to see interactions between lsp client/server.
+    ;;(lsp-log-io  t)
+    :hook
+    ((haskell-mode-hook . lsp)
+     (haskell-literate-mode-hook . lsp)))
+#+end_src
 ** Java
 :PROPERTIES:
 :ID:       C7C55090-290C-406E-AF64-2A9AFF68ABA9
