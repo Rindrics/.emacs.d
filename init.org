@@ -1011,6 +1011,12 @@ I love org-mode.
       (processing-application-dir . "/Applications/Processing.app")
       (processing-sketchbook-dir . "/Users/ahayashi/dev/processing")))
 #+end_src
+** protobuf
+#+begin_src emacs-lisp
+  (leaf protobuf-mode
+  :ensure t
+  :require t)
+#+end_src
 ** Python
 :PROPERTIES:
 :ID:       BD3AF941-0D01-422B-AE46-328C98E5E749
