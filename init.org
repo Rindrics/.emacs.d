@@ -1145,6 +1145,14 @@ I love org-mode.
     :hook
     (typescript-mode-hook . typescript-mode-init))
 #+end_src
+** Vue
+#+begin_src emacs-lisp
+  (leaf vue-mode
+    :ensure t
+    :require t
+    :mode "\\.vue\\'"
+    :hook (vue-mode-hook . lsp-deferred))
+#+end_src
 
 * Misc helpers
 :PROPERTIES:
