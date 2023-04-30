@@ -840,6 +840,17 @@ I love org-mode.
     :setq
     `((inferior-lisp-program . "sbcl")))
 #+end_src
+** Compile
+#+begin_src emacs-lisp
+  (leaf compile
+    :require t
+    :setq
+    `((compilation-error-regexp-alist .
+                                      (append
+                                       '(;; d:/h...ript/sample.ts (13,175):
+                                         ("^\\(.*\\) (\\([0-9]+\\),[0-9]+):" 1 2))
+                                       compilation-error-regexp-alist))))
+#+end_src
 ** Flycheck
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook #'global-flycheck-mode)
