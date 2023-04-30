@@ -536,6 +536,7 @@ I love org-mode.
        (hy . t)
        (lisp . t)
        (python . t)
+       (R . t)
        (scheme . t)
        (shell . t)))
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
@@ -1521,7 +1522,7 @@ I love org-mode.
     (defun org-hugo--tag-processing-fn-remove-tags-maybe (tags-list info)
       "Remove user-specified tags/categories. See `org-hugo-tag-processing-functions' for more info."
       ;; Use tag/category string (including @ prefix) exactly as used in Org file.
-      (let ((tags-categories-to-be-removed '("ahblog" "pnp" "blog" "renaissance" "guru" "refile_target")))
+      (let ((tags-categories-to-be-removed '("ahblog" "pnp" "blog" "renaissance" "guru" "refile_target" "fam")))
         (cl-remove-if (lambda (tag_or_cat)
                         (member tag_or_cat tags-categories-to-be-removed))
                       tags-list)))
