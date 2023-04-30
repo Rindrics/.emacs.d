@@ -1086,6 +1086,25 @@ I love org-mode.
   (leaf ess-r-package
     :require t)
 #+end_src
+** Rust
+#+begin_src emacs-lisp
+  (leaf rust-mode
+    :ensure t
+    ;; :custom rust-format-on-save t
+    )
+
+
+  (leaf cargo
+    :ensure t
+    :hook (rust-mode-hook . cargo-minor-mode))
+
+
+  (leaf lsp-mode
+    :ensure t
+    :hook (rust-mode-hook . lsp)
+    :bind ("C-c h" . lsp-describe-thing-at-point)
+    :custom (lsp-rust-server 'rust-analyzer))
+#+end_src
 ** Scala
 #+begin_src emacs-lisp
   (leaf scala-mode
