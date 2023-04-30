@@ -871,7 +871,12 @@ I love org-mode.
     :setq
     `((go-test-verbose . t)))
 #+end_src
-
+** Haskell
+#+begin_src emacs-lisp
+  (leaf haskell-mode
+    :ensure t
+    :require t)
+#+end_src
 ** Java
 :PROPERTIES:
 :ID:       C7C55090-290C-406E-AF64-2A9AFF68ABA9
