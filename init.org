@@ -984,6 +984,12 @@ I love org-mode.
     ;;
     )
 #+end_src
+** PHP
+#+begin_src emacs-lisp
+  (leaf php-mode
+    :ensure t
+    :require t)
+#+end_src
 ** PlantUML
 #+begin_src emacs-lisp
   (leaf plantuml-mode
