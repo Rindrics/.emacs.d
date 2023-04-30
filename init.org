@@ -1052,7 +1052,10 @@ I love org-mode.
 #+begin_src emacs-lisp
   (leaf quickrun
     :ensure t
-    :require t)
+    :require t
+     :bind (
+            ("<f5>" . quickrun)
+            ))
 #+end_src
 ** R
 :PROPERTIES:
