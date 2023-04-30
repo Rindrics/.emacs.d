@@ -194,8 +194,11 @@
 (defun my-break-between-braces ()
   (interactive)
   (if
-      (and (eq ?} (char-after (point)))
-           (eq ?{ (char-before (point))))
+      (or
+       (and (eq ?} (char-after (point)))
+            (eq ?{ (char-before (point))))
+       (and (eq ?` (char-after (point)))
+            (eq ?` (char-before (point)))))
       (progn
         (newline)
         (newline)
