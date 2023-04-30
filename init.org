@@ -1064,6 +1064,7 @@ I love org-mode.
 #+begin_src emacs-lisp
   (leaf ess
     :ensure t
+    :require t
     :preface
     (defun then_R_operator ()
       "R - %>% operator or 'then' pipe operator"
