@@ -1131,6 +1131,20 @@ I love org-mode.
     :ensure t
     :require t)
 #+end_src
+** TypeScript
+#+begin_src emacs-lisp
+  (leaf typescript-mode
+    :ensure t
+    :preface
+    (defun typescript-mode-init ()
+      (set (make-local-variable 'compile-command)
+           (format "tsc -sourcemap %s"
+                   (file-name-nondirectory (buffer-file-name)))))
+
+    :require t
+    :hook
+    (typescript-mode-hook . typescript-mode-init))
+#+end_src
 
 * Misc helpers
 :PROPERTIES:
