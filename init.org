@@ -918,6 +918,12 @@ I love org-mode.
   ;;
     )
 #+end_src
+** Mermaid
+#+begin_src emacs-lisp
+  (leaf mermaid-mode
+    :ensure t
+    :require t)
+#+end_src
 ** PlantUML
 #+begin_src emacs-lisp
   (leaf plantuml-mode
