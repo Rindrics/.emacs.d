@@ -163,8 +163,6 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (setq custom-file (locate-user-emacs-file "custom.el"))
   (unless (file-exists-p custom-file)
     (write-region "" nil custom-file))
-  (add-hook 'after-save-hook
-      #'executable-make-buffer-file-executable-if-script-p)
   (load custom-file)
 #+end_src
 *** Server mode
@@ -325,26 +323,26 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
 *** counsel
 #+begin_src emacs-lisp
   (leaf counsel
-       :ensure t
-       :require t
-       :bind*
-       `(("M-x" .  counsel-M-x)
-         ("C-x C-r" .  counsel-recentf)
-         ("C-x C-f" .  counsel-find-file)
-         ("C-x r b" . counsel-bookmark)
-         ("<f1> f" . counsel-describe-function)
-         ("<f1> v" . counsel-describe-variable)
-         ("<f1> l" . counsel-find-library)
-         ("<f1> b" . counsel-descbinds)
-         ("<f2> i" . counsel-info-lookup-symbol)
-         ("<f2> u" . counsel-unicode-char)
-         ("C-c g" . counsel-git)
-         ("C-c j" . counsel-git-grep)
-         ("C-c k" . counsel-ag)
-         ("C-x l" . counsel-locate)
-         ("C-S-o" . counsel-rhythmbox))
-       :config
-       (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../" "undo-tree"))))
+    :ensure t
+    :require t
+    :bind*
+    `(("M-x" .  counsel-M-x)
+      ("C-x C-r" .  counsel-recentf)
+      ("C-x C-f" .  counsel-find-file)
+      ("C-x r b" . counsel-bookmark)
+      ("<f1> f" . counsel-describe-function)
+      ("<f1> v" . counsel-describe-variable)
+      ("<f1> l" . counsel-find-library)
+      ("<f1> b" . counsel-descbinds)
+      ("<f2> i" . counsel-info-lookup-symbol)
+      ("<f2> u" . counsel-unicode-char)
+      ("C-c g" . counsel-git)
+      ("C-c j" . counsel-git-grep)
+      ("C-c k" . counsel-ag)
+      ("C-x l" . counsel-locate)
+      ("C-S-o" . counsel-rhythmbox))
+    :config
+    (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../"))))
 #+end_src
 *** company
 #+begin_src emacs-lisp
@@ -503,7 +501,8 @@ I love org-mode.
      ("s-a" . my-agenda))
     :setq
     `((org-agenda-start-with-log-mode . nil)
-      (org-agenda-files . `("~/GitHub/gtd/gtd.org"))
+      (org-agenda-files . `(,@(orgs-in-directory-except-readme "~/GitHub/gtd/projects/")
+                            "~/GitHub/gtd/gtd.org"))
       (org-refile-targets .'(("~/GitHub/gtd/gtd.org" :tag . "refile_target")))
       (org-directory . "~/Dropbox/org/")
       (org-journal-dir . ,(concat org-directory "journal/"))
@@ -543,6 +542,7 @@ I love org-mode.
      'org-babel-load-languages
      '((emacs-lisp . t)
        (plantuml . t)
+       (hy . t)
        (lisp . t)
        (python . t)
        (R . t)
@@ -590,9 +590,7 @@ I love org-mode.
 #+begin_src emacs-lisp
   (leaf terraform-mode
     :ensure t
-    :require t
-    :setq
-    `((terraform-format-on-save-mode . nil)))
+    :require t)
 #+end_src
 *** YAML
 :PROPERTIES:
@@ -739,10 +737,7 @@ I love org-mode.
   (leaf undo-tree
     :ensure t
     :require t
-    :config (global-undo-tree-mode t)
-    :setq
-    `((undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo"))))
-    )
+    :config (global-undo-tree-mode t))
 #+end_src
 ** Version control
 :PROPERTIES:
@@ -909,17 +904,6 @@ I love org-mode.
   (leaf haskell-mode
     :ensure t
     :require t)
-
-  (leaf lsp-haskell
-    :ensure t
-    :require t
-    :setq
-    `((lsp-haskell-process-path-hie . "haskell-language-server-wrapper"))
-    ;; Comment/uncomment this line to see interactions between lsp client/server.
-    ;;(lsp-log-io  t)
-    :hook
-    ((haskell-mode-hook . lsp)
-     (haskell-literate-mode-hook . lsp)))
 #+end_src
 ** Java
 :PROPERTIES:
@@ -1028,12 +1012,6 @@ I love org-mode.
     ;;
     )
 #+end_src
-** Mermaid
-#+begin_src emacs-lisp
-  (leaf mermaid-mode
-    :ensure t
-    :require t)
-#+end_src
 ** PHP
 #+begin_src emacs-lisp
   (leaf php-mode
@@ -1078,12 +1056,10 @@ I love org-mode.
   (leaf lsp-pyright
     :ensure t
     :require t
-    :hook
-      (python-mode-hook . lsp-deferred)  ; or lsp-deferred
     :init
-      (when (executable-find "python3")
-            (setq lsp-pyright-python-executable-cmd "python3"))
-    :hook (python-mode-hook . lsp-deferred)))
+     ;; (setq lsp-python-ms-auto-install-server t)
+     ;; (setq lsp-python-ms-executable (executable-find "python-language-server"))
+    :hook (python-mode-hook . lsp-deferred))
 #+end_src
 ** Quickrun
 :PROPERTIES:
@@ -1126,12 +1102,6 @@ I love org-mode.
     `(("M--" . ess-insert-assign)))
   (leaf ess-r-package
     :require t)
-#+end_src
-** Ruby
-#+begin_src emacs-lisp
-  (leaf ruby-mode
-    :ensure t
-    )
 #+end_src
 ** Rust
 #+begin_src emacs-lisp
