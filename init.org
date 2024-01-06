@@ -243,6 +243,15 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
 #+end_src
 
 ** My essential packages
+*** asdf
+#+begin_src emacs-lisp
+  (when (file-exists-p (expand-file-name "~/.asdf"))
+    (add-to-list 'load-path "site-lisp/asdf.el")
+    (require 'asdf)
+    (let ((paths (split-string (shell-command-to-string "which -a asdf") "\n" t)))
+      (setq asdf-binary (car paths)))
+    (asdf-enable))
+#+end_src
 *** Evil
 :PROPERTIES:
 :ID:       0B90B817-F16B-4843-99C3-DA52DFC5A742
