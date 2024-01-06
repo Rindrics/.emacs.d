@@ -857,6 +857,13 @@ I love org-mode.
                                          ("^\\(.*\\) (\\([0-9]+\\),[0-9]+):" 1 2))
                                        compilation-error-regexp-alist))))
 #+end_src
+** Docker
+#+begin_src emacs-lisp
+  (leaf docker
+    :ensure t
+    :require t
+    :bind (("C-c d" . docker)))
+#+end_src
 ** Flycheck
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook #'global-flycheck-mode)
