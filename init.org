@@ -964,6 +964,7 @@ I love org-mode.
            (lsp-mode-hook . lsp-enable-which-key-integration)
            (java-mode-hook . lsp-deferred)
            (typescript-mode-hook . lsp-deferred)
+           (typescript-mode-hook . lsp-deferred)
            (javascript-mode-hook . lsp-deferred))
     :commands lsp
     :setq
