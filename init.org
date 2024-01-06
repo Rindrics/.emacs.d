@@ -1072,18 +1072,6 @@ I love org-mode.
 :ID:       BD3AF941-0D01-422B-AE46-328C98E5E749
 :END:
 #+begin_src emacs-lisp
-  (leaf elpy
-    :ensure t
-    :require t
-    :config
-    (elpy-enable)
-    (setq org-babel-python-command "python3")
-    (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter")
-    :setq
-    `((python-shell-interpreter . "jupyter")
-      (python-shell-interpreter-args . "console --simple-prompt")
-      (python-shell-prompt-detect-failure-warning . nil)
-      (elpy-shell-echo-output . nil)))
   (leaf python-mode
     :ensure t
     :require t)
@@ -1094,7 +1082,8 @@ I love org-mode.
       (python-mode-hook . lsp-deferred)  ; or lsp-deferred
     :init
       (when (executable-find "python3")
-            (setq lsp-pyright-python-executable-cmd "python3")))
+            (setq lsp-pyright-python-executable-cmd "python3"))
+    :hook (python-mode-hook . lsp-deferred)))
 #+end_src
 ** Quickrun
 :PROPERTIES:
