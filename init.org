@@ -113,6 +113,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (set-language-environment "Japanese")
   (prefer-coding-system 'utf-8)
   (global-auto-revert-mode t)
+  (tab-bar-mode t)
   (setq-default indent-tabs-mode  nil)
   (setq tags-add-tables nil)
   (setq use-dialog-box nil)
