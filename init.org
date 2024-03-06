@@ -58,7 +58,30 @@ By evaluating the block above, I can call function ~(leaf)~ to configure package
      :ensure t
      :require t)
 #+end_src
+*** Install use-package
+#+begin_src emacs-lisp
+  (leaf use-package
+    :ensure t
+    :require t)
+#+end_src
 
+*** Install straight
+#+begin_src emacs-lisp
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+  (setq straight-use-package-by-default t)
+  (straight-use-package 'use-package)
+#+end_src
 ** Tangling
 Every time I save this file, ~org-babel~ tangles the configuration file ~init.el~.
 #+begin_src emacs-lisp
@@ -207,7 +230,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (setq mac-command-modifier 'super)
   (setq mac-right-command-modifier 'hyper)
   (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
-  (global-set-key (kbd "C-m") 'newline-and-indent)
+  (global-set-key (kbd "C-m") 'my-break-between-braces)
   (global-set-key (kbd "C--") 'other-window)
   (defun other-window-backward (&optional n)
     "Select Nth previous window."
@@ -511,6 +534,7 @@ I love org-mode.
        (plantuml . t)
        (lisp . t)
        (python . t)
+       (R . t)
        (scheme . t)
        (shell . t)))
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
@@ -817,9 +841,28 @@ I love org-mode.
     :setq
     `((inferior-lisp-program . "sbcl")))
 #+end_src
+** Compile
+#+begin_src emacs-lisp
+  (leaf compile
+    :require t
+    :setq
+    `((compilation-error-regexp-alist .
+                                      (append
+                                       '(;; d:/h...ript/sample.ts (13,175):
+                                         ("^\\(.*\\) (\\([0-9]+\\),[0-9]+):" 1 2))
+                                       compilation-error-regexp-alist))))
+#+end_src
 ** Flycheck
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook #'global-flycheck-mode)
+#+end_src
+** GitHUb Copilot
+#+begin_src emacs-lisp
+  (use-package copilot
+    :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+    :ensure t)
+  (add-hook 'prog-mode-hook 'copilot-mode)
+  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
 #+end_src
 ** Go
 #+begin_src emacs-lisp
@@ -866,6 +909,23 @@ I love org-mode.
     :ensure t
     :require t)
 #+end_src
+** JavaScript
+#+begin_src emacs-lisp
+(leaf js2-mode
+  :ensure t
+  :require t
+  :config
+  (append-to-list auto-mode-alist '(("\\.js\\'" . js2-mode)))
+  :hook
+  ((js2-mode-hook . lsp-deferred)
+   (web-mode-hook . lsp-deferred)))
+#+end_src
+** Kotlin
+#+begin_src emacs-lisp
+  (leaf kotlin-mode
+    :ensure t
+    :require t)
+#+end_src
 ** Lisp
 *** Scheme
 #+begin_src emacs-lisp
@@ -885,13 +945,42 @@ I love org-mode.
 :ID:       408D7220-2BAF-4EBC-B32C-D50C1C5FAE63
 :END:
 #+begin_src emacs-lisp
-  (leaf eglot
+  (leaf lsp-mode
     :ensure t
     :require t
-    :hook
-    ((go-mode-hook . eglot-ensure))
-    :config
-    (add-to-list 'eglot-stay-out-of 'flymake))
+    :init
+    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+    (setq lsp-keymap-prefix "C-c l")
+    :hook ((go-mode-hook . lsp-deferred)
+           (lsp-mode-hook . lsp-enable-which-key-integration)
+           (typescript-mode-hook . lsp-deferred)
+           (javascript-mode-hook . lsp-deferred))
+    :commands lsp
+    :setq
+    `((lsp-eldoc-render-all . t)
+      (lsp-document-sync-method . lsp--sync-incremental)))
+
+  (leaf lsp-ui
+    :ensure t
+    :require t
+    :commands lsp-ui-mode
+    :setq
+    `((lsp-ui-doc-enable . t)
+      (lsp-ui-doc-header . t)
+      (lsp-ui-doc-include-signature . t)
+      (lsp-ui-doc-max-width . 150)
+      (lsp-ui-doc-max-height . 30)
+      (lsp-ui-peek-enable . t)))
+  (leaf lsp-ivy
+    :commands lsp-ivy-workspace-symbol)
+  ;; (leaf eglot
+  ;;   :ensure t
+  ;;   :require t
+  ;;   :hook
+  ;;   ((go-mode-hook . eglot-ensure)
+  ;;    (python-mode-hook . eglot-ensure))
+  ;;   :config
+  ;;   (add-to-list 'eglot-stay-out-of 'flymake))
 
   (leaf tramp
     :require t
@@ -900,27 +989,33 @@ I love org-mode.
       (tramp-default-method . "rsync"))
     :config
     (append-to-list tramp-remote-path '("/usr/local/go/bin/go" "/usr/bin" "/snap/bin"))
-  ;; (lsp-register-client
-  ;;  (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
-  ;;                   :major-modes '(go-mode)
-  ;;                   :remote? t
-  ;;                   :server-id 'gopls-remote))
-  ;; (lsp-register-client
-  ;;  (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
-  ;;                   :major-modes '(python-mode)
-  ;;                   :remote? t
-  ;;                   :server-id 'pyls-remote))
-  ;; (lsp-register-client
-  ;;  (make-lsp-client :new-connection (lsp-tramp-connection "terraform-lsp")
-  ;;                   :major-modes '(terraform-mode)
-  ;;                   :remote? t
-  ;;                   :server-id 'pyls-remote))
-  ;;
+    ;; (lsp-register-client
+    ;;  (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
+    ;;                   :major-modes '(go-mode)
+    ;;                   :remote? t
+    ;;                   :server-id 'gopls-remote))
+    ;; (lsp-register-client
+    ;;  (make-lsp-client :new-connection (lsp-tramp-connection "pyls")
+    ;;                   :major-modes '(python-mode)
+    ;;                   :remote? t
+    ;;                   :server-id 'pyls-remote))
+    ;; (lsp-register-client
+    ;;  (make-lsp-client :new-connection (lsp-tramp-connection "terraform-lsp")
+    ;;                   :major-modes '(terraform-mode)
+    ;;                   :remote? t
+    ;;                   :server-id 'pyls-remote))
+    ;;
     )
 #+end_src
 ** Mermaid
 #+begin_src emacs-lisp
   (leaf mermaid-mode
+    :ensure t
+    :require t)
+#+end_src
+** PHP
+#+begin_src emacs-lisp
+  (leaf php-mode
     :ensure t
     :require t)
 #+end_src
@@ -945,6 +1040,12 @@ I love org-mode.
       (processing-application-dir . "/Applications/Processing.app")
       (processing-sketchbook-dir . "/Users/ahayashi/dev/processing")))
 #+end_src
+** protobuf
+#+begin_src emacs-lisp
+  (leaf protobuf-mode
+  :ensure t
+  :require t)
+#+end_src
 ** Python
 :PROPERTIES:
 :ID:       BD3AF941-0D01-422B-AE46-328C98E5E749
@@ -965,13 +1066,14 @@ I love org-mode.
   (leaf python-mode
     :ensure t
     :require t)
-  (leaf lsp-python-ms
+  (leaf lsp-pyright
     :ensure t
     :require t
+    :hook
+      (python-mode-hook . lsp-deferred)  ; or lsp-deferred
     :init
-     (setq lsp-python-ms-auto-install-server t)
-     (setq lsp-python-ms-executable (executable-find "python-language-server"))
-    :hook (python-mode-hook . lsp-deferred))
+      (when (executable-find "python3")
+            (setq lsp-pyright-python-executable-cmd "python3")))
 #+end_src
 ** Quickrun
 :PROPERTIES:
@@ -980,7 +1082,10 @@ I love org-mode.
 #+begin_src emacs-lisp
   (leaf quickrun
     :ensure t
-    :require t)
+    :require t
+     :bind (
+            ("<f5>" . quickrun)
+            ))
 #+end_src
 ** R
 :PROPERTIES:
@@ -989,6 +1094,7 @@ I love org-mode.
 #+begin_src emacs-lisp
   (leaf ess
     :ensure t
+    :require t
     :preface
     (defun then_R_operator ()
       "R - %>% operator or 'then' pipe operator"
@@ -1010,6 +1116,25 @@ I love org-mode.
     `(("M--" . ess-insert-assign)))
   (leaf ess-r-package
     :require t)
+#+end_src
+** Rust
+#+begin_src emacs-lisp
+  (leaf rust-mode
+    :ensure t
+    ;; :custom rust-format-on-save t
+    )
+
+
+  (leaf cargo
+    :ensure t
+    :hook (rust-mode-hook . cargo-minor-mode))
+
+
+  (leaf lsp-mode
+    :ensure t
+    :hook (rust-mode-hook . lsp)
+    :bind ("C-c h" . lsp-describe-thing-at-point)
+    :custom (lsp-rust-server 'rust-analyzer))
 #+end_src
 ** Scala
 #+begin_src emacs-lisp
@@ -1036,6 +1161,28 @@ I love org-mode.
   (leaf docker-tramp
     :ensure t
     :require t)
+#+end_src
+** TypeScript
+#+begin_src emacs-lisp
+  (leaf typescript-mode
+    :ensure t
+    :preface
+    (defun typescript-mode-init ()
+      (set (make-local-variable 'compile-command)
+           (format "tsc -sourcemap %s"
+                   (file-name-nondirectory (buffer-file-name)))))
+
+    :require t
+    :hook
+    (typescript-mode-hook . typescript-mode-init))
+#+end_src
+** Vue
+#+begin_src emacs-lisp
+  (leaf vue-mode
+    :ensure t
+    :require t
+    :mode "\\.vue\\'"
+    :hook (vue-mode-hook . lsp-deferred))
 #+end_src
 
 * Misc helpers
@@ -1393,7 +1540,7 @@ I love org-mode.
     (defun org-hugo--tag-processing-fn-remove-tags-maybe (tags-list info)
       "Remove user-specified tags/categories. See `org-hugo-tag-processing-functions' for more info."
       ;; Use tag/category string (including @ prefix) exactly as used in Org file.
-      (let ((tags-categories-to-be-removed '("ahblog" "pnp" "blog" "renaissance" "guru" "refile_target")))
+      (let ((tags-categories-to-be-removed '("ahblog" "pnp" "blog" "renaissance" "guru" "refile_target" "fam")))
         (cl-remove-if (lambda (tag_or_cat)
                         (member tag_or_cat tags-categories-to-be-removed))
                       tags-list)))
