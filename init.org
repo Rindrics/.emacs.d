@@ -163,6 +163,8 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (setq custom-file (locate-user-emacs-file "custom.el"))
   (unless (file-exists-p custom-file)
     (write-region "" nil custom-file))
+  (add-hook 'after-save-hook
+      #'executable-make-buffer-file-executable-if-script-p)
   (load custom-file)
 #+end_src
 *** Server mode
