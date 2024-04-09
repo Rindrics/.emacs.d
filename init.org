@@ -1122,6 +1122,15 @@ I love org-mode.
   (leaf ess-r-package
     :require t)
 #+end_src
+** Ruby
+#+begin_src emacs-lisp
+  (leaf ruby-mode
+    :ensure t
+    )
+  (leaf ruby-electric-mode
+    :ensure t
+    )
+#+end_src
 ** Rust
 #+begin_src emacs-lisp
   (leaf rust-mode
