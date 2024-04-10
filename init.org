@@ -1127,9 +1127,6 @@ I love org-mode.
   (leaf ruby-mode
     :ensure t
     )
-  (leaf ruby-electric-mode
-    :ensure t
-    )
 #+end_src
 ** Rust
 #+begin_src emacs-lisp
