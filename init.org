@@ -1080,36 +1080,6 @@ I love org-mode.
             ("<f5>" . quickrun)
             ))
 #+end_src
-** R
-:PROPERTIES:
-:ID:       53679356-6C9F-423B-BEE4-6270F5889DF6
-:END:
-#+begin_src emacs-lisp
-  (leaf ess
-    :ensure t
-    :require t
-    :preface
-    (defun then_R_operator ()
-      "R - %>% operator or 'then' pipe operator"
-      (interactive)
-      (just-one-space 1)
-      (insert "%>%")
-      (reindent-then-newline-and-indent))
-    :bind
-    (("C-S-m" . then_R_operator)
-     ("C-S-m" . then_R_operator))
-    :setq
-    `((ess-ask-for-ess-directory . nil)
-      (ess-style . 'DEFAULT)
-      (ess-indent-offset . 2))
-    :config
-    (add-hook 'ess-r-post-run-hook (lambda () (evil-emacs-state)))
-    (add-hook 'ess-r-mode-hook 'lsp)
-    :bind
-    `(("M--" . ess-insert-assign)))
-  (leaf ess-r-package
-    :require t)
-#+end_src
 ** Rust
 #+begin_src emacs-lisp
   (leaf rust-mode
