@@ -1069,6 +1069,19 @@ I love org-mode.
      ;; (setq lsp-python-ms-auto-install-server t)
      ;; (setq lsp-python-ms-executable (executable-find "python-language-server"))
     :hook (python-mode-hook . lsp-deferred))
+  (leaf transient
+    :ensure t
+    :require t
+    )
+  (leaf pyvenv
+    :ensure t
+    :require t
+    )
+  (leaf poetry
+    :ensure t
+    :require t
+    :setq
+    `((poetry-tracking-mode . t)))
 #+end_src
 ** Quickrun
 :PROPERTIES:
