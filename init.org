@@ -625,21 +625,6 @@ I love org-mode.
     ((web-mode-hook . lsp-deferred)))
 #+end_src
 ** Minor modes
-*** Indentation
-:PROPERTIES:
-:ID:       729F62BD-5899-43DE-9EA6-DCB58B7FB1BC
-:END:
-#+begin_src emacs-lisp
-  (leaf highlight-indent-guides
-    :ensure t
-    :require t
-    :hook
-    ((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode)
-    :custom
-    (highlight-indent-guides-auto-enabled . t)
-    (highlight-indent-guides-responsive . t)
-    (highlight-indent-guides-method . 'character)) ; column
-#+end_src
 *** Multiple-cursors
 #+begin_src emacs-lisp
   (leaf multiple-cursors
