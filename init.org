@@ -1244,6 +1244,12 @@ I love org-mode.
     (("C-;" . goto-last-change)
      ("C-," . goto-last-change-reverse)))
 #+end_src
+** GraphQL
+#+begin_src emacs-lisp
+  (leaf graphql-mode
+    :ensure t
+    :require t)
+#+end_src
 ** Junk files
 #+begin_src emacs-lisp
   (leaf open-junk-file
