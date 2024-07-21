@@ -854,6 +854,16 @@ I love org-mode.
                                          ("^\\(.*\\) (\\([0-9]+\\),[0-9]+):" 1 2))
                                        compilation-error-regexp-alist))))
 #+end_src
+** Deno
+#+begin_src emacs-lisp
+  (leaf lsp-deno
+    :ensure t
+    :require t
+    :config
+    :custom `((lsp-deno-import-map . "import_map.json") ; Adjust if you have an import map
+              (lsp-deno-enable . t)))
+#+end_src
+
 ** Docker
 #+begin_src emacs-lisp
   (leaf docker
