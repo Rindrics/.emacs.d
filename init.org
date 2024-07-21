@@ -1264,6 +1264,19 @@ I love org-mode.
     :hook ((after-init-hook . which-key-mode))
     :setq (which-key-idle-delay . 0.3))
 #+end_src
+** Markdown
+#+begin_src emacs-lisp
+  (leaf markdown-mode
+    :ensure t
+    :mode ("\\.md\\'" . gfm-mode)
+    :config
+    :custom `((markdown-command . '("pandoc" "--from=markdown" "--to=html5"))
+              (markdown-fontify-code-blocks-natively . t)
+              (markdown-header-scaling . t)
+              (markdown-indent-on-enter . 'indent-and-new-item))
+    :bind (markdown-mode-map
+           ("<S-tab>" . markdown-shifttab)))
+#+end_src
 
 ** Project
 :PROPERTIES:
