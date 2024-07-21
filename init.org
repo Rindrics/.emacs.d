@@ -779,6 +779,9 @@ I love org-mode.
             ("SPC" git-gutter:toggle-popup-hunk))
     :config
     (global-git-gutter-mode))
+
+  (leaf prog-mode
+    :mode ("\\.gitignore\\'" . prog-mode))
 #+end_src
 * Fonts
 #+begin_src emacs-lisp
