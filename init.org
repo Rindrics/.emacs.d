@@ -87,7 +87,7 @@ Every time I save this file, ~org-babel~ tangles the configuration file ~init.el
 #+begin_src emacs-lisp
   (leaf *tangling
     :config
-    (setq user-emacs-directory "~/GitHub/gtd/dotfiles/.emacs.d/")
+    (setq user-emacs-directory "~/.emacs.d/")
     (defun tangle-init ()
       ;; Tangle code blocks if current buffer is init.org or mylibrary.org
       (when (member (buffer-file-name)
