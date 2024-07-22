@@ -207,9 +207,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
 
   (leaf tempbuf
     :require t
-    :hook
-    ((dired-mode-hook . turn-on-tempbuf-mode)
-     (magit-mode-hook . turn-on-tempbuf-mode)))
+    :hook ((dired-mode-hook magit-mode-hook) . turn-on-tempbuf-mode))
   ;; (leaf maxframe
   ;;   :ensure t
   ;;   :require t
