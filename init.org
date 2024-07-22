@@ -97,7 +97,7 @@ Every time I save this file, ~org-babel~ tangles the configuration file ~init.el
           (find-file-noselect "init.el")
           (with-current-buffer "init.el"
             (eval-buffer))
-           (byte-compile-file "init.el")
+           ;(byte-compile-file "init.el")
           (kill-buffer "init.el"))))
     (add-hook 'after-save-hook 'tangle-init))
 #+end_src
