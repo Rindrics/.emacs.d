@@ -83,7 +83,7 @@ By evaluating the block above, I can call function ~(leaf)~ to configure package
   (straight-use-package 'use-package)
 #+end_src
 ** Tangling
-Every time I save this file, ~org-babel~ tangles the configuration file ~init.el~.
+Every time I save this file, ~org-babel~ tangles the configuration file ~init.el~ from this org-mode file.
 #+begin_src emacs-lisp
   (leaf *tangling
     :config
