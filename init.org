@@ -125,6 +125,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (setq max-lisp-eval-depth 10000)
   (append-to-list load-path
                   '("~/.emacs.d/site-lisp"
+                    "~/.emacs.d/site-lisp/lsp-bridge"
                     "~/.emacs.d/elpa"
                     "~/.emacs.d/elisp"))
   (leaf *make-scratch
@@ -430,7 +431,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
             matches buffer-info
             remote-host buffer-position parrot
             selection-info)
-      '(misc-info persp-name lsp github debug
+      '(misc-info persp-name lsp-bridge github debug
                   minor-modes input-method major-mode
                   process vcs checker)))
 
@@ -618,9 +619,7 @@ I love org-mode.
     :config
     (append-to-list auto-mode-alist '(("\\.html\\'" . web-mode)
                                       ("\\.ts[x]?\\'" . web-mode)
-                                      ("\\.css\\'" . web-mode)))
-    :hook
-    ((web-mode-hook . lsp-deferred)))
+                                      ("\\.css\\'" . web-mode))))
 #+end_src
 ** Minor modes
 *** Multiple-cursors
@@ -924,9 +923,7 @@ I love org-mode.
   :ensure t
   :require t
   :config
-  (append-to-list auto-mode-alist '(("\\.js\\'" . js2-mode)))
-  :hook
-  ((js2-mode-hook . lsp-deferred)))
+  (append-to-list auto-mode-alist '(("\\.js\\'" . js2-mode))))
 #+end_src
 ** Kotlin
 #+begin_src emacs-lisp
@@ -953,45 +950,21 @@ I love org-mode.
 :ID:       408D7220-2BAF-4EBC-B32C-D50C1C5FAE63
 :END:
 #+begin_src emacs-lisp
-  (leaf lsp-mode
-    :ensure t
+  (leaf lsp-bridge
+    :after ysnippet exec-path-from-shell
     :require t
-    :init
-    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-    (setq lsp-keymap-prefix "C-c l")
-    :hook ((go-mode-hook . lsp-deferred)
-           (lsp-mode-hook . lsp-enable-which-key-integration)
-           (java-mode-hook . lsp-deferred)
-           (typescript-mode-hook . lsp-deferred)
-           (typescript-mode-hook . lsp-deferred)
-           (javascript-mode-hook . lsp-deferred))
-    :commands lsp
+    :doc "See instructions on URL"
+    :url "https://github.com/manateelazycat/lsp-bridge?tab=readme-ov-file"
+    :when (executable-find "basedpyright")
     :setq
-    `((lsp-eldoc-render-all . t)
-      (lsp-document-sync-method . lsp--sync-incremental)))
-
-  (leaf lsp-ui
-    :ensure t
-    :require t
-    :commands lsp-ui-mode
-    :setq
-    `((lsp-ui-doc-enable . t)
-      (lsp-ui-doc-header . t)
-      (lsp-ui-doc-include-signature . t)
-      (lsp-ui-doc-max-width . 150)
-      (lsp-ui-doc-max-height . 30)
-      (lsp-ui-peek-enable . t)))
-  (leaf lsp-ivy
-    :commands lsp-ivy-workspace-symbol)
-  ;; (leaf eglot
-  ;;   :ensure t
-  ;;   :require t
-  ;;   :hook
-  ;;   ((go-mode-hook . eglot-ensure)
-  ;;    (python-mode-hook . eglot-ensure))
-  ;;   :config
-  ;;   (add-to-list 'eglot-stay-out-of 'flymake))
-
+    `((lsp-bridge-enable-hover-diagnostic . t)
+      (lsp-bridge-enable-auto-format-code . t)
+      (lsp-bridge-enable-log . t)
+      (lsp-bridge-enable-org-babel . t)
+      (lsp-bridge-python-command . "~/venv-for-emacs/bin/python3")
+      (lsp-bridge-enable-profile . t))
+    :config
+    (global-lsp-bridge-mode))
   (leaf tramp
     :require t
     :setq
@@ -1058,13 +1031,6 @@ I love org-mode.
   (leaf python-mode
     :ensure t
     :require t)
-  (leaf lsp-pyright
-    :ensure t
-    :require t
-    :init
-     ;; (setq lsp-python-ms-auto-install-server t)
-     ;; (setq lsp-python-ms-executable (executable-find "python-language-server"))
-    :hook (python-mode-hook . lsp-deferred))
   (leaf transient
     :ensure t
     :require t
@@ -1102,13 +1068,6 @@ I love org-mode.
   (leaf cargo
     :ensure t
     :hook (rust-mode-hook . cargo-minor-mode))
-
-
-  (leaf lsp-mode
-    :ensure t
-    :hook (rust-mode-hook . lsp)
-    :bind ("C-c h" . lsp-describe-thing-at-point)
-    :custom (lsp-rust-server 'rust-analyzer))
 #+end_src
 ** Scala
 #+begin_src emacs-lisp
@@ -1149,14 +1108,6 @@ I love org-mode.
     :require t
     :hook
     (typescript-mode-hook . typescript-mode-init))
-#+end_src
-** Vue
-#+begin_src emacs-lisp
-  (leaf vue-mode
-    :ensure t
-    :require t
-    :mode "\\.vue\\'"
-    :hook (vue-mode-hook . lsp-deferred))
 #+end_src
 
 * Misc helpers
