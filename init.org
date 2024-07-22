@@ -349,28 +349,28 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
 #+end_src
 *** company
 #+begin_src emacs-lisp
-  (leaf company
-    :ensure t
-    :require t
-    :setq `((company-minimum-prefix-length . 1))
-    :bind
-    (("C-M-i" . company-complete)
-     (:company-active-map
-      ("C-h" . nil)
-      ("C-n" . company-select-next)
-      ("C-p" . company-select-previous)
-      ("<tab>" . company-complete-common-or-cycle)
-      ("<backtab>" . company-select-previous)
-      ("C-i" . company-complete-selection)
-      ("M-d" . company-show-doc-buffer))
-     (:company-search-map
-      ("C-n" . company-select-next)
-      ("C-p" . company-select-previous)))
-    :hook (after-init-hook . global-company-mode)
-    :setq
-    `((company-tooltip-maximum-width . 50)
-      (company-selection-wrap-around . t)
-      (company-quickhelp-max-lines . 5)))
+  ;; (leaf company
+  ;;   :ensure t
+  ;;   :require t
+  ;;   :setq `((company-minimum-prefix-length . 1))
+  ;;   :bind
+  ;;   (("C-M-i" . company-complete)
+  ;;    (:company-active-map
+  ;;     ("C-h" . nil)
+  ;;     ("C-n" . company-select-next)
+  ;;     ("C-p" . company-select-previous)
+  ;;     ("<tab>" . company-complete-common-or-cycle)
+  ;;     ("<backtab>" . company-select-previous)
+  ;;     ("C-i" . company-complete-selection)
+  ;;     ("M-d" . company-show-doc-buffer))
+  ;;    (:company-search-map
+  ;;     ("C-n" . company-select-next)
+  ;;     ("C-p" . company-select-previous)))
+  ;;   :hook (after-init-hook . global-company-mode)
+  ;;   :setq
+  ;;   `((company-tooltip-maximum-width . 50)
+  ;;     (company-selection-wrap-around . t)
+  ;;     (company-quickhelp-max-lines . 5)))
 #+end_src
 *** doom
 **** Main theme
@@ -716,9 +716,9 @@ I love org-mode.
     (define-key yas-minor-mode-map (kbd "C-x i n") 'yas-new-snippet)
     (define-key yas-minor-mode-map (kbd "C-x i h") 'yas-expand)
     (define-key yas-minor-mode-map (kbd "C-x i v") 'yas-visit-snippet-file))
-  (leaf ivy-yasnippet
-    :ensure t
-    :require t)
+  ;; (leaf ivy-yasnippet
+  ;;   :ensure t
+  ;;   :require t)
 #+end_src
 *** Undo
 :PROPERTIES:
