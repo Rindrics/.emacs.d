@@ -83,11 +83,11 @@ By evaluating the block above, I can call function ~(leaf)~ to configure package
   (straight-use-package 'use-package)
 #+end_src
 ** Tangling
-Every time I save this file, ~org-babel~ tangles the configuration file ~init.el~.
+Every time I save this file, ~org-babel~ tangles the configuration file ~init.el~ from this org-mode file.
 #+begin_src emacs-lisp
   (leaf *tangling
     :config
-    (setq user-emacs-directory "~/GitHub/gtd/dotfiles/.emacs.d/")
+    (setq user-emacs-directory "~/.emacs.d/")
     (defun tangle-init ()
       ;; Tangle code blocks if current buffer is init.org or mylibrary.org
       (when (member (buffer-file-name)
@@ -97,7 +97,7 @@ Every time I save this file, ~org-babel~ tangles the configuration file ~init.el
           (find-file-noselect "init.el")
           (with-current-buffer "init.el"
             (eval-buffer))
-           (byte-compile-file "init.el")
+           ;(byte-compile-file "init.el")
           (kill-buffer "init.el"))))
     (add-hook 'after-save-hook 'tangle-init))
 #+end_src
@@ -114,6 +114,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (prefer-coding-system 'utf-8)
   (global-auto-revert-mode t)
   (tab-bar-mode t)
+  (setq image-types '(svg png gif tiff jpeg xpm xbm pbm))
   (setq-default indent-tabs-mode  nil)
   (setq tags-add-tables nil)
   (setq use-dialog-box nil)
@@ -125,6 +126,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (setq max-lisp-eval-depth 10000)
   (append-to-list load-path
                   '("~/.emacs.d/site-lisp"
+                    "~/.emacs.d/site-lisp/lsp-bridge"
                     "~/.emacs.d/elpa"
                     "~/.emacs.d/elisp"))
   (leaf *make-scratch
@@ -207,9 +209,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
 
   (leaf tempbuf
     :require t
-    :hook
-    ((dired-mode-hook . turn-on-tempbuf-mode)
-     (magit-mode-hook . turn-on-tempbuf-mode)))
+    :hook ((dired-mode-hook magit-mode-hook) . turn-on-tempbuf-mode))
   ;; (leaf maxframe
   ;;   :ensure t
   ;;   :require t
@@ -271,8 +271,8 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     :config
     (evil-mode 1)
     (define-key evil-normal-state-map "\C-\\-" 'other-window)
-    (define-key evil-normal-state-map "\M-." 'xref-find-definitions)
-    (define-key evil-normal-state-map "\M-," 'xref-go-back)
+    (define-key evil-normal-state-map "\M-." 'lsp-bridge-find-def)
+    (define-key evil-normal-state-map "\M-," 'lsp-bridge-find-def-return)
     (define-key evil-insert-state-map "\C-\\-" 'other-window)
     (define-key evil-visual-state-map "\C-\\-" 'other-window)
     (define-key evil-insert-state-map "\C-y" 'yank)
@@ -351,28 +351,28 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
 #+end_src
 *** company
 #+begin_src emacs-lisp
-  (leaf company
-    :ensure t
-    :require t
-    :setq `((company-minimum-prefix-length . 1))
-    :bind
-    (("C-M-i" . company-complete)
-     (:company-active-map
-      ("C-h" . nil)
-      ("C-n" . company-select-next)
-      ("C-p" . company-select-previous)
-      ("<tab>" . company-complete-common-or-cycle)
-      ("<backtab>" . company-select-previous)
-      ("C-i" . company-complete-selection)
-      ("M-d" . company-show-doc-buffer))
-     (:company-search-map
-      ("C-n" . company-select-next)
-      ("C-p" . company-select-previous)))
-    :hook (after-init-hook . global-company-mode)
-    :setq
-    `((company-tooltip-maximum-width . 50)
-      (company-selection-wrap-around . t)
-      (company-quickhelp-max-lines . 5)))
+  ;; (leaf company
+  ;;   :ensure t
+  ;;   :require t
+  ;;   :setq `((company-minimum-prefix-length . 1))
+  ;;   :bind
+  ;;   (("C-M-i" . company-complete)
+  ;;    (:company-active-map
+  ;;     ("C-h" . nil)
+  ;;     ("C-n" . company-select-next)
+  ;;     ("C-p" . company-select-previous)
+  ;;     ("<tab>" . company-complete-common-or-cycle)
+  ;;     ("<backtab>" . company-select-previous)
+  ;;     ("C-i" . company-complete-selection)
+  ;;     ("M-d" . company-show-doc-buffer))
+  ;;    (:company-search-map
+  ;;     ("C-n" . company-select-next)
+  ;;     ("C-p" . company-select-previous)))
+  ;;   :hook (after-init-hook . global-company-mode)
+  ;;   :setq
+  ;;   `((company-tooltip-maximum-width . 50)
+  ;;     (company-selection-wrap-around . t)
+  ;;     (company-quickhelp-max-lines . 5)))
 #+end_src
 *** doom
 **** Main theme
@@ -432,7 +432,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
             matches buffer-info
             remote-host buffer-position parrot
             selection-info)
-      '(misc-info persp-name lsp github debug
+      '(misc-info persp-name lsp-bridge github debug
                   minor-modes input-method major-mode
                   process vcs checker)))
 
@@ -620,9 +620,7 @@ I love org-mode.
     :config
     (append-to-list auto-mode-alist '(("\\.html\\'" . web-mode)
                                       ("\\.ts[x]?\\'" . web-mode)
-                                      ("\\.css\\'" . web-mode)))
-    :hook
-    ((web-mode-hook . lsp-deferred)))
+                                      ("\\.css\\'" . web-mode))))
 #+end_src
 ** Minor modes
 *** Multiple-cursors
@@ -718,9 +716,9 @@ I love org-mode.
     (define-key yas-minor-mode-map (kbd "C-x i n") 'yas-new-snippet)
     (define-key yas-minor-mode-map (kbd "C-x i h") 'yas-expand)
     (define-key yas-minor-mode-map (kbd "C-x i v") 'yas-visit-snippet-file))
-  (leaf ivy-yasnippet
-    :ensure t
-    :require t)
+  ;; (leaf ivy-yasnippet
+  ;;   :ensure t
+  ;;   :require t)
 #+end_src
 *** Undo
 :PROPERTIES:
@@ -779,6 +777,9 @@ I love org-mode.
             ("SPC" git-gutter:toggle-popup-hunk))
     :config
     (global-git-gutter-mode))
+
+  (leaf prog-mode
+    :mode ("\\.gitignore\\'" . prog-mode))
 #+end_src
 * Fonts
 #+begin_src emacs-lisp
@@ -854,6 +855,16 @@ I love org-mode.
                                          ("^\\(.*\\) (\\([0-9]+\\),[0-9]+):" 1 2))
                                        compilation-error-regexp-alist))))
 #+end_src
+** Deno
+#+begin_src emacs-lisp
+  (leaf lsp-deno
+    :ensure t
+    :require t
+    :config
+    :custom `((lsp-deno-import-map . "import_map.json") ; Adjust if you have an import map
+              (lsp-deno-enable . t)))
+#+end_src
+
 ** Docker
 #+begin_src emacs-lisp
   (leaf docker
@@ -913,9 +924,7 @@ I love org-mode.
   :ensure t
   :require t
   :config
-  (append-to-list auto-mode-alist '(("\\.js\\'" . js2-mode)))
-  :hook
-  ((js2-mode-hook . lsp-deferred)))
+  (append-to-list auto-mode-alist '(("\\.js\\'" . js2-mode))))
 #+end_src
 ** Kotlin
 #+begin_src emacs-lisp
@@ -942,44 +951,42 @@ I love org-mode.
 :ID:       408D7220-2BAF-4EBC-B32C-D50C1C5FAE63
 :END:
 #+begin_src emacs-lisp
-  (leaf lsp-mode
-    :ensure t
+  (leaf lsp-bridge
+    :after yasnippet exec-path-from-shell
     :require t
-    :init
-    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-    (setq lsp-keymap-prefix "C-c l")
-    :hook ((go-mode-hook . lsp-deferred)
-           (lsp-mode-hook . lsp-enable-which-key-integration)
-           (java-mode-hook . lsp-deferred)
-           (typescript-mode-hook . lsp-deferred)
-           (typescript-mode-hook . lsp-deferred)
-           (javascript-mode-hook . lsp-deferred))
-    :commands lsp
+    :doc "See instructions on URL"
+    :url "https://github.com/manateelazycat/lsp-bridge?tab=readme-ov-file"
+    :when (executable-find "basedpyright")
     :setq
-    `((lsp-eldoc-render-all . t)
-      (lsp-document-sync-method . lsp--sync-incremental)))
+    `((lsp-bridge-enable-hover-diagnostic . t)
+      (lsp-bridge-enable-auto-format-code . nil)
+      (lsp-bridge-enable-log . t)
+      (lsp-bridge-enable-org-babel . t)
+      (lsp-bridge-python-command . "~/venv-for-emacs/bin/python3")
+      (lsp-bridge-enable-profile . t))
+    :config
+    (global-lsp-bridge-mode)
+    (defvar lsp-bridge-peek-timer nil
+      "Timer to trigger `lsp-bridge-peek` after a delay when the cursor stops moving.")
 
-  (leaf lsp-ui
-    :ensure t
-    :require t
-    :commands lsp-ui-mode
-    :setq
-    `((lsp-ui-doc-enable . t)
-      (lsp-ui-doc-header . t)
-      (lsp-ui-doc-include-signature . t)
-      (lsp-ui-doc-max-width . 150)
-      (lsp-ui-doc-max-height . 30)
-      (lsp-ui-peek-enable . t)))
-  (leaf lsp-ivy
-    :commands lsp-ivy-workspace-symbol)
-  ;; (leaf eglot
-  ;;   :ensure t
-  ;;   :require t
-  ;;   :hook
-  ;;   ((go-mode-hook . eglot-ensure)
-  ;;    (python-mode-hook . eglot-ensure))
-  ;;   :config
-  ;;   (add-to-list 'eglot-stay-out-of 'flymake))
+    (defun lsp-bridge-peek-after-idle ()
+      "Trigger `lsp-bridge-peek` if the cursor has been idle for 1 second."
+      (when lsp-bridge-mode
+        (lsp-bridge-peek)))
+
+    (defun lsp-bridge-reset-peek-timer ()
+      "Reset the timer for `lsp-bridge-peek` to trigger after 1 second of idle,
+  and abort `lsp-bridge-peek` when the cursor moves."
+      ;; カーソルが動いたときに `lsp-bridge-peek-abort` を呼び出す
+      (when (and lsp-bridge-mode (fboundp 'lsp-bridge-peek-abort))
+        (lsp-bridge-peek-abort))
+      ;; 既存のタイマーをキャンセルして再設定
+      (when lsp-bridge-peek-timer
+        (cancel-timer lsp-bridge-peek-timer))
+      (setq lsp-bridge-peek-timer (run-with-idle-timer 0.5 nil 'lsp-bridge-peek-after-idle)))
+
+    ;; カーソルが動いたときに `post-command-hook` でタイマーをリセット
+    (add-hook 'post-command-hook 'lsp-bridge-reset-peek-timer))
 
   (leaf tramp
     :require t
@@ -1047,13 +1054,6 @@ I love org-mode.
   (leaf python-mode
     :ensure t
     :require t)
-  (leaf lsp-pyright
-    :ensure t
-    :require t
-    :init
-     ;; (setq lsp-python-ms-auto-install-server t)
-     ;; (setq lsp-python-ms-executable (executable-find "python-language-server"))
-    :hook (python-mode-hook . lsp-deferred))
   (leaf transient
     :ensure t
     :require t
@@ -1091,13 +1091,6 @@ I love org-mode.
   (leaf cargo
     :ensure t
     :hook (rust-mode-hook . cargo-minor-mode))
-
-
-  (leaf lsp-mode
-    :ensure t
-    :hook (rust-mode-hook . lsp)
-    :bind ("C-c h" . lsp-describe-thing-at-point)
-    :custom (lsp-rust-server 'rust-analyzer))
 #+end_src
 ** Scala
 #+begin_src emacs-lisp
@@ -1138,14 +1131,6 @@ I love org-mode.
     :require t
     :hook
     (typescript-mode-hook . typescript-mode-init))
-#+end_src
-** Vue
-#+begin_src emacs-lisp
-  (leaf vue-mode
-    :ensure t
-    :require t
-    :mode "\\.vue\\'"
-    :hook (vue-mode-hook . lsp-deferred))
 #+end_src
 
 * Misc helpers
@@ -1244,6 +1229,12 @@ I love org-mode.
     (("C-;" . goto-last-change)
      ("C-," . goto-last-change-reverse)))
 #+end_src
+** GraphQL
+#+begin_src emacs-lisp
+  (leaf graphql-mode
+    :ensure t
+    :require t)
+#+end_src
 ** Junk files
 #+begin_src emacs-lisp
   (leaf open-junk-file
@@ -1263,6 +1254,19 @@ I love org-mode.
     ((which-key-max-description-length . 40))
     :hook ((after-init-hook . which-key-mode))
     :setq (which-key-idle-delay . 0.3))
+#+end_src
+** Markdown
+#+begin_src emacs-lisp
+  (leaf markdown-mode
+    :ensure t
+    :mode ("\\.md\\'" . gfm-mode)
+    :config
+    :custom `((markdown-command . '("pandoc" "--from=markdown" "--to=html5"))
+              (markdown-fontify-code-blocks-natively . t)
+              (markdown-header-scaling . t)
+              (markdown-indent-on-enter . 'indent-and-new-item))
+    :bind (markdown-mode-map
+           ("<S-tab>" . markdown-shifttab)))
 #+end_src
 
 ** Project

@@ -18,3 +18,4 @@ workspace/
 eclipse*
 projectile.cache
 ac-comphist.dat
+lsp-bridge
