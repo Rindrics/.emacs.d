@@ -114,6 +114,7 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
   (prefer-coding-system 'utf-8)
   (global-auto-revert-mode t)
   (tab-bar-mode t)
+  (setq image-types '(svg png gif tiff jpeg xpm xbm pbm))
   (setq-default indent-tabs-mode  nil)
   (setq tags-add-tables nil)
   (setq use-dialog-box nil)
@@ -270,8 +271,8 @@ The setting is immediately reflected because ~(tangle-init)~ calls ~(eval-buffer
     :config
     (evil-mode 1)
     (define-key evil-normal-state-map "\C-\\-" 'other-window)
-    (define-key evil-normal-state-map "\M-." 'xref-find-definitions)
-    (define-key evil-normal-state-map "\M-," 'xref-go-back)
+    (define-key evil-normal-state-map "\M-." 'lsp-bridge-find-def)
+    (define-key evil-normal-state-map "\M-," 'lsp-bridge-find-def-return)
     (define-key evil-insert-state-map "\C-\\-" 'other-window)
     (define-key evil-visual-state-map "\C-\\-" 'other-window)
     (define-key evil-insert-state-map "\C-y" 'yank)
@@ -951,20 +952,42 @@ I love org-mode.
 :END:
 #+begin_src emacs-lisp
   (leaf lsp-bridge
-    :after ysnippet exec-path-from-shell
+    :after yasnippet exec-path-from-shell
     :require t
     :doc "See instructions on URL"
     :url "https://github.com/manateelazycat/lsp-bridge?tab=readme-ov-file"
     :when (executable-find "basedpyright")
     :setq
     `((lsp-bridge-enable-hover-diagnostic . t)
-      (lsp-bridge-enable-auto-format-code . t)
+      (lsp-bridge-enable-auto-format-code . nil)
       (lsp-bridge-enable-log . t)
       (lsp-bridge-enable-org-babel . t)
       (lsp-bridge-python-command . "~/venv-for-emacs/bin/python3")
       (lsp-bridge-enable-profile . t))
     :config
-    (global-lsp-bridge-mode))
+    (global-lsp-bridge-mode)
+    (defvar lsp-bridge-peek-timer nil
+      "Timer to trigger `lsp-bridge-peek` after a delay when the cursor stops moving.")
+
+    (defun lsp-bridge-peek-after-idle ()
+      "Trigger `lsp-bridge-peek` if the cursor has been idle for 1 second."
+      (when lsp-bridge-mode
+        (lsp-bridge-peek)))
+
+    (defun lsp-bridge-reset-peek-timer ()
+      "Reset the timer for `lsp-bridge-peek` to trigger after 1 second of idle,
+  and abort `lsp-bridge-peek` when the cursor moves."
+      ;; カーソルが動いたときに `lsp-bridge-peek-abort` を呼び出す
+      (when (and lsp-bridge-mode (fboundp 'lsp-bridge-peek-abort))
+        (lsp-bridge-peek-abort))
+      ;; 既存のタイマーをキャンセルして再設定
+      (when lsp-bridge-peek-timer
+        (cancel-timer lsp-bridge-peek-timer))
+      (setq lsp-bridge-peek-timer (run-with-idle-timer 0.5 nil 'lsp-bridge-peek-after-idle)))
+
+    ;; カーソルが動いたときに `post-command-hook` でタイマーをリセット
+    (add-hook 'post-command-hook 'lsp-bridge-reset-peek-timer))
+
   (leaf tramp
     :require t
     :setq
