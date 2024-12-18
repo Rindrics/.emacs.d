@@ -49,6 +49,15 @@
   :url "https://github.com/Silex/package-utils"
   :ensure t)
 
+;; -------------------------------------
+;; Generic Configurations
+;; -------------------------------------
+;; See http://rindrics.com/emacs/backup/
+(leaf backup
+  :custom
+  (make-backup-files . nil)
+  (auto-save-default . nil))
+
 ;; See http://rindrics.com/emacs/magit/
 (leaf magit
   :doc "Complete text-based user interface to Git"
