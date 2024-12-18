@@ -1,0 +1,11 @@
+# Backup files
+**~
+
+# Auto-generated files
+auto-save-list
+
+# Cache files
+eshell/
+
+# elpa packages
+/elpa/
