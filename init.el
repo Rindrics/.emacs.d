@@ -27,6 +27,11 @@
       (el-get-notify-type       . 'message)
       (el-get-git-shallow-clone . t))
     (leaf hydra :ensure t)
+    (leaf major-mode-hydra
+      :doc "Use pretty-hydra to define template easily"
+      :url "https://github.com/jerrypnz/major-mode-hydra.el"
+      :ensure t
+      :require pretty-hydra)
     :config
     (leaf-keywords-init)))
 
@@ -51,3 +56,25 @@
   :ensure t
   :init
   (setq magit-auto-revert-mode nil))
+
+(leaf *hydra-git
+  :bind
+  ("M-g" . *hydra-git/body)
+  :pretty-hydra
+  ((:title " Git" :color blue :quit-key "q" :foreign-keys warn :separator "╌")
+   ("Basic"
+    (("w" magit-checkout "checkout")
+     ("s" magit-status "status")
+     ("b" magit-branch "branch")
+     ("F" magit-pull "pull")
+     ("f" magit-fetch "fetch")
+     ("A" magit-apply "apply")
+     ("c" magit-commit "commit")
+     ("P" magit-push "push"))
+    ""
+    (("d" magit-diff "diff")
+     ("l" magit-log "log")
+     ("r" magit-rebase "rebase")
+     ("z" magit-stash "stash")
+     ("!" magit-run "run shell command")
+     ("y" magit-show-refs "references")))))
