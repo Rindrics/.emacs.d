@@ -43,3 +43,11 @@
   :doc "Interactive package manager"
   :url "https://github.com/Silex/package-utils"
   :ensure t)
+
+;; See http://rindrics.com/emacs/magit/
+(leaf magit
+  :doc "Complete text-based user interface to Git"
+  :url "https://magit.vc/"
+  :ensure t
+  :init
+  (setq magit-auto-revert-mode nil))
