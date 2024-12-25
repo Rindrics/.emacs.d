@@ -87,3 +87,55 @@
      ("z" magit-stash "stash")
      ("!" magit-run "run shell command")
      ("y" magit-show-refs "references")))))
+
+(leaf *recentf
+  :doc "Record open files history"
+  :global-minor-mode recentf-mode
+  :bind
+  (("C-x C-r" . recentf-open))
+  :custom
+  (recentf-max-saved-items . 20000)
+  (recentf-max-menu-items  . 20000)
+  (recentf-auto-cleanup    . 'never)
+  (recentf-exclude . '((expand-file-name package-user-dir)
+       "recentf"
+       )))
+
+(leaf vertico
+  :doc "Completion interface"
+  :ensure t
+  :init (vertico-mode)
+  :custom
+  (vertico-cycle . t)
+  (vertico-count . 18))
+
+(leaf vertico-directory
+  :doc "Extensions for file directory navigation"
+  :after vertico
+  :ensure nil
+  :preface
+  (defun vertico-directory-enter-or-dired ()
+    "Enter directory or open it in dired if it's the current selection."
+    (interactive)
+    (let* ((current (vertico--candidate))
+	   (cand (minibuffer-completion-contents)))
+      (if (or (string-suffix-p "/" current)
+	      (and (not (string-suffix-p "/" cand))
+		   (file-directory-p current)))
+	  (progn
+	    (vertico-exit)
+	    (dired current))
+	(vertico-directory-enter))))
+  :init
+  (with-eval-after-load 'vertico
+    (define-key vertico-map (kbd "RET") #'vertico-directory-enter-or-dired)
+    (define-key vertico-map (kbd "/") #'vertico-directory-enter)
+    (define-key vertico-map (kbd "DEL") #'vertico-directory-delete-char)
+    (define-key vertico-map (kbd "M-DEL") #'vertico-directory-delete-word)))
+
+(leaf orderless
+  :doc "Completion style for regexp matching"
+  :ensure t
+  :custom
+  (completion-styles . '(orderless))
+  (completion-category-defaults . nil))
