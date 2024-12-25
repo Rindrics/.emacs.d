@@ -21,11 +21,6 @@
     :url "https://github.com/conao3/leaf.el"
     :ensure t
     :init
-    (leaf el-get
-      :ensure t
-      :custom
-      (el-get-notify-type       . 'message)
-      (el-get-git-shallow-clone . t))
     (leaf hydra :ensure t)
     (leaf major-mode-hydra
       :doc "Use pretty-hydra to define template easily"
