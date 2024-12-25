@@ -98,7 +98,8 @@
   (recentf-max-menu-items  . 20000)
   (recentf-auto-cleanup    . 'never)
   (recentf-exclude . '((expand-file-name package-user-dir)
-       "recentf"
+		       "recentf"
+		       "COMMIT_EDITMSG"
        )))
 
 (leaf vertico
