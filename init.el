@@ -47,6 +47,17 @@
 ;; -------------------------------------
 ;; Generic Configurations
 ;; -------------------------------------
+
+;; See http://rindrics.com/emacs/keep-tidy/
+(leaf cus-edit
+  :doc "tools for customizing Emacs and Lisp packages"
+  :custom
+  `((custom-file . ,(locate-user-emacs-file "custom.el"))))
+(leaf no-littering
+  :doc "Keep .emacs.d/ clean"
+  :url "https://github.com/emacscollective/no-littering"
+  :ensure t)
+
 ;; See http://rindrics.com/emacs/backup/
 (leaf backup
   :custom
