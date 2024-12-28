@@ -146,3 +146,78 @@
   :custom
   (completion-styles . '(orderless))
   (completion-category-defaults . nil))
+
+;; -----------------------------------------------------------------------------------------
+;;
+;; MacOS
+;;
+;; -----------------------------------------------------------------------------------------
+
+(leaf exec-path-from-shell
+  :doc "Share PATH from shell environment variables"
+  :url "https://github.com/purcell/exec-path-from-shell"
+  :ensure t
+  :if (and (equal system-type 'darwin) (window-system))
+  :custom
+  (exec-path-from-shell-check-startup-files . nil)
+  (exec-path-from-shell-variables . '("PATH" "GOPATH" "LANG"))
+  :init
+  (setq exec-path  (parse-colon-path (string-trim-right (shell-command-to-string "echo $PATH"))))
+  (setenv "PATH"   (string-trim-right (shell-command-to-string "echo $PATH")))
+  (setenv "GOPATH" (string-trim-right (shell-command-to-string "echo $GOPATH")))
+  :config
+  (exec-path-from-shell-initialize))
+
+;; -----------------------------------------------------------------------------------------
+;;
+;; Programming Mode
+;;
+;; -----------------------------------------------------------------------------------------
+
+(leaf yasnippet
+  :doc "Template system"
+  :url "https://github.com/joaotavora/yasnippet"
+  :ensure t
+  :hook   ((after-init-hook . yas-reload-all)
+           (prog-mode-hook  . yas-minor-mode))
+  :custom (yas-snippet-dirs . `(,(expand-file-name "snippets" user-emacs-directory))))
+
+(leaf lsp-bridge
+  :doc "fast LSP client"
+  :vc (:url "https://github.com/manateelazycat/lsp-bridge")
+  :require t
+  :init (global-lsp-bridge-mode)
+  :custom
+  (acm-enable-tabnine                 . nil)
+  (acm-enable-copilot                 . t)
+  (acm-enable-quick-access            . t)
+  (lsp-bridge-enable-hover-diagnostic . t)
+  (acm-backend-yas-candidates-number  . 5))
+
+;; -----------------------------------------------------------------------------------------
+;;
+;; Configuration Language
+;;
+;; -----------------------------------------------------------------------------------------
+
+(leaf yaml-mode
+  :doc "Major mode for editing files in the YAML data serialization format"
+  :url "https://github.com/yoshiki/yaml-mode"
+  :ensure t
+  :mode ("\\.yaml\\'" "\\.yml\\'" "\\.rule\\'") ; .rule is a file for Prometheus alert manager
+  :defvar yaml-file-threshold
+  :custom
+  (lsp-yaml-schemas . '(:file:///Users/aigarash/zap-standalone/all.json "/*.yaml"))
+  (yaml-file-threshold . 100000)
+  :hook
+  (yaml-mode-hook
+   . (lambda ()
+       (if (< (buffer-size (current-buffer)) yaml-file-threshold)
+           (progn
+             (if (window-system)
+                 (highlight-indent-guides-mode))
+             (yas-minor-mode)
+             (lsp-deferred)))))
+  :custom-face
+  (font-lock-variable-name-face . '((t (:foreground "violet")))))
+
