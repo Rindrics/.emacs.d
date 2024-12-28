@@ -194,6 +194,12 @@
   (lsp-bridge-enable-hover-diagnostic . t)
   (acm-backend-yas-candidates-number  . 5))
 
+;; Python
+(leaf python
+  :doc "Python development environment"
+  :url "https://wiki.python.org/moin/EmacsPythonMode"
+  :mode ("\\.py\\'" . python-mode))
+
 ;; -----------------------------------------------------------------------------------------
 ;;
 ;; Configuration Language
