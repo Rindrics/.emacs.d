@@ -1,5 +1,5 @@
-(require 'profiler)
-(profiler-start 'cpu)
+;; (require 'profiler)
+;; (profiler-start 'cpu)
 
 ;; Temporally Maximize GC
 (setq gc-cons-threshold most-positive-fixnum)
@@ -234,7 +234,7 @@
   (font-lock-variable-name-face . '((t (:foreground "violet")))))
 
 
-(profiler-report)
-(profiler-stop)
+;; (profiler-report)
+;; (profiler-stop)
 
 (setq gc-cons-threshold 16777216) ; 16mb
