@@ -1,3 +1,6 @@
+;; Temporally Maximize GC
+(setq gc-cons-threshold most-positive-fixnum)
+
 (eval-and-compile
   (when (or load-file-name byte-compile-current-file)
     (setq user-emacs-directory
@@ -227,3 +230,5 @@
   :custom-face
   (font-lock-variable-name-face . '((t (:foreground "violet")))))
 
+
+(setq gc-cons-threshold 16777216) ; 16mb
