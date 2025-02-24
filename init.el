@@ -142,7 +142,6 @@
   :init
   (with-eval-after-load 'vertico
     (define-key vertico-map (kbd "RET") #'vertico-directory-enter-or-dired)
-    (define-key vertico-map (kbd "/") #'vertico-directory-enter)
     (define-key vertico-map (kbd "DEL") #'vertico-directory-delete-char)
     (define-key vertico-map (kbd "M-DEL") #'vertico-directory-delete-word)))
 
