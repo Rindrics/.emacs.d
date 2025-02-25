@@ -225,6 +225,33 @@
 
 ;; -----------------------------------------------------------------------------------------
 ;;
+;; Brackets Guide
+;;
+;; -----------------------------------------------------------------------------------------
+
+(leaf smartparens
+  :ensure t
+  :require smartparens-config
+  :global-minor-mode smartparens-global-mode
+  :bind
+  (:smartparens-mode-map
+   ("M-<DEL>" . sp-backward-unwrap-sexp)
+   ("M-]"     . sp-up-sexp)
+   ("M-["     . sp-down-sexp)
+   ("C-("     . sp-beginning-of-sexp)
+   ("C-)"     . sp-end-of-sexp)
+   ("C-M-f"   . sp-forward-sexp)
+   ("C-M-b"   . sp-backward-sexp)
+   ("C-M-n"   . sp-next-sexp)
+   ("C-M-p"   . sp-previous-sexp))
+  :config
+  (sp-local-pair 'org-mode "*" "*")
+  (sp-local-pair 'org-mode "=" "=")
+  (sp-local-pair 'org-mode "~" "~")
+  (sp-local-pair 'org-mode "+" "+"))
+
+;; -----------------------------------------------------------------------------------------
+;;
 ;; Programming Mode
 ;;
 ;; -----------------------------------------------------------------------------------------
