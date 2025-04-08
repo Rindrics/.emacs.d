@@ -362,6 +362,84 @@
    ("S-M-<right>" . markdown-demote-subtree)
    ("S-M-<left>" . markdown-promote-subtree)))
 
+(setq org-startup-indented t)
+(leaf org-theme
+  :doc "Theme for org-mode"
+  :custom
+  (org-todo-keyword-faces
+   . '(("WAIT" . (:foreground "#6272a4" :weight bold :width condensed))
+       ("NEXT" . (:foreground "#f1fa8c" :weight bold :width condensed))))
+  :custom-face
+  ;; general
+  (org-level-1         . '((t (:inherit outline-1 :weight normal :height 1.2))))
+  (org-level-2         . '((t (:inherit outline-2 :weight normal))))
+  (org-level-3         . '((t (:inherit outline-3 :weight normal))))
+  (org-level-4         . '((t (:inherit outline-4 :weight normal))))
+  (org-level-5         . '((t (:inherit outline-5 :weight normal))))
+  (org-level-6         . '((t (:inherit outline-6 :weight normal))))
+  (org-link            . '((t (:foreground "#bd93f9" :underline t :weight normal))))
+  (org-list-dt         . '((t (:foreground "#bd93f9"))))
+  (org-checkbox-statistics-todo . '((t (:foreground "#6272a4" :weight normal :height 0.9))))
+  (org-checkbox-statistics-done . '((t (:foreground "#44475a" :weight normal :height 0.9))))
+  (org-document-title  . '((t (:foreground "#61bfff" :weight normal :height 1.0))))
+  (org-document-info-keyword   . '((t (:foreground "#6272a4" :height 1.0))))
+  (org-document-info   . '((t (:foreground "#6272a4" :height 1.0))))
+  (org-meta-line       . '((t (:foreground "#44475a" :height 1.0))))
+  (org-footnote        . '((t (:foreground "#76e0f3"))))
+  (org-agenda-calendar-event . '((t (:foreground "#8995ba"))))
+  (org-special-keyword . '((t (:foreground "#6272a4"))))
+  (org-drawer          . '((t (:foreground "#44475a"))))
+  (org-checkbox        . '((t (:foreground "#bd93f9"))))
+  (org-tag             . '((t (:foreground "#6272a4"))))
+  (org-date            . '((t (:foreground "#8995ba" :height 0.9 :weight light :width condensed))))
+  (org-priority        . '((t (:foreground "#f1fa8c")))) ; #ebe087
+  (org-todo            . '((t (:foreground "#ad92dd" :weight bold :width condensed))))
+  (org-done            . '((t (:background "#282a36" :foreground "#3b216a" :strike-through nil :weight bold :width condensed)))))
+
+(leaf org-modern
+  :doc "To Be Modern Looks"
+  :url "https://github.com/minad/org-modern"
+  :ensure t
+  :hook (org-mode-hook . org-modern-mode)
+  :custom
+  (org-modern-star           . 'replace)
+  (org-modern-hide-stars     . " ")
+  (org-modern-progress       . nil)
+  (org-modern-tag            . nil)
+  (org-modern-todo           . t)
+  (org-modern-priority       . t)
+  (org-modern-statistics     . nil)
+  (org-modern-timestamp      . nil)
+  (org-modern-block-name     . nil)
+  (org-modern-block-fringe   . nil)
+  (org-modern-table-vertical . 1)
+  (org-modern-variable-pitch . t)
+  ;; todo faces
+  (org-modern-todo-faces
+   . (quote (("TODO" :background "#673AB7" :foreground "#f8f8f2")
+	     ("WAIT" :background "#6272a4" :foreground "#f8f8f2")
+	     ("NEXT" :background "#f1fa8c" :foreground "#1E2029") ; #bd93f9
+	     ("DONE" :background "#373844" :foreground "#b0b8d1"))))
+  ;; use nerd font icons
+  (org-modern-list           . '((?+ . "◦") (?- . "–") (?* . "•")))
+  (org-modern-checkbox       . '((?X . "") (?- . "") (?\s . "")))
+  (org-modern-priority       . '((?A . "") (?B . "") (?C . "")))
+  ;;(org-modern-replace-stars  . "")
+  (org-modern-replace-stars  . "")
+  :custom-face
+  (org-modern-date-active   . '((t (:background "#373844" :foreground "#f8f8f2" :height 0.75 :weight light :width condensed))))
+  (org-modern-time-active   . '((t (:background "#44475a" :foreground "#f8f8f2" :height 0.75 :weight light :width condensed))))
+  (org-modern-date-inactive . '((t (:background "#373844" :foreground "#b0b8d1" :height 0.75 :weight light :width condensed))))
+  (org-modern-time-inactive . '((t (:background "#44475a" :foreground "#b0b8d1" :height 0.75 :weight light :width condensed))))
+  (org-modern-tag           . '((t (:background "#44475a" :foreground "#b0b8d1" :height 0.75 :weight light :width condensed))))
+  (org-modern-statistics    . '((t (:foreground "violet" :weight light)))))
+
+(leaf org-bullets
+  :ensure t
+  :require t
+  :custom (org-bullets-bullet-list . '("" "" "" "" "" "" "" "" "" ""))
+  :hook (org-mode-hook . (lambda () (org-bullets-mode 1))))
+
 ;; (profiler-report)
 ;; (profiler-stop)
 
