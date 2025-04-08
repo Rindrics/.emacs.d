@@ -32,6 +32,7 @@
     :ensure t
     :init
     (leaf hydra :ensure t)
+    (leaf lv :ensure t)
     (leaf major-mode-hydra
       :doc "Use pretty-hydra to define template easily"
       :url "https://github.com/jerrypnz/major-mode-hydra.el"
@@ -85,6 +86,7 @@
 (leaf *hydra-git
   :bind
   ("M-g" . *hydra-git/body)
+   :after pretty-hydra
   :pretty-hydra
   ((:title " Git" :color blue :quit-key "q" :foreign-keys warn :separator "╌")
    ("Basic"
@@ -121,7 +123,7 @@
 (leaf vertico
   :doc "Completion interface"
   :ensure t
-  :init (vertico-mode)
+  :hook (after-init-hook . vertico-mode)
   :custom
   (vertico-cycle . t)
   (vertico-count . 18))
@@ -201,6 +203,7 @@
  (when (eq system-type 'darwin)
    (set-face-attribute 'default nil :family jp-font-family :height 140))
  (set-japanese-font jp-font-family)
+ (set-fontset-font t 'unicode (font-spec :family jp-font-family :slant 'normal))
  (set-frame-font jp-font-family nil t)
  (set-latin-and-greek-font default-font-family)
  (add-to-list 'face-font-rescale-alist (cons default-font-family 0.86))
@@ -272,7 +275,13 @@
   :doc "fast LSP client"
   :vc (:url "https://github.com/manateelazycat/lsp-bridge")
   :require t
+  :after markdown-mode
   :init (global-lsp-bridge-mode)
+  :hook
+  ((go-mode-hook
+    . (lambda ()
+	(yas-minor-mode)
+	(lsp-bridge-mode))))
   :custom
   (acm-enable-tabnine                 . nil)
   (acm-enable-copilot                 . t)
