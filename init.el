@@ -349,6 +349,18 @@
 ;;
 ;; -----------------------------------------------------------------------------------------
 (setq sentence-end "[。？！.!?][]\"')}]*\\($\\|\t\\| \\)[ \t\n]*")
+(leaf markdown-mode
+  :doc "Major mode for editing Markdown-formatted text"
+  :url "https://github.com/jrblevin/markdown-mode"
+  :ensure t
+  :mode
+  (("README\\.md\\'" . gfm-mode)
+   ("\\.md\\'"       . markdown-mode))
+  :bind
+  (("M-<up>" . markdown-move-subtree-up)
+   ("M-<down>" . markdown-move-subtree-down)
+   ("S-M-<right>" . markdown-demote-subtree)
+   ("S-M-<left>" . markdown-promote-subtree)))
 
 ;; (profiler-report)
 ;; (profiler-stop)
