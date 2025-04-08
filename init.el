@@ -276,6 +276,23 @@
   (lsp-bridge-enable-hover-diagnostic . t)
   (acm-backend-yas-candidates-number  . 5))
 
+;; Go
+(leaf go-mode
+  :doc "Go development environment"
+  :url "https://github.com/dominikh/go-mode.el"
+  :if (executable-find "go")
+  :ensure t
+  :mode "\\.go\\'"
+  :custom
+  (gofmt-command . "goimports")
+  :hook
+  (go-mode-hook
+   . (lambda ()
+       (add-hook 'before-save-hook #'gofmt-before-save t t)))
+ :bind
+  (:go-mode-map
+   ("C-c C-n" . go-run)
+   ("C-c C-m" . consult-make-in-project-root)))
 ;; Python
 (leaf python
   :doc "Python development environment"
