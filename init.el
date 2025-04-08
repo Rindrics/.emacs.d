@@ -16,10 +16,14 @@
    'package-archives '(("org"   . "https://orgmode.org/elpa/")
 		       ("melpa" . "https://melpa.org/packages/")
 		       ("gnu"   . "https://elpa.gnu.org/packages/")))
+  (add-to-list 'load-path "~/.emacs.d/elpa/")
+
   (package-initialize)
   (unless (package-installed-p 'leaf)
     (package-refresh-contents)
     (package-install 'leaf))
+(let ((default-directory "~/.emacs.d/elpa/"))
+  (normal-top-level-add-subdirs-to-load-path))
 
   ;; Leaf keywords
   (leaf leaf-keywords
