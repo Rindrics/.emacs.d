@@ -326,6 +326,23 @@
   :custom-face
   (font-lock-variable-name-face . '((t (:foreground "violet")))))
 
+(leaf doom-themes
+  :doc "Megapack of themes"
+  :url "https://github.com/doomemacs/themes"
+  :ensure t
+  :require (doom-dracula-theme doom-themes-ext-org)
+  :init (setq custom-safe-themes t)
+  :defer-config
+  (let ((display-table (or standard-display-table (make-display-table))))
+    (set-display-table-slot display-table 'vertical-border (make-glyph-code ?│))
+    (setq standard-display-table display-table))
+  :config
+  (load-theme 'doom-dracula)
+  (doom-themes-org-config)
+  :custom-face
+  (hl-line         . '((t (:background "#3B4252" :extend t ))))
+  (vertical-border . '((t (:background "#282a36" :foreground "#1E2029")))))
+
 ;; -----------------------------------------------------------------------------------------
 ;;
 ;; Plain text
