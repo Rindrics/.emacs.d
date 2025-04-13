@@ -28,7 +28,6 @@
  '(cursor-in-non-selected-windows nil)
 
  ;; Font settings
- '(font-lock-maximum-decoration nil)
  '(font-lock-maximum-size nil)
  '(x-underline-at-descent-line t)
 
