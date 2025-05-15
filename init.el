@@ -59,6 +59,11 @@
 ;; Generic Configurations
 ;; -------------------------------------
 
+(leaf *basic-keybind
+  :config
+  (global-set-key (kbd "C-c n") #'forward-list)
+  (global-set-key (kbd "C-c p") #'backward-list))
+
 ;; See http://rindrics.com/emacs/keep-tidy/
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
