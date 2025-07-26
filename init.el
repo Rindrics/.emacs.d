@@ -268,54 +268,6 @@
 ;;
 ;; -----------------------------------------------------------------------------------------
 
-(leaf yasnippet
-  :doc "Template system"
-  :url "https://github.com/joaotavora/yasnippet"
-  :ensure t
-  :hook   ((after-init-hook . yas-reload-all)
-           (prog-mode-hook  . yas-minor-mode))
-  :custom (yas-snippet-dirs . `(,(expand-file-name "snippets" user-emacs-directory))))
-
-(leaf lsp-bridge
-  :doc "fast LSP client"
-  :vc (:url "https://github.com/manateelazycat/lsp-bridge")
-  :require t
-  :after markdown-mode
-  :init (global-lsp-bridge-mode)
-  :hook
-  ((go-mode-hook
-    . (lambda ()
-	(yas-minor-mode)
-	(lsp-bridge-mode))))
-  :custom
-  (acm-enable-tabnine                 . nil)
-  (acm-enable-copilot                 . t)
-  (acm-enable-quick-access            . t)
-  (lsp-bridge-enable-hover-diagnostic . t)
-  (acm-backend-yas-candidates-number  . 5))
-
-;; Go
-(leaf go-mode
-  :doc "Go development environment"
-  :url "https://github.com/dominikh/go-mode.el"
-  :if (executable-find "go")
-  :ensure t
-  :mode "\\.go\\'"
-  :custom
-  (gofmt-command . "goimports")
-  :hook
-  (go-mode-hook
-   . (lambda ()
-       (add-hook 'before-save-hook #'gofmt-before-save t t)))
- :bind
-  (:go-mode-map
-   ("C-c C-n" . go-run)
-   ("C-c C-m" . consult-make-in-project-root)))
-;; Python
-(leaf python
-  :doc "Python development environment"
-  :url "https://wiki.python.org/moin/EmacsPythonMode"
-  :mode ("\\.py\\'" . python-mode))
 
 ;; -----------------------------------------------------------------------------------------
 ;;
