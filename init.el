@@ -333,6 +333,7 @@
    ("S-M-<left>" . markdown-promote-subtree)))
 
 (setq org-startup-indented t)
+(setq org-startup-truncated nil)
 (leaf org-theme
   :doc "Theme for org-mode"
   :custom
